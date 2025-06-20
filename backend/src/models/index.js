@@ -16,20 +16,20 @@ const Product = defineProduct(sequelize, DataTypes);
 const Category = defineCategory(sequelize, DataTypes);
 
 // establecemos las relaciones entre las entidades
-User.belongsTo(Role, { foreignKey: "rol_id" });
-Role.hasMany(User, { foreignKey: "rol_id" });
+User.belongsTo(Role, { foreignKey: "rol_id", as: "role" });
+Role.hasMany(User, { foreignKey: "rol_id", as: "users" });
 
-Cart.belongsTo(User, { foreignKey: "user_id" });
-User.hasMany(Cart, { foreignKey: "user_id" });
+Cart.belongsTo(User, { foreignKey: "user_id", as: "user" });
+User.hasMany(Cart, { foreignKey: "user_id", as: "carts" });
 
-CartItem.belongsTo(Cart, { foreignKey: "cart_id" });
-Cart.hasMany(CartItem, { foreignKey: "cart_id" });
+CartItem.belongsTo(Cart, { foreignKey: "cart_id", as: "cart" });
+Cart.hasMany(CartItem, { foreignKey: "cart_id", as: "cartItems" });
 
-CartItem.belongsTo(Product, { foreignKey: "product_id" });
-Product.hasOne(CartItem, { foreignKey: "product_id" });
+CartItem.belongsTo(Product, { foreignKey: "product_id", as: "product" });
+Product.hasOne(CartItem, { foreignKey: "product_id", as: "cartItem" });
 
-Product.belongsTo(Category, { foreignKey: "categoria_id" });
-Category.hasMany(Product, { foreignKey: "categoria_id" });
+Product.belongsTo(Category, { foreignKey: "categoria_id", as: "category" });
+Category.hasMany(Product, { foreignKey: "categoria_id", as: "products" });
 
 // Exportamos los modelos para que puedan ser utilizados en otros módulos
 export {

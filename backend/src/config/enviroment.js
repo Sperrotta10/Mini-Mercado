@@ -13,4 +13,7 @@ export const enviroment = {
     SECURE_COOKIE : process.env.SECURE_COOKIE,
     SECURE_DB : process.env.SECURE_DB,
     JWT_SECRET : process.env.JWT_SECRET,
+    SESSION_SECRET : process.env.SESSION_SECRET,
+    GOOGLE_CLIENT_ID : process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET : process.env.GOOGLE_CLIENT_SECRET,
 }
