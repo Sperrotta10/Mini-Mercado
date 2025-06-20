@@ -16,32 +16,37 @@ export function defineUser(sequelize, DataTypes){
                 key: 'rol_id'
             }
         },
+        googleId: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            unique: false
+        },
         nombre_completo: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         cedula : {
             type: DataTypes.STRING,
-            allowNull: false,
-            unique: true
+            allowNull: true,
+            unique: false
         },
         telefono: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         username: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true
+            unique: false
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true
+            unique: false
         },
         password: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         suscripcion: {
             type: DataTypes.BOOLEAN,
@@ -53,7 +58,29 @@ export function defineUser(sequelize, DataTypes){
         },
     }, {
         timestamps: true,
-        tableName: "users"
+        tableName: "users",
+        indexes: [
+            {
+                unique: true,
+                fields: ['email'],
+                name: 'idx_user_email_unique'
+            },
+            {
+                unique: true,
+                fields: ['username'],
+                name: 'idx_user_username_unique'
+            },
+            {
+                unique: true,
+                fields: ['cedula'],
+                name: 'idx_user_cedula_unique'
+            },
+            {
+                unique: true,
+                fields: ['googleId'],
+                name: 'idx_user_googleId_unique'
+            }
+        ]
     });
 
     return User;

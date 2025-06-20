@@ -2,6 +2,7 @@ import zod from 'zod';
 
 const updateUser = zod.object({
     nombre_completo: zod.string().min(1, { message : 'El nombre completo es requerido'}),
+    cedula : zod.string().min(6, { message : 'La cédula es requerida'}).max(8, { message : 'La cédula debe tener un máximo de 8 caracteres' }),
     telefono: zod.string().min(10, { message : 'El teléfono es requerido'}).max(11, { message : 'El teléfono debe tener un máximo de 11 caracteres' }),
     username: zod.string().min(1, { message : 'El nombre de usuario es requerido'}).max(20, { message : 'El nombre de usuario debe tener un máximo de 20 caracteres' }),
     email: zod.string().email({ message : 'El email debe ser válido' }),
