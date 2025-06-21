@@ -5,6 +5,9 @@ import { enviroment } from './config/enviroment.js';
 import { sequelize } from './config/dataBase.js';
 import './models/index.js';
 import { routerApiV1 } from './api/v1/router.js';
+import passport from 'passport';
+import { setupGoogleAuth } from './middlewares/authGoogle/google.js';
+import session from 'express-session';
 
 
 const app = express();
@@ -18,6 +21,19 @@ app.use(cors({
 // middleware para parsear el cuerpo de las peticiones y las cookies
 app.use(express.json());
 app.use(cookieParser());
+
+// Configuración de sesión (¡antes que passport!)
+app.use(session({
+  secret: enviroment.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: enviroment.SECURE_COOKIE === "prod" } 
+}));
+
+// Inicializa Passport y configura estrategias
+app.use(passport.initialize());
+app.use(passport.session());
+setupGoogleAuth(passport); // Configura la estrategia Google
 
 app.use('/api/v1/', routerApiV1);
 
