@@ -17,10 +17,25 @@
         </div>
     
     </header>
+
+    <main>
+        <div class="contendor_producto">
+            <div class="producto_carta">
+                <img :src="pizza" alt="Producto" class="producto_carta_imagen">
+                <div class="product_informacion">
+                    <h3 class="producto_nombre">Pizza</h3>
+                    
+                    <div class="producto_precio">¥19.90</div>
+                    <button class="btn_agregar_carrito">Agregar carrito</button>
+                </div>
+            </div>
+        </div>
+    </main>
 </template>
 
 <script setup>
 import logo from '@/assets/Imagenes/LogoMSJ.png'
+import pizza from '@/assets/Imagenes/pizza jamon.png'
 </script>
 
 <style scoped>
