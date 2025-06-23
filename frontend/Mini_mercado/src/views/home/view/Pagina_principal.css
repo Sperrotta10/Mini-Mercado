@@ -100,9 +100,16 @@ header {
 
 /*Areas de producto */
 
-.contendor_producto{
-    display: flex;
-    justify-content: center;
+.contendor_producto {
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.contenedor_caja_producto {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 25px;
 }
 
 /*Area de responsive*/

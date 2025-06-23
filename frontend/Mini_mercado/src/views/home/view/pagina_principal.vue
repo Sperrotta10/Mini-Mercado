@@ -20,18 +20,22 @@
 
     <main>
         <div class="contendor_producto">
-            <!--Podemos que llamar 2 formas los componentes, para que si el futuro quieran hacer-->
-            <!--Con el ciclo for-->
-            <Carta_producto 
-                v-for="producto in productos" 
-                :key="producto.id"
-                :imagen="producto.imagen"
-                :nombre="producto.nombre"
-                :precio="producto.precio"
-            ></Carta_producto>
 
-            <!--O simplemente llenar los datos-->
-            <Carta_producto :nombre="'Pizza_mas'" :precio="234" :imagen="pizzaImg"></Carta_producto>
+          <div class="contenedor_caja_producto">
+              <!--Podemos que llamar 2 formas los componentes, para que si el futuro quieran hacer-->
+              <!--Con el ciclo for-->
+              <Carta_producto 
+                  v-for="producto in productos" 
+                  :key="producto.id"
+                  :imagen="producto.imagen"
+                  :nombre="producto.nombre"
+                  :precio="producto.precio"
+              ></Carta_producto>
+
+              <!--O simplemente llenar los datos-->
+              <Carta_producto :nombre="'Pizza_mas'" :precio="234" :imagen="pizzaImg"></Carta_producto>
+          </div>
+          
         </div>
     </main>
 </template>
@@ -55,25 +59,25 @@ export default {
         },
         {
           id: 2,
-          nombre: 'Pizza',
+          nombre: 'Pizza2',
           precio: '15.90',
           imagen: pizzaImg
         },
         {
           id: 3,
-          nombre: 'Pizza',
+          nombre: 'Pizza3',
           precio: '15.90',
           imagen: pizzaImg
         },
         {
           id: 4,
-          nombre: 'Pizza',
+          nombre: 'Pizza4',
           precio: '15.90',
           imagen: pizzaImg
         },
         {
           id: 5,
-          nombre: 'Pizza',
+          nombre: 'Pizza5',
           precio: '15.90',
           imagen: pizzaImg
         }

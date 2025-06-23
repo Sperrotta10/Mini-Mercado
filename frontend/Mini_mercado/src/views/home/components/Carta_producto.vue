@@ -1,7 +1,7 @@
 <template>
     <div class="producto_carta">
         <img :src="imagen" alt="Producto" class="producto_carta_imagen">
-        <div class="product_informacion">
+        <div class="producto_informacion">
 
             <h3 class="producto_nombre">{{ nombre }}</h3>
             <div class="producto_precio">{{precio}}</div>
@@ -42,7 +42,6 @@ export default {
 
 <style scoped>
 .producto_carta {
-    width: 160px;
     background: white;
     border-radius: 10px;
     overflow: hidden;
