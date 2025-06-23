@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <h1>Mini Mercado</h1>
+  <RouterView></RouterView>
 </template>
 
 <style scoped>

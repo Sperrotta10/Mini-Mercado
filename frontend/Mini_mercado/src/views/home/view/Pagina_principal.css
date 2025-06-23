@@ -1,0 +1,89 @@
+/*Parte Header ------------------------------------------------------------------*/
+.barra_principal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.contenedor_logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    align-items: center;
+    width: auto;
+    height: 70px;
+}
+
+.logo:hover {
+    cursor: pointer;
+}
+
+.contenedor_buscador {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 20px;
+    position: relative;
+}
+
+.contenedor_buscador input {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 30px;
+    border: none;
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.contenedor_buscador button {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background: #5fe8be;
+    border: none;
+    color: white;
+    padding: 7px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.contendor_accion_usuarios {
+    display: flex;
+    align-items: center;
+}
+
+.btn_login,
+.btn_carrito {
+    background: #5fe8be;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.btn_login:hover,
+.btn_carrito:hover {
+    background: #3fa98a;
+    transform: translateY(-2px);
+}
+
+.btn_login i,
+.btn_carrito i {
+    margin-right: 8px;
+}
+
+/*Area de responsive*/
+@media (max-width: 768px) {
+    .barra_principal {
+        flex-direction: column;
+    }
+}
