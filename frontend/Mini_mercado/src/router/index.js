@@ -1,4 +1,5 @@
 import Pagina_principal from '@/views/home/view/pagina_principal.vue'
+import pagina_404 from '@/views/pagina_404/pagina_404.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -8,6 +9,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: Pagina_principal,
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: pagina_404
     }
   ],
 })
