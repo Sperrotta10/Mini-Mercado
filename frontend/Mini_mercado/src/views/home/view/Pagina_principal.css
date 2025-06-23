@@ -98,8 +98,9 @@ header {
     margin-right: 8px;
 }
 
-/*Areas de producto */
 
+
+/*Areas de producto ------------------------------------------------------------------*/
 .contendor_producto {
     max-width: 1400px;
     margin: 40px auto;
@@ -112,9 +113,28 @@ header {
     gap: 25px;
 }
 
-/*Area de responsive*/
+
+
+/*Area de responsive ------------------------------------------------------------------*/
+@media (max-width: 1200px) {
+    .contenedor_caja_producto {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+}
+
 @media (max-width: 768px) {
     .barra_principal {
         flex-direction: column;
+    }
+
+    .contenedor_caja_producto {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .contenedor_caja_producto {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
