@@ -42,6 +42,10 @@
           
         </div>
     </main>
+
+    <footer>
+        <span>© 2025 MSJ Market</span>
+    </footer>
 </template>
 
 <script >

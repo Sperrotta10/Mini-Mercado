@@ -115,6 +115,18 @@ header {
 
 
 
+
+/*Footer ------------------------------------------------------------------*/
+footer {
+    background: #004C45;
+    color: #fff;
+    padding: 50px 5% 20px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+
+
 /*Area de responsive ------------------------------------------------------------------*/
 @media (max-width: 1200px) {
     .contenedor_caja_producto {
