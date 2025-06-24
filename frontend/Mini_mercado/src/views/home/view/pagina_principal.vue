@@ -1,9 +1,7 @@
 <template>
     <header>
         <div class="barra_principal">
-                <div class="contenedor_logo">
-                    <img :src="logo" alt="LOGOMSJ" class="logo">
-                </div>
+                <Logo_con_link></Logo_con_link>
 
                 <div class="contenedor_buscador">
                     <input type="text" placeholder="Buscar producto">
@@ -51,6 +49,7 @@
 <script >
 import Carta_producto from '../components/Carta_producto.vue'
 import Publicidad_carousel from '../components/publicidad_carousel.vue'
+import Logo_con_link from '../../../components_general/logo_con_link.vue'
 
 export default {
    //Aqui tiene que nombrar el nombre de componente para llamarlo
@@ -97,7 +96,6 @@ export default {
 </script>
 
 <script setup>
-import logo from '@/assets/Imagenes/LogoMSJ.png'
 import pizzaImg from '@/assets/Imagenes/pizza jamon.png'
 </script>
 

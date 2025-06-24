@@ -1,7 +1,7 @@
 <template>
   <div class="pagina-404">
     <div class="header">
-      <img src="@/assets/Imagenes/LogoMSJ.png" alt="Logo supermercado" class="logo">
+      <logo_con_link class="logo"/>
       <h1>Vaya, ¿la página se viajo?👻</h1>
     </div>
 
@@ -29,6 +29,11 @@
 
   </div>
 </template>
+
+<script setup>
+import Logo_con_link from '../../components_general/logo_con_link.vue'
+
+</script>
 
 <style scoped>
 /*Plantilla de colores: para guiar bien las cosas*/

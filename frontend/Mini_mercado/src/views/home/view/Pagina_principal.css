@@ -22,21 +22,6 @@ header {
     flex-wrap: wrap;
 }
 
-.contenedor_logo {
-    display: flex;
-    align-items: center;
-}
-
-.logo {
-    align-items: center;
-    width: auto;
-    height: 70px;
-}
-
-.logo:hover {
-    cursor: pointer;
-}
-
 .contenedor_buscador {
     flex: 1;
     max-width: 600px;
