@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import Logo_con_link from '../../components_general/logo_con_link.vue'
+import Logo_con_link from '../../modules/logo_con_link.vue'
 
 </script>
 

@@ -83,6 +83,11 @@ header {
     margin-right: 8px;
 }
 
+.btn_link{
+    text-decoration: none;
+    color: white;
+}
+
 
 
 /*Areas de producto ------------------------------------------------------------------*/

@@ -9,7 +9,7 @@
                 </div>
 
                 <div class="contendor_accion_usuarios">
-                    <button class="btn_login"><i class="fas fa-user"></i> Login</button>
+                    <button class="btn_login"><router-link to ="/login" class="btn_link"><i class="fas fa-user"></i> Login</router-link></button>
                     <button class="btn_carrito"><i class="fas fa-shopping-cart"></i> Carrito</button>
                 </div>
         </div>
@@ -49,7 +49,7 @@
 <script >
 import Carta_producto from '../components/Carta_producto.vue'
 import Publicidad_carousel from '../components/publicidad_carousel.vue'
-import Logo_con_link from '../../../components_general/logo_con_link.vue'
+import Logo_con_link from '../../../modules/logo_con_link.vue'
 
 export default {
    //Aqui tiene que nombrar el nombre de componente para llamarlo
