@@ -19,6 +19,10 @@
     </header>
 
     <main>
+      <!--Area de Carousel, para el manejo de publicidad-->
+      <Publicidad_carousel></Publicidad_carousel>
+
+      <!--Area de Productos-->
         <div class="contendor_producto">
 
           <div class="contenedor_caja_producto">
@@ -42,6 +46,7 @@
 
 <script >
 import Carta_producto from '../components/Carta_producto.vue'
+import Publicidad_carousel from '../components/publicidad_carousel.vue'
 
 export default {
    //Aqui tiene que nombrar el nombre de componente para llamarlo
