@@ -158,7 +158,7 @@ h1 {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background: #10b68d;
+  background: #004C45;
   color: white;
   text-align: center;
   padding: 1rem;
