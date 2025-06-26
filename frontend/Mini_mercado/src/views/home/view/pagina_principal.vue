@@ -20,6 +20,8 @@
       <!--Area de Carousel, para el manejo de publicidad-->
       <Publicidad_carousel></Publicidad_carousel>
 
+      <!--Areas de Categorias de producto-->
+      <categorias_producto></categorias_producto>
       <!--Area de Productos-->
         <div class="contendor_producto">
 
@@ -50,6 +52,7 @@
 import Carta_producto from '../components/Carta_producto.vue'
 import Publicidad_carousel from '../components/publicidad_carousel.vue'
 import Logo_con_link from '../../../modules/logo_con_link.vue'
+import categorias_producto from '../components/categorias_producto.vue'
 
 export default {
    //Aqui tiene que nombrar el nombre de componente para llamarlo

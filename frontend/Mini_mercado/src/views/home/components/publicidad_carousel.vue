@@ -117,7 +117,7 @@ onBeforeUnmount(() => {
 
 .contenedor_carousel {
   position: relative;
-  height: 520px;
+  height: 70vh;
 }
 
 .slide {

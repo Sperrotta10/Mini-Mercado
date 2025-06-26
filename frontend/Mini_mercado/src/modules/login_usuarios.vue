@@ -123,7 +123,7 @@ import Logo_con_link from './logo_con_link.vue'
 }
 
 .contenedor_input input:focus {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(0, 0, 0, 0.4);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
@@ -152,20 +152,19 @@ import Logo_con_link from './logo_con_link.vue'
 .login-wrapper button {
   width: 100%;
   padding: 0.75rem;
-  background-color: white;
+  background-color: #10b68d;
   border: none;
-  outline: none;
   border-radius: 30px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   font-size: 1rem;
-  color: black;
+  color: white;
   font-weight: 700;
   transition: all 0.3s ease;
 }
 
 .login-wrapper button:hover {
-  background-color: #f0f0f0;
+  background-color: #004C45;
   transform: translateY(-2px);
 }
 
