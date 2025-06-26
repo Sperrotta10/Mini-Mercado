@@ -16,4 +16,6 @@ export const enviroment = {
     SESSION_SECRET : process.env.SESSION_SECRET,
     GOOGLE_CLIENT_ID : process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET : process.env.GOOGLE_CLIENT_SECRET,
+    SUPABASE_URL : process.env.SUPABASE_URL,
+    SUPABASE_KEY : process.env.SUPABASE_KEY,
 }
