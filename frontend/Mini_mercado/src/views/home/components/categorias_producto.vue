@@ -1,5 +1,6 @@
 <template>
   <div class="contenedor_suporte_producto_categorias">
+      <h3>Categorías</h3>
     <div class="contenedor_categorias">
         <div 
           v-for="(categoria, index) in categorias" 
@@ -7,10 +8,10 @@
           class="carta_categoria"
         >
           <div class="imagen_categoria">
-            <img :src="pizzaImg" alt="">
+            <img :src="categoria.imagen" alt="">
           </div>
           <div class="contenido_categoria">
-            <h3 class="nombre_categoria">{{ categoria.name }}</h3>
+            <p class="nombre_categoria">{{ categoria.name }}</p>
           </div>
         </div>
     </div>
@@ -20,23 +21,32 @@
 
 <script setup>
 import { ref } from 'vue';
-import pizzaImg from '@/assets/Imagenes/cocacola.png'
+import frutas from '@/assets/Imagenes/fruta.jpg'
+import vegetales from '@/assets/Imagenes/vegetal 2.jpg'
+import chucheria from '@/assets/Imagenes/chucheria.jpg'
+import refresco from '@/assets/Imagenes/refresco.jpg'
+import helados from '@/assets/Imagenes/helado.png'
 
 const categorias = ref([
   {
-    name: 'Test',
+    name: 'Frutas',
+    imagen: frutas
   },
   {
-    name: 'Test',
+    name: 'Vegetales',
+    imagen: vegetales
   },
   {
-    name: 'Test',
+    name: 'Chuchería',
+    imagen: chucheria
   },
   {
-    name: 'Test',
+    name: 'Refresco',
+    imagen: refresco
   },
   {
-    name: 'Test',
+    name: 'Helados',
+    imagen: helados
   }
 ]);
 </script>
@@ -45,6 +55,26 @@ const categorias = ref([
 .contenedor_suporte_producto_categorias{
   max-width: 90%;
   margin: 10px auto;
+}
+
+.contendor_separador{
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.lineas{ /*Era una opcion si se quiere ponerse en linea */
+  height: 1px;
+  width: 100%;
+  background-color: #004C45;
+  margin: 0px 10px;
+}
+
+h3{
+  text-align: center;
+  color: #018175;
+  margin: 20px 0px;
+  font-size: 2.0rem;
 }
 
 .contenedor_categorias {
@@ -73,21 +103,22 @@ const categorias = ref([
 .imagen_categoria {
   position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  
 }
 
 .imagen_categoria img{
   width: 100%;
-  height: auto;
+  height: 150px;
+  object-fit: cover;
 }
 
 .contenido_categoria {
-  padding: 25px;
+  margin: 10px 0px;
+  padding: 15px 10px;
 }
 
 .nombre_categoria {
-  font-size: 1.4rem;
+  font-size: 1rem;
   color: #2c3e50;
   margin-bottom: 10px;
 }

@@ -7,6 +7,7 @@
             <div class="producto_precio">{{precio}}</div>
 
             <button class="btn_agregar_carrito">Agregar carrito</button>
+            <button class="btn_agregar_carrito">Ver más detalles</button>
         </div>
     </div>
 </template>

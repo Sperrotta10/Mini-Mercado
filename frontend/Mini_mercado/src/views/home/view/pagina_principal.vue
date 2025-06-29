@@ -9,7 +9,7 @@
                 </div>
 
                 <div class="contendor_accion_usuarios">
-                    <button class="btn_login"><router-link to ="/login" class="btn_link"><i class="fas fa-user"></i> Login</router-link></button>
+                    <router-link to ="/login" class="btn_link"><button class="btn_login"><i class="fas fa-user"></i> Login</button></router-link>
                     <button class="btn_carrito"><i class="fas fa-shopping-cart"></i> Carrito</button>
                 </div>
         </div>
@@ -22,6 +22,7 @@
 
       <!--Areas de Categorias de producto-->
       <categorias_producto></categorias_producto>
+
       <!--Area de Productos-->
         <div class="contendor_producto">
 
