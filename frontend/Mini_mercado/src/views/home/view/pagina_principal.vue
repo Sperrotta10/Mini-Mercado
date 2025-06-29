@@ -85,7 +85,7 @@ export default {
           id: 4,
           nombre: 'Pizza4',
           precio: '15.90',
-          imagen: pizzaImg
+          imagen: cafe
         },
         {
           id: 5,
@@ -101,6 +101,7 @@ export default {
 
 <script setup>
 import pizzaImg from '@/assets/Imagenes/pizza jamon.png'
+import cafe from '@/assets/Imagenes/cafe.jpg'
 </script>
 
 <style scoped>
