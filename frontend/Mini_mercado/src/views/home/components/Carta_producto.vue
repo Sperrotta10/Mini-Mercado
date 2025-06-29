@@ -36,9 +36,9 @@
                         <div class="contador_para_producto">
                             <label for="contador">Cantidad:</label>
                             <div class="control_contador">
-                                <button class="btn_contador">-</button>
-                                <input type="number" id="contador" min="1" value="1" class="contador_input_numero" />
-                                <button class="btn_contador">+</button>
+                                <button class="btn_contador" @click="decrementar">-</button>
+                                <input type="number" id="contador" min="1" :value="cantidad_producto" class="contador_input_numero" />
+                                <button class="btn_contador" @click="incrementar">+</button>
                             </div>
                         </div>
                         
@@ -86,6 +86,24 @@ export default {
 //       });
 //     }
 //   }
+}
+</script>
+
+<script setup>
+import { ref } from 'vue';
+const cantidad_producto = ref(0);
+
+//Para incrementar la cantidad de producto
+const incrementar = () => {
+  cantidad_producto.value++;
+}
+
+//Para decrementar 
+const decrementar = () => {
+  if (cantidad_producto.value > 0){
+    cantidad_producto.value--;
+  }
+  
 }
 </script>
 
@@ -183,6 +201,7 @@ export default {
   padding: 5px;
   width: 32px;
   height: 32px;
+  color: #10b68d;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -191,7 +210,12 @@ export default {
 }
 
 .btn_apagar_modal:hover {
-  background-color: #f5f5f5;
+  background-color: #10b68d;
+  color: #004C45;
+}
+
+.btn_apagar_modal span{
+  font-size: 1.2rem;
 }
 
 .contenido_modal {
