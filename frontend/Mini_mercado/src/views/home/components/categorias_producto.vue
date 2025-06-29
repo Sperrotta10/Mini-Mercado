@@ -7,12 +7,14 @@
           :key="index" 
           class="carta_categoria"
         >
+        <RouterLink target="_blank" :to="categoria.link" class="carta_link">
           <div class="imagen_categoria">
             <img :src="categoria.imagen" alt="">
           </div>
           <div class="contenido_categoria">
             <p class="nombre_categoria">{{ categoria.name }}</p>
           </div>
+        </RouterLink>
         </div>
     </div>
   </div>
@@ -26,27 +28,38 @@ import vegetales from '@/assets/Imagenes/vegetal 2.jpg'
 import chucheria from '@/assets/Imagenes/chucheria.jpg'
 import refresco from '@/assets/Imagenes/refresco.jpg'
 import helados from '@/assets/Imagenes/helado.png'
+import carne from '@/assets/Imagenes/carne.jpg'
 
 const categorias = ref([
   {
     name: 'Frutas',
-    imagen: frutas
+    imagen: frutas,
+    link:'/categoria/frutas'
   },
   {
     name: 'Vegetales',
-    imagen: vegetales
+    imagen: vegetales,
+    link:'/categoria/vegetales'
   },
   {
     name: 'Chuchería',
-    imagen: chucheria
+    imagen: chucheria,
+    link:'/categoria/chucheria'
   },
   {
     name: 'Refresco',
-    imagen: refresco
+    imagen: refresco,
+    link:'/categoria/refresco'
   },
   {
     name: 'Helados',
-    imagen: helados
+    imagen: helados,
+    link:'/categoria/helados'
+  },
+  {
+    name: 'Carnicería',
+    imagen: carne,
+    link:'/categoria/carniceria'
   }
 ]);
 </script>
@@ -79,9 +92,17 @@ h3{
 
 .contenedor_categorias {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 25px;
   margin-bottom: 40px;
+}
+
+.carta_link {
+  text-decoration: none;
+}
+
+.carta_link p:hover{
+  color: #018175;
 }
 
 .carta_categoria {
@@ -96,8 +117,9 @@ h3{
 }
 
 .carta_categoria:hover {
-  transform: translateY(-10px);
+  scale: 1.1;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
 }
 
 .imagen_categoria {
