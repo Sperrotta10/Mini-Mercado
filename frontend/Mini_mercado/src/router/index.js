@@ -1,6 +1,8 @@
 import Pagina_principal from '@/views/home/view/pagina_principal.vue'
 import pagina_404 from '@/views/pagina_404/pagina_404.vue'
 import login_usuarios from '@/modules/login_usuarios.vue'
+import pagina_administrador from '@/views/admin/view/pagina_administrador.vue'
+import pagina_usuario from '@/views/usuarios/view/pagina_usuario.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -18,8 +20,18 @@ const router = createRouter({
     },
     {
       path: '/login',
-      name: 'Login_usuario', //Esto hasta momento es demo
+      name: 'Pagina de Login usuario', //Esto hasta momento es demo
       component: login_usuarios
+    },
+    {
+      path: '/administrador',
+      name: 'administrador', //Esto hasta momento es demo
+      component: pagina_administrador
+    },
+    {
+      path: '/usuario',
+      name: 'Pagina de Usuario', //Esto hasta momento es demo
+      component: pagina_usuario
     }
   ],
 })
