@@ -5,6 +5,7 @@ import { defineCartItem } from "../modules/cart-item/schemas/cart-item.js";
 import { defineProduct } from "../modules/product/schemas/product.js";
 import { defineCategory } from "../modules/category/schemas/category.js";
 import { sequelize } from "../config/dataBase.js";
+import { Sequelize } from "sequelize";
 import { DataTypes } from "sequelize";
 
 // definimos los modelos de la base de datos
@@ -33,6 +34,8 @@ Category.hasMany(Product, { foreignKey: "categoria_id", as: "products" });
 
 // Exportamos los modelos para que puedan ser utilizados en otros módulos
 export {
+    sequelize,
+    Sequelize,
     User,
     Role,
     Cart,
