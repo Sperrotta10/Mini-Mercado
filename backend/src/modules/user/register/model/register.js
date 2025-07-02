@@ -1,11 +1,11 @@
 import bcrypt from 'bcrypt';
-import { User } from "../../../../models/index.js"
+import { User, Role } from "../../../../models/index.js"
 import { enviroment } from "../../../../config/enviroment.js"
 
 export class ModelUserRegister {
 
     // Metodo para crear un usuario
-    static async create(data) {
+    static async create(data, role_id) {
 
         try {
 
@@ -16,13 +16,18 @@ export class ModelUserRegister {
             const salt = parseInt(enviroment.SALT, 10);
             const hashPassword = await bcrypt.hash(data.password, salt);
 
-            const user = await User.create({...data, password : hashPassword, rol_id : enviroment.ROLE_DEFAULT}, {
-                attributes : {
-                    exclude : ['password','rol_id'],
-                },
-            });
+            const user = await User.create({...data, password : hashPassword, rol_id : role_id});
 
-            return {message : "User creado", status : 201, data : user};
+            const userResponse = {
+                user_id: user.user_id,
+                username: user.username,
+                email: user.email,
+                suscripcion : user.suscripcion,
+                updatedAt : user.updatedAt,
+                createdAt : user.createdAt,
+            }
+
+            return {message : "User creado", status : 201, data : userResponse};
 
 
         } catch (error) {
@@ -84,6 +89,40 @@ export class ModelUserRegister {
 
         } catch (error) {
             console.error("Error al obtener user");
+            throw error;
+        }
+    }
+
+    static async getPaginationEmpleado(page, limit, offset, role) {
+        
+        try {
+
+            const { count, rows: users } = await User.findAndCountAll({
+                include: {
+                    model: Role,
+                    as: 'role',
+                    where: { name: role },
+                },
+                limit,
+                offset,
+                attributes: { exclude: ['password'] } 
+            });
+
+            if (users.length === 0) return { message: "No se encontraron usuarios con ese rol", status: 404 };
+
+            return { 
+                message: 'Users obtenidos', 
+                status: 200, 
+                data: {
+                    currentPage : page,
+                    totalPages: Math.ceil(count / limit),
+                    totalItems: count,
+                    users
+                }
+            };
+
+        } catch (error) {
+            console.error("Error al obtener los usuarios");
             throw error;
         }
     }
