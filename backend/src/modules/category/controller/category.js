@@ -20,11 +20,13 @@ export class CategoryController extends BaseController {
 
     const validate = this.validators?.create;
     const result = validate ? validate(req.body) : { success: true, data: req.body };
-    const resultImage = isImageFile(image);
+    
+    if (image){
+        const resultImage = isImageFile(image);
+        if (!resultImage.success) return res.status(resultImage.status).json({ message: resultImage.message });
+    }
 
     if (!result.success) return res.status(400).json({ message: "Error de validación", error: result.error.errors });
-
-    if (image && !resultImage.success) return res.status(resultImage.status).json({ message: resultImage.message });
 
     let filePath = null;
 
