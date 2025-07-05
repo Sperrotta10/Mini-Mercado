@@ -10,11 +10,17 @@ export function defineRole(sequelize, DataTypes) {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true
+            unique: false
         },
     }, {
         timestamps: true,
-        tableName: "roles"
+        tableName: "roles",
+        indexes : [
+            {
+                unique: true,
+                fields: ['name']
+            }
+        ]
     });
 
     return Role;
