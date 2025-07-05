@@ -29,16 +29,19 @@ export class CategoryController extends BaseController {
     if (!result.success) return res.status(400).json({ message: "Error de validación", error: result.error.errors });
 
     let filePath = null;
+    const payload = result.data;
+    const FOLDER = 'category';
+    const BUCKET = 'category-images';
 
     try {
 
         // Subir imagen a Supabase
-        const imageUrl = await uploadImage(image, 'category', 'category-images');
+        const imageUrl = await uploadImage(image, FOLDER, BUCKET);
         filePath = extractPathFromUrl(imageUrl);
-        result.data.image = imageUrl; // agregamos la URL de la imagen en los datos
+        payload.image = imageUrl; // agregamos la URL de la imagen en los datos
 
         // Guardar la categoría en la base de datos
-        const created = await this.model.create(result.data);
+        const created = await this.model.create(payload);
         return res.status(created.status).json({ message: created.message, data: created.data ?? null });
 
     } catch (error) {
@@ -46,7 +49,7 @@ export class CategoryController extends BaseController {
         if (filePath) {
             // Si hubo un error, eliminar la imagen subida
             try {
-                await deleteFile(filePath, 'category-images');
+                await deleteFile(filePath, BUCKET);
             } catch (error) {
                 console.error("Error al eliminar la imagen:", error);
             }
