@@ -5,6 +5,7 @@ import session from 'express-session';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import fileUpload from "express-fileupload"
 import { enviroment } from './enviroment.js';
 
 
@@ -21,6 +22,15 @@ export function createServer() {
     // middleware para parsear el cuerpo de las peticiones y las cookies
     app.use(express.json());
     app.use(cookieParser());
+    
+    // Middleware para parsear datos tipo form-urlencoded
+    app.use(express.urlencoded({ extended: true }));
+    // Middleware para manejar archivos
+    app.use(fileUpload({
+        useTempFiles: false,
+        createParentPath: true, // Crea directorios padre si no existen
+        limits: { fileSize: 2 * 1024 * 1024 } // Limita el tamaño del archivo a 2MB
+    }));
 
     // Configuración de sesión (¡antes que passport!)
     app.use(session({
