@@ -10,11 +10,21 @@ export function defineCategory(sequelize, DataTypes) {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true
+            unique: false
         },
+        image : {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
     }, {
         timestamps: true,
-        tableName: "categories"
+        tableName: "categories",
+        indexes: [
+            {
+                unique: true,
+                fields: ['name'] 
+            }
+        ]
     });
 
     return Category;
