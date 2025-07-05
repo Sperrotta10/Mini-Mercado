@@ -16,6 +16,25 @@ export class CategoryModel {
         }
     }
 
+    static async getById(categoria_id) {
+
+        try {
+
+            const categoria = await Category.findByPk(categoria_id);
+
+            if (!categoria) {
+                return {message : "Categoria no encontrado", status : 404};
+            }
+
+            return {message : "Categoria obtenido", data : categoria, status : 200};
+
+        } catch (error) {
+            console.error("Error al obtener la categoria por id", error);
+            throw new Error("Error al obtener la categoria por id");
+        }
+
+    }
+
 
     static async create(data) {
 
