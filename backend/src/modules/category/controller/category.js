@@ -2,6 +2,7 @@ import { BaseController } from "../../../controller/controller.js"
 import { validateCreateCategory } from "../validation/create.js"
 import { validateUpdateCategory } from "../validation/update.js"
 import { isImageFile } from "../../../helpers/images.js"
+import { errorUploadImage } from "../../../helpers/upload_image.js"
 import { uploadImage, extractPathFromUrl, deleteFile } from "../../../utils/images.js"
 import { CategoryModel } from "../model/category.js"
 
@@ -46,14 +47,7 @@ export class CategoryController extends BaseController {
 
     } catch (error) {
 
-        if (filePath) {
-            // Si hubo un error, eliminar la imagen subida
-            try {
-                await deleteFile(filePath, BUCKET);
-            } catch (error) {
-                console.error("Error al eliminar la imagen:", error);
-            }
-        }
+        await errorUploadImage(filePath, BUCKET);
 
         return res.status(500).json({ message: "Error interno", error: error.message });
     }
@@ -64,9 +58,6 @@ export class CategoryController extends BaseController {
     const { id } = req.params;
     const image = req.files?.image;
     const body = req.body || {};
-
-    console.log("Datos recibidos para actualizar:", body);
-    console.log("Imagen recibida:", image);
 
     if (Object.keys(body).length === 0 && !image) return res.status(400).json({ message: "No se proporcionaron datos para actualizar" });
 
@@ -109,15 +100,7 @@ export class CategoryController extends BaseController {
 
     } catch (error) {
 
-
-        if (filePath) {
-            // Si hubo un error, eliminar la imagen subida
-            try {
-                await deleteFile(filePath, BUCKET);
-            } catch (error) {
-                console.error("Error al eliminar la imagen:", error);
-            }
-        }
+        await errorUploadImage(filePath, BUCKET);
 
         return res.status(500).json({ message: "Error interno", error: error.message });
     }
