@@ -32,24 +32,27 @@ export const uploadImage = async (file, folder, bucket) => {
 export const deleteFile = async (filePath, bucket) => {
 
   try {
+    if (!filePath) throw new Error("No se proporcionó una ruta de archivo válida");
 
-    if (!filePath) {
-      throw new Error("No se proporcionó una ruta de archivo válida");
-    }
-
-    // 2. Elimina la imagen antigua (opcional)
+    let path = filePath;
+    console.log("Ruta del archivo a eliminar:", path);
+    // Si es una URL de Supabase, extrae la ruta interna
     if (isSupabaseUrl(filePath)) {
-      const oldImagePath = extractPathFromUrl(filePath);
-
-      const { error } = await supabase.storage
-      .from(bucket)
-      .remove([oldImagePath]);
-
-      if (error) throw error;
+      path = extractPathFromUrl(filePath);
     }
-    
+
+    if (!path) throw new Error("No se pudo determinar la ruta interna del archivo");
+
+    const { error } = await supabase.storage
+      .from(bucket)
+      .remove([path]);
+
+    console.log("Intentando eliminar archivo:", error);
+    if (error) throw error;
+
+    console.log(`Archivo eliminado correctamente: ${path}`);
   } catch (error) {
-    console.error("Error al eliminar archivo:", error);
+    console.error("Error al eliminar archivo:", error.message);
   }
   
 };
