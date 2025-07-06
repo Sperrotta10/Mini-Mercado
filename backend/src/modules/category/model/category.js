@@ -1,4 +1,5 @@
 import { Category } from "../../../models/index.js"
+import { deleteFile } from "../../../utils/images.js"
 
 export class CategoryModel {
 
@@ -75,13 +76,22 @@ export class CategoryModel {
 
         try {
 
+            const BUCKET = 'category-images';
+
             const categoriaExists = await Category.findByPk(categoria_id);
 
             if (!categoriaExists) {
                 return {message : "Categoria no encontrado", status : 404};
             }
             
-            await Category.destroy({where : {categoria_id}});
+            const deleted = await Category.destroy({where : {categoria_id}});
+
+            if (deleted === 0) return { message: "Producto no encontrado", status: 404 };
+
+            if (categoriaExists.image) {
+                console.log("Eliminando imagen del producto:", productExists.image);
+                await deleteFile(productExists.image, BUCKET);
+            }
 
             return {message : "Categoria eliminada", status : 200};
 
