@@ -1,16 +1,44 @@
 import zod from 'zod';
 
 const updateProduct = zod.object({
-    name: zod.string().min(1, { message: 'El nombre del producto es requerido' }),
-    image: zod.string().url({ message: 'La imagen debe ser una URL válida' }),
-    price: zod.number().positive({ message: 'El precio debe ser un número positivo' }),
-    stock: zod.number().int().nonnegative({ message: 'El stock debe ser un número entero no negativo' }),
-    stock_min: zod.number().int().nonnegative({ message: 'El stock mínimo debe ser un número entero no negativo' }),
-    oferta: zod.number().int().nonnegative({ message: 'La oferta debe ser un número entero no negativo' }).default(0),
-    categoria_id: zod.number().int().positive({ message: 'El ID de la categoría debe ser un número entero positivo' }),
-}).partial().refine((data) => Object.keys(data).length > 0, {
-    message: 'Debes enviar al menos un campo para crear el producto',
-});
+  name: zod.string().min(1, { message: 'El nombre del producto es requerido' }).optional(),
+
+  price: zod
+    .string()
+    .regex(/^\d+(\.\d+)?$/)
+    .transform(Number)
+    .refine(val => val > 0, { message: 'El precio debe ser un número positivo' })
+    .optional(),
+
+  stock: zod
+    .string()
+    .regex(/^\d+$/)
+    .transform(Number)
+    .refine(val => val >= 0, { message: 'El stock debe ser un número entero no negativo' })
+    .optional(),
+
+  stock_min: zod
+    .string()
+    .regex(/^\d+$/)
+    .transform(Number)
+    .refine(val => val >= 0, { message: 'El stock mínimo debe ser un número entero no negativo' })
+    .optional(),
+
+  oferta: zod
+    .string()
+    .regex(/^\d+$/)
+    .transform(Number)
+    .refine(val => val >= 0, { message: 'La oferta debe ser un número entero no negativo' })
+    .optional(),
+
+  categoria_id: zod
+    .string()
+    .regex(/^\d+$/)
+    .transform(Number)
+    .refine(val => val > 0, { message: 'El ID de la categoría debe ser un número entero positivo' })
+    .optional(),
+}).partial()
+
 
 export function validateUpdateProduct(data) {
     return updateProduct.safeParse(data);
