@@ -9,6 +9,7 @@ productRouter.get('/pagination', controller.getPaginatedWithFilters);
 productRouter.get('/search/:name', controller.searchByName);
 productRouter.get('/', controller.getAll);
 productRouter.get('/:id', controller.getId);
+productRouter.post('/all', controller.createAll);
 productRouter.post('/', controller.create);
 productRouter.patch('/:id', authenticateHybrid, controller.update);
 productRouter.delete('/:id', controller.delete);
