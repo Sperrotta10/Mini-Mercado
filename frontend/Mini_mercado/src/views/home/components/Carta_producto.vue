@@ -1,5 +1,6 @@
 <template>
     <div class="producto_carta">
+      <RouterLink :to="`/producto_detalles/${nombre}`"> <!--Aqui agregamos la cosa de routerlink para que puede conectarse, permitiendo abrir otra ruta-->
         <img :src="imagen" alt="Producto" class="producto_carta_imagen">
         <div class="producto_informacion">
 
@@ -9,6 +10,7 @@
             <button class="btn_agregar_carrito" @click="showModal = true">Agregar carrito</button>
             <button class="btn_agregar_carrito">Ver más detalles</button>
         </div>
+      </RouterLink>
 
         <!-- Usando la etiqueta de teleport para hacer la modal más sencillo -->
         <Teleport to="body">

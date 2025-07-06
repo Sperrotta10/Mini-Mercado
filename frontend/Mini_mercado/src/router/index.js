@@ -35,7 +35,8 @@ const router = createRouter({
       component: pagina_usuario
     },
     {
-      path: '/producto_detalles',
+      //Ahora, modificando al ruta dinamicamente
+      path: '/producto_detalles/:nombre',
       name: 'Pagina de producto detalle', //Esto hasta momento es demo
       component: Detalles_producto
     }

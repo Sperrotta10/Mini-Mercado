@@ -5,7 +5,7 @@
                 <img :src="Ejemplo_png" alt="Producto_imagen">
             </div>
             <div class="producto_informacion">
-                <h1 class="producto_titulo">Manzana</h1>
+                <h1 class="producto_titulo">{{ nombre_producto }}</h1>
                 <span class="producto_categoria">Frutas</span>
                 <div class="producto_precio">$29.90</div>
                 <div class="producto_disnonible">Disponible: </div>
@@ -60,7 +60,31 @@
 </template>
 
 <script setup>
+import { computed, watch, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+
 import Ejemplo_png from '@/assets/Imagenes/pizza jamon.png'
+
+const route = useRoute();
+const nombre_producto = computed(()=> route.params.nombre)
+
+//Hacemos una funcion para que puede chequear para ver que si funciona
+const cargarProducto = (nombre) =>{
+    console.log('Cargado: ',nombre,' Niceeeee!')
+}
+
+//Montando las cosas
+onMounted(()=>{
+    cargarProducto(route.params.nombre)
+})
+
+watch(
+    () => route.params.nombre,
+    (nuevoNombre) =>{
+        cargarProducto(nuevoNombre)
+    }
+)
+
 </script>
 
 <style scoped>
