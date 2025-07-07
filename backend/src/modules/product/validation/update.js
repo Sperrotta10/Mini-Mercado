@@ -37,6 +37,13 @@ const updateProduct = zod.object({
     .transform(Number)
     .refine(val => val > 0, { message: 'El ID de la categoría debe ser un número entero positivo' })
     .optional(),
+
+  status: zod
+    .string()
+    .regex(/^(true|false)$/i, { message: 'El estado debe ser "true" o "false"' })
+    .transform(val => val.toLowerCase() === 'true')
+    .optional()
+
 }).partial()
 
 
