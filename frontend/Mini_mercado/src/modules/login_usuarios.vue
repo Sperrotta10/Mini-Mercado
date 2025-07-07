@@ -45,9 +45,9 @@ import Logo_con_link from './logo_con_link.vue'
 }
 
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 1rem;
   background-color: white;
 }

@@ -1,5 +1,6 @@
 <template>
-<div class="contenedor">
+    <header_general></header_general>
+    <div class="contenedor">
         <div class="producto_detalle">
             <div class="product_imagen">
                 <img :src="Ejemplo_png" alt="Producto_imagen">
@@ -57,13 +58,15 @@
             </div>
         </div>
     </div>
+    <footer_general></footer_general>
 </template>
 
 <script setup>
 import { computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-
 import Ejemplo_png from '@/assets/Imagenes/pizza jamon.png'
+import header_general from '@/modules/header_general.vue';
+import footer_general from '@/modules/footer_general.vue';
 
 const route = useRoute();
 const nombre_producto = computed(()=> route.params.nombre)

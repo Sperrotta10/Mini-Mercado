@@ -1,20 +1,7 @@
 <template>
-    <header>
-        <div class="barra_principal">
-                <Logo_con_link></Logo_con_link>
 
-                <div class="contenedor_buscador">
-                    <input type="text" placeholder="Buscar producto">
-                    <button>Buscar</button>
-                </div>
-
-                <div class="contendor_accion_usuarios">
-                    <router-link to ="/login" class="btn_link"><button class="btn_login"><i class="fas fa-user"></i> Login</button></router-link>
-                    <button class="btn_carrito"><i class="fas fa-shopping-cart"></i> Carrito</button>
-                </div>
-        </div>
-    
-    </header>
+    <!--Area de header-->
+    <header_general></header_general>
 
     <main>
       <!--Area de Carousel, para el manejo de publicidad-->
@@ -43,17 +30,17 @@
           
         </div>
     </main>
-
-    <footer>
-        <span>© 2025 MSJ Market</span>
-    </footer>
+    
+    <!--Area de footer-->
+    <Footer_general></Footer_general>
 </template>
 
-<script >
+<script>
+import header_general from '@/modules/header_general.vue'
 import Carta_producto from '../components/Carta_producto.vue'
 import Publicidad_carousel from '../components/publicidad_carousel.vue'
-import Logo_con_link from '../../../modules/logo_con_link.vue'
 import categorias_producto from '../components/categorias_producto.vue'
+import Footer_general from '@/modules/footer_general.vue'
 
 export default {
    //Aqui tiene que nombrar el nombre de componente para llamarlo
