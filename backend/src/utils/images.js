@@ -3,6 +3,9 @@ import { supabase } from '../config/supaBase.js';
 
 export const uploadImage = async (file, folder, bucket) => {
   try {
+
+    if (!file) throw new Error("No se proporcionó un archivo válido");
+
     // 1. Define la ruta (usamos timestamp para evitar duplicados)
     const filePath = `${folder}/${Date.now()}_${file.name}`;
 
