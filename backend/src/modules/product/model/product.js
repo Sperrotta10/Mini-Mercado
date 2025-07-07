@@ -32,7 +32,7 @@ export class ProductModel {
         }
     }
 
-    static async getPaginatedWithFilters(page, limit, offset, filters) {
+    static async getPaginatedWithFilters(page, limit, offset, filters, role) {
 
         try {
 
@@ -58,6 +58,10 @@ export class ProductModel {
                     return { message: "Categoría no encontrada", status: 404 };
                 }
                 where.categoria_id = filters.categoria;
+            }
+
+            if (role !== 'admin') {
+                where.status = true; // Solo productos activos para usuarios no administradores
             }
 
             const { count, rows: products } = await Product.findAndCountAll({
@@ -93,7 +97,8 @@ export class ProductModel {
             where: {
                 name: {
                 [Op.like]: `%${name}%`
-                }
+                },
+                status: true // Solo productos activos
             }
             });
 
@@ -134,7 +139,7 @@ export class ProductModel {
 
     }
 
-    static async update(product_id, data) {
+    static async update(product_id, data, role) {
     
         try {
 
@@ -142,6 +147,10 @@ export class ProductModel {
 
             if (!productExists) {
                 return {message : "Producto no encontrado", status : 404};
+            }
+
+            if (role !== 'admin' && productExists.status === false) {
+                return {message : "No tienes permiso para modificar este producto", status : 403};
             }
             
             await Product.update(data, {where : {product_id}});
