@@ -66,6 +66,7 @@ export class ProductController extends BaseController {
 
     getPaginatedWithFilters = async (req, res) => {
         
+        const { rol } = req.user;
         const result = validatePagination(req.query);
 
         if (!result.success) return res.status(400).json({ message: "Error de validación", error: result.error.errors });
@@ -75,7 +76,7 @@ export class ProductController extends BaseController {
         const offset = (page - 1) * limit;
 
         try {
-            const response = await this.model.getPaginatedWithFilters(page, limit, offset, filters);
+            const response = await this.model.getPaginatedWithFilters(page, limit, offset, filters, rol);
             return res.status(response.status).json({ message: response.message, data: response.data });
         } catch (error) {
             return res.status(500).json({ message: "Error interno", error: error.message });
@@ -124,13 +125,17 @@ export class ProductController extends BaseController {
 
                 try {
                  
-                    // subir imagen a Supabase si se proporciona
-                    const imageUrl = await uploadImage(image, FOLDER, BUCKET);
+                    if (image) {
 
-                    if (!imageUrl) return res.status(500).json({ message: "Error al subir la imagen" });
+                        // subir imagen a Supabase si se proporciona
+                        const imageUrl = await uploadImage(image, FOLDER, BUCKET);
 
-                    filePath = extractPathFromUrl(imageUrl);
-                    payload.image = imageUrl; // agregamos la URL de la imagen en los datos
+                        if (!imageUrl) return res.status(500).json({ message: "Error al subir la imagen" });
+
+                        filePath = extractPathFromUrl(imageUrl);
+                        payload.image = imageUrl; // agregamos la URL de la imagen en los datos
+                    }
+                
 
                     const product = await this.model.getId(id);
 
@@ -142,7 +147,7 @@ export class ProductController extends BaseController {
                     }
                 
                     // actualizar el producto en la base de datos
-                    const updated = await this.model.update(id, payload);
+                    const updated = await this.model.update(id, payload, rol);
                     if (updated.status === 200) {
                         
                         if (filePath && product.data.image && product.data.image !== payload.image) {
@@ -162,7 +167,7 @@ export class ProductController extends BaseController {
             } else if (rol === 'empleado') {
                 
                 const filtered = { stock: result.data.stock };
-                const updated = await this.model.update(id, filtered);
+                const updated = await this.model.update(id, filtered, rol);
                 return res.status(updated.status).json({ message: updated.message, data: updated.data });
 
             } else {
