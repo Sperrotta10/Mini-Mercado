@@ -1,6 +1,6 @@
 <template>
     <div class="producto_carta">
-      <RouterLink :to="`/producto_detalles/${nombre}`"> <!--Aqui agregamos la cosa de routerlink para que puede conectarse, permitiendo abrir otra ruta-->
+       <!--Aqui agregamos la cosa de routerlink para que puede conectarse, permitiendo abrir otra ruta-->
         <img :src="imagen" alt="Producto" class="producto_carta_imagen">
         <div class="producto_informacion">
 
@@ -8,9 +8,11 @@
             <div class="producto_precio">{{precio}}</div>
 
             <button class="btn_agregar_carrito" @click="showModal = true">Agregar carrito</button>
+            <RouterLink :to="`/producto_detalles/${nombre}`" class="link">
             <button class="btn_agregar_carrito">Ver más detalles</button>
+            </RouterLink>
         </div>
-      </RouterLink>
+      
 
         <!-- Usando la etiqueta de teleport para hacer la modal más sencillo -->
         <Teleport to="body">
@@ -93,7 +95,7 @@ export default {
 
 <script setup>
 import { ref } from 'vue';
-const cantidad_producto = ref(0);
+const cantidad_producto = ref(1);
 
 //Para incrementar la cantidad de producto
 const incrementar = () => {
@@ -102,7 +104,7 @@ const incrementar = () => {
 
 //Para decrementar 
 const decrementar = () => {
-  if (cantidad_producto.value > 0){
+  if (cantidad_producto.value > 1){
     cantidad_producto.value--;
   }
   
@@ -116,6 +118,14 @@ const decrementar = () => {
     overflow: hidden;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
+}
+
+.link{
+  text-decoration: none;
+}
+
+.link h3{
+  color: #004C45;
 }
 
 .producto_carta:hover {

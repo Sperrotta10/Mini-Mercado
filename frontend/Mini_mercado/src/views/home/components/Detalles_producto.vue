@@ -12,64 +12,54 @@
                 <div class="producto_disnonible">Disponible: </div>
                 
                 <div class="control_cantidad">
-                    <button class="btn_cantidad menos">-</button>
-                    <input type="text" class="input_cantidad" value="1">
-                    <button class="btn_cantidad mas">+</button>
+                    <button class="btn_cantidad menos" @click="decrementar">-</button>
+                    <input type="text" class="input_cantidad" :value="cantidad_producto">
+                    <button class="btn_cantidad mas" @click="incrementar">+</button>
                 </div>
                 
-                <button class="agregar_al_carrito">Agregar_al_carrito</button>
+                <button class="agregar_al_carrito">Agregar al carrito</button>
             </div>
         </div>
         
+        <h2 class="section_titulo">Producto recomendado</h2>
         <div class="producto_aleatorio_recomendado">
-            <h2 class="section_titulo">Producto recomendado</h2>
-            <div class="producto_grid">
-                <div class="producto_carta">
-                    <img :src="Ejemplo_png" alt="Producto1" class="producto_carta_imagen">
-                    <div class="producto_carta_cuerpo">
-                        <h3 class="producto_carta_titulo">Manzana</h3>
-                        <div class="producto_carta_precio">$25.80</div>
-                    </div>
-                </div>
-                
-                <div class="producto_carta">
-                    <img :src="Ejemplo_png" class="producto_carta_imagen">
-                    <div class="producto_carta_cuerpo">
-                        <h3 class="producto_carta_titulo">Manzana</h3>
-                        <div class="producto_carta_precio">$39.90</div>
-                    </div>
-                </div>
-                
-                <div class="producto_carta">
-                    <img :src="Ejemplo_png" alt="Producto1" class="producto_carta_imagen">
-                    <div class="producto_carta_cuerpo">
-                        <h3 class="producto_carta_titulo">Manzana</h3>
-                        <div class="producto_carta_precio">$89.00</div>
-                    </div>
-                </div>
-                
-                <div class="producto_carta">
-                    <img :src="Ejemplo_png" alt="Producto1" class="producto_carta_imagen">
-                    <div class="producto_carta_cuerpo">
-                        <h3 class="producto_carta_titulo">Manzana</h3>
-                        <div class="producto_carta_precio">$129.00</div>
-                    </div>
-                </div>
-            </div>
+            <carta_producto
+                v-for="producto in productos" 
+                :key="producto.id"
+                :imagen="producto.imagen"
+                :nombre="producto.nombre"
+                :precio="producto.precio"
+            ></carta_producto>
         </div>
     </div>
     <footer_general></footer_general>
 </template>
 
 <script setup>
-import { computed, watch, onMounted } from 'vue';
+import { computed, watch, onMounted,ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Ejemplo_png from '@/assets/Imagenes/pizza jamon.png'
 import header_general from '@/modules/header_general.vue';
 import footer_general from '@/modules/footer_general.vue';
+import Carta_producto from './Carta_producto.vue';
 
 const route = useRoute();
 const nombre_producto = computed(()=> route.params.nombre)
+
+const cantidad_producto = ref(1);
+
+//Para incrementar la cantidad de producto
+const incrementar = () => {
+  cantidad_producto.value++;
+}
+
+//Para decrementar 
+const decrementar = () => {
+  if (cantidad_producto.value > 1){
+    cantidad_producto.value--;
+  }
+  
+}
 
 //Hacemos una funcion para que puede chequear para ver que si funciona
 const cargarProducto = (nombre) =>{
@@ -88,11 +78,50 @@ watch(
     }
 )
 
+//Simulando datos conectados:
+const productos = [
+  {
+    id: 1,
+    nombre: 'Pizza',
+    precio: '19.90',
+    imagen: Ejemplo_png
+  },
+  {
+    id: 2,
+    nombre: 'Pizza2',
+    precio: '15.90',
+    imagen: Ejemplo_png
+  },
+  {
+    id: 3,
+    nombre: 'Pizza3',
+    precio: '15.90',
+    imagen: Ejemplo_png
+  },
+  {
+    id: 4,
+    nombre: 'Pizza4',
+    precio: '15.90',
+    imagen: Ejemplo_png
+  },
+  {
+    id: 5,
+    nombre: 'Pizza5',
+    precio: '15.90',
+    imagen: Ejemplo_png
+  },
+  {
+    id: 6,
+    nombre: 'Pizza5',
+    precio: '20.22',
+    imagen: Ejemplo_png
+  }
+]
 </script>
 
 <style scoped>
 .contenedor{
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -176,7 +205,6 @@ watch(
     height: 30px;
     text-align: center;
     border: 1px solid #ddd;
-    margin: 0 5px;
 }
 
 .agregar_al_carrito {
@@ -196,6 +224,9 @@ watch(
 
 .producto_aleatorio_recomendado {
     margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 25px;
 }
 
 .section_titulo {
@@ -205,54 +236,25 @@ watch(
     border-bottom: 1px solid #eee;
 }
 
-.producto_grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-}
+@media (max-width: 1200px) {
+    .producto_aleatorio_recomendado {
+        grid-template-columns: repeat(4, 1fr);
+    }
 
-.producto_carta {
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-}
-
-.producto_carta:hover {
-    transform: translateY(-5px);
-}
-
-.producto_carta_imagen {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-}
-
-.producto_carta_cuerpo {
-    padding: 15px;
-}
-
-.producto_carta_titulo {
-    font-size: 16px;
-    margin-bottom: 8px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.producto_carta_precio {
-    color: #10b68d;
-    font-weight: bold;
-    font-size: 18px;
 }
 
 @media (max-width: 768px) {
     .producto_detalle {
         flex-direction: column;
     }
-    
-    .producto_grid {
+
+    .producto_aleatorio_recomendado {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .producto_aleatorio_recomendado {
         grid-template-columns: repeat(2, 1fr);
     }
 }

@@ -35,60 +35,48 @@
     <Footer_general></Footer_general>
 </template>
 
-<script>
+<script setup>
 import header_general from '@/modules/header_general.vue'
 import Carta_producto from '../components/Carta_producto.vue'
 import Publicidad_carousel from '../components/publicidad_carousel.vue'
 import categorias_producto from '../components/categorias_producto.vue'
 import Footer_general from '@/modules/footer_general.vue'
 
-export default {
-   //Aqui tiene que nombrar el nombre de componente para llamarlo
-  components: {
-    Carta_producto  
-  },
-  data() {
-    return {
-      productos: [
-        {
-          id: 1,
-          nombre: 'Pizza',
-          precio: '19.90',
-          imagen: pizzaImg
-        },
-        {
-          id: 2,
-          nombre: 'Pizza2',
-          precio: '15.90',
-          imagen: pizzaImg
-        },
-        {
-          id: 3,
-          nombre: 'Pizza3',
-          precio: '15.90',
-          imagen: pizzaImg
-        },
-        {
-          id: 4,
-          nombre: 'Pizza4',
-          precio: '15.90',
-          imagen: cafe
-        },
-        {
-          id: 5,
-          nombre: 'Pizza5',
-          precio: '15.90',
-          imagen: pizzaImg
-        }
-      ]
-    };
-  }
-};
-</script>
-
-<script setup>
 import pizzaImg from '@/assets/Imagenes/pizza jamon.png'
 import cafe from '@/assets/Imagenes/cafe.jpg'
+
+const productos = [
+  {
+    id: 1,
+    nombre: 'Pizza',
+    precio: '19.90',
+    imagen: pizzaImg
+  },
+  {
+    id: 2,
+    nombre: 'Pizza2',
+    precio: '15.90',
+    imagen: pizzaImg
+  },
+  {
+    id: 3,
+    nombre: 'Pizza3',
+    precio: '15.90',
+    imagen: pizzaImg
+  },
+  {
+    id: 4,
+    nombre: 'Pizza4',
+    precio: '15.90',
+    imagen: cafe
+  },
+  {
+    id: 5,
+    nombre: 'Pizza5',
+    precio: '15.90',
+    imagen: pizzaImg
+  }
+]
 </script>
 
 <style scoped>
