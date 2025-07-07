@@ -32,6 +32,11 @@ export function defineProduct(sequelize, DataTypes) {
             allowNull: true,
             defaultValue: 0
         },
+        status: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true
+        },
         categoria_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
