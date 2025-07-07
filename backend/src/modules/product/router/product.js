@@ -5,7 +5,7 @@ import { authenticateHybrid } from "../../../middlewares/auth/authentificate.js"
 export const productRouter = Router();
 const controller = new ProductController();
 
-productRouter.get('/pagination', controller.getPaginatedWithFilters);
+productRouter.get('/pagination', authenticateHybrid, controller.getPaginatedWithFilters);
 productRouter.get('/search/:name', controller.searchByName);
 productRouter.get('/', controller.getAll);
 productRouter.get('/:id', controller.getId);
