@@ -13,9 +13,12 @@
       <!--Area de Productos-->
         <div class="contendor_producto">
 
+          <h2>Frutas</h2>
+
           <div class="contenedor_caja_producto">
               <!--Podemos que llamar 2 formas los componentes, para que si el futuro quieran hacer-->
               <!--Con el ciclo for-->
+              <Carta_categoria></Carta_categoria>
               <Carta_producto 
                   v-for="producto in productos" 
                   :key="producto.id"
@@ -41,6 +44,7 @@ import Carta_producto from '../components/Carta_producto.vue'
 import Publicidad_carousel from '../components/publicidad_carousel.vue'
 import categorias_producto from '../components/categorias_producto.vue'
 import Footer_general from '@/modules/footer_general.vue'
+import Carta_categoria from '../components/Carta_categoria.vue'
 
 import pizzaImg from '@/assets/Imagenes/productos/pizza jamon.png'
 import cafe from '@/assets/Imagenes/productos/cafe.jpg'
