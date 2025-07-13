@@ -95,15 +95,15 @@
     </main>
     
     <!--Area de footer-->
-    <Footer_general></Footer_general>
+    <FooterComponente></FooterComponente>
 </template>
 
 <script setup>
 import header_general from '@/modules/header_general.vue'
+import FooterComponente from '../components/Footer_Detalles.vue'
 import Carta_producto from '../components/Carta_producto.vue'
 import Publicidad_carousel from '../components/publicidad_carousel.vue'
 import categorias_producto from '../components/categorias_producto.vue'
-import Footer_general from '@/modules/footer_general.vue'
 import Carta_categoria from '../components/Carta_categoria.vue'
 
 import pizzaImg from '@/assets/Imagenes/productos/pizza jamon.png'
