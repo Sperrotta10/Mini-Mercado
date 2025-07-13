@@ -1,6 +1,6 @@
 <template>
   <div class="contenedor_suporte_producto_categorias">
-      <h3>Categorías</h3>
+      <h1>Categorías</h1>
     <div class="contenedor_categorias">
         <div 
           v-for="(categoria, index) in categorias" 
@@ -89,7 +89,7 @@ const categorias = ref([
   margin: 0px 10px;
 }
 
-h3{
+h1{
   text-align: center;
   color: #018175;
   margin: 20px 0px;
