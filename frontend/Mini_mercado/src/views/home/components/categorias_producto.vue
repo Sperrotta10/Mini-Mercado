@@ -23,43 +23,49 @@
 
 <script setup>
 import { ref } from 'vue';
-import frutas from '@/assets/Imagenes/categorias/fruta.jpg'
-import vegetales from '@/assets/Imagenes/categorias/vegetal 2.jpg'
+import frutas from '@/assets/Imagenes/categorias/frutas_y_verduras.webp'
+import lacteos from '@/assets/Imagenes/categorias/lacteos.jpg'
 import chucheria from '@/assets/Imagenes/categorias/chucheria.jpg'
 import refresco from '@/assets/Imagenes/categorias/refresco.jpg'
-import helados from '@/assets/Imagenes/categorias/helado.png'
+import abarrotes from '@/assets/Imagenes/categorias/abarrotes.jpg'
 import carne from '@/assets/Imagenes/categorias/carne.jpg'
+import limpieza from '@/assets/Imagenes/categorias/limpieza.webp'
 
 const categorias = ref([
   {
-    name: 'Frutas',
+    name: 'Frutas y verduras',
     imagen: frutas,
-    link:'/categoria/frutas'
-  },
-  {
-    name: 'Vegetales',
-    imagen: vegetales,
-    link:'/categoria/vegetales'
-  },
-  {
-    name: 'Chuchería',
-    imagen: chucheria,
-    link:'/categoria/chucheria'
-  },
-  {
-    name: 'Refresco',
-    imagen: refresco,
-    link:'/categoria/refresco'
-  },
-  {
-    name: 'Helados',
-    imagen: helados,
-    link:'/categoria/helados'
+    link:'/categoria/frutasyverduras'
   },
   {
     name: 'Carnicería',
     imagen: carne,
     link:'/categoria/carniceria'
+  },
+  {
+    name: 'Snacks y Dulces',
+    imagen: chucheria,
+    link:'/categoria/snacksydulces'
+  },
+  {
+    name: 'Bebidas',
+    imagen: refresco,
+    link:'/categoria/bebidas'
+  },
+  {
+    name: 'Lactéos',
+    imagen: lacteos,
+    link:'/categoria/lacteos'
+  },
+  {
+    name: 'Abarrotes',
+    imagen: abarrotes,
+    link:'/categoria/abarrotes'
+  },
+  {
+    name: 'Limpieza',
+    imagen: limpieza,
+    link:'/categoria/limpieza'
   }
 ]);
 </script>
@@ -92,7 +98,7 @@ h3{
 
 .contenedor_categorias {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   gap: 25px;
   margin-bottom: 40px;
 }
