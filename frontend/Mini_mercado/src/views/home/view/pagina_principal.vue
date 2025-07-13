@@ -93,6 +93,9 @@
           
         </div>
     </main>
+
+    <!--Area de presentacion de MSJ Market-->
+    <PresentacionMarket></PresentacionMarket>
     
     <!--Area de footer-->
     <FooterComponente></FooterComponente>
@@ -101,6 +104,7 @@
 <script setup>
 import header_general from '@/modules/header_general.vue'
 import FooterComponente from '../components/Footer_Detalles.vue'
+import PresentacionMarket from '../components/PresentacionMarket.vue'
 import Carta_producto from '../components/Carta_producto.vue'
 import Publicidad_carousel from '../components/publicidad_carousel.vue'
 import categorias_producto from '../components/categorias_producto.vue'
