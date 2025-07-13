@@ -23,12 +23,12 @@
 
 <script setup>
 import { ref } from 'vue';
-import frutas from '@/assets/Imagenes/fruta.jpg'
-import vegetales from '@/assets/Imagenes/vegetal 2.jpg'
-import chucheria from '@/assets/Imagenes/chucheria.jpg'
-import refresco from '@/assets/Imagenes/refresco.jpg'
-import helados from '@/assets/Imagenes/helado.png'
-import carne from '@/assets/Imagenes/carne.jpg'
+import frutas from '@/assets/Imagenes/categorias/fruta.jpg'
+import vegetales from '@/assets/Imagenes/categorias/vegetal 2.jpg'
+import chucheria from '@/assets/Imagenes/categorias/chucheria.jpg'
+import refresco from '@/assets/Imagenes/categorias/refresco.jpg'
+import helados from '@/assets/Imagenes/categorias/helado.png'
+import carne from '@/assets/Imagenes/categorias/carne.jpg'
 
 const categorias = ref([
   {

@@ -42,8 +42,8 @@ import Publicidad_carousel from '../components/publicidad_carousel.vue'
 import categorias_producto from '../components/categorias_producto.vue'
 import Footer_general from '@/modules/footer_general.vue'
 
-import pizzaImg from '@/assets/Imagenes/pizza jamon.png'
-import cafe from '@/assets/Imagenes/cafe.jpg'
+import pizzaImg from '@/assets/Imagenes/productos/pizza jamon.png'
+import cafe from '@/assets/Imagenes/productos/cafe.jpg'
 
 const productos = [
   {

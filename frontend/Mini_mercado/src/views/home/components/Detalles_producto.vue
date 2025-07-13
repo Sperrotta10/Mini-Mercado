@@ -38,7 +38,7 @@
 <script setup>
 import { computed, watch, onMounted,ref } from 'vue';
 import { useRoute } from 'vue-router';
-import Ejemplo_png from '@/assets/Imagenes/pizza jamon.png'
+import Ejemplo_png from '@/assets/Imagenes/productos/pizza jamon.png'
 import header_general from '@/modules/header_general.vue';
 import footer_general from '@/modules/footer_general.vue';
 import Carta_producto from './Carta_producto.vue';
