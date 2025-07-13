@@ -14,7 +14,9 @@
         <div class="contendor_producto">
 
           <div class="contenedor_lista_producto">
-            <h2>Productos recomendados</h2>
+            <div class="contenedor_titulo">
+              <h2>Productos recomendados</h2>
+            </div>
             <div class="contenedor_caja_producto">
                 <!--Podemos que llamar 2 formas los componentes, para que si el futuro quieran hacer-->
                 <!--Con el ciclo for-->
@@ -32,7 +34,9 @@
           </div>
 
           <div class="contenedor_lista_producto">
-            <h2>Frutas y verduras</h2>
+            <div class="contenedor_titulo">
+              <h2>Frutas y verduras</h2>
+            </div>
             <div class="contenedor_caja_producto">
                 <!--Podemos que llamar 2 formas los componentes, para que si el futuro quieran hacer-->
                 <!--Con el ciclo for-->
@@ -52,7 +56,9 @@
 
           <!--Es un ejemplo, para tener ideas como se ve cuando se conecta la base de datos-->
           <div class="contenedor_lista_producto">
-            <h2>Carnicería</h2>
+            <div class="contenedor_titulo">
+              <h2>Carnicería</h2>
+            </div>
             <div class="contenedor_caja_producto">
                 <!--Podemos que llamar 2 formas los componentes, para que si el futuro quieran hacer-->
                 <!--Con el ciclo for-->
@@ -72,7 +78,9 @@
 
           <!--Es un ejemplo, para tener ideas como se ve cuando se conecta la base de datos-->
           <div class="contenedor_lista_producto">
-            <h2>Snacks y dulces</h2>
+            <div class="contenedor_titulo">
+              <h2>Snacks y dulces</h2>
+            </div>     
             <div class="contenedor_caja_producto">
                 <!--Podemos que llamar 2 formas los componentes, para que si el futuro quieran hacer-->
                 <!--Con el ciclo for-->

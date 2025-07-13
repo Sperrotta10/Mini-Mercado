@@ -41,7 +41,7 @@
 }
 
 .contenedor_titulo {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: #018175;
     margin-bottom: 25px;
     padding-bottom: 10px;

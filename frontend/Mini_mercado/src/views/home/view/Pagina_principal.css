@@ -31,6 +31,10 @@
     font-size: 1.5rem;
 }
 
+.contenedor_titulo{
+    margin-bottom: 20px;
+}
+
 /*Area de responsive ------------------------------------------------------------------*/
 @media (max-width: 1200px) {
     .contenedor_caja_producto {
