@@ -1,5 +1,6 @@
 import { BaseController } from "../../../controller/controller.js";
 import { validateCreateProduct } from "../validation/create.js"
+import { validateCreateAllProduct } from "../validation/create_all.js"
 import { validateUpdateProduct } from "../validation/update.js"
 import { validatePagination } from "../validation/get_pagination.js"
 import { isImageFile } from "../../../helpers/images.js"
@@ -188,7 +189,7 @@ export class ProductController extends BaseController {
                 const results = [];
 
                 for (const user of data) {
-                    const validation = this.validators.create(user);
+                    const validation = validateCreateAllProduct(user);
 
                     if (!validation.success) {
                         return res.status(400).json({ message: "Error de validación", error: validation.error.errors });
@@ -200,16 +201,6 @@ export class ProductController extends BaseController {
 
                 return res.status(207).json({ message: 'Procesamiento por lote', results });
             }
-
-            // Si es solo un objeto
-            const validation = this.validators.create(data);
-
-            if (!validation.success) {
-            return res.status(400).json({ message: 'Error de validación', errors: validation.error.errors });
-            }
-
-            const producto = await this.model.create(validation.data);
-            return res.status(producto.status).json({ message: producto.message, data: producto.data });
 
         } catch (error) {
             console.error(error);
