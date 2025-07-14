@@ -21,20 +21,34 @@
               <a href="#">¡Crear nuevo usuario!</a>
             </div>
 
-            <button type='submit'>Entrar</button>
+            <div class="contenido_mostra_otro_acceso">
+              <div class="linea_separado"></div>
+              <span>O desea entrar con</span>
+              <div class="linea_separado"></div>
+            </div>
+
+            <button class="contenido_extra_acceso">
+              <div class="contenedor_imagen">
+                <img :src="Icon_google" alt="icon">
+              </div>
+              <p>Google</p>
+            </button>
+
+            <button type='submit' class="btn">Entrar</button>
           </form>
         </div>
       </div>
     </main>
     
     <footer class="footer">
-      <span>© 2025 MSJ Market</span>
-    </footer>
+      <p>© 2025 MSJ Market</p>
+    </footer>    
   </div>
 </template>
 
 <script setup>
-import Logo_con_link from './logo_con_link.vue' 
+import Logo_con_link from './logo_con_link.vue'
+import Icon_google from '@/assets/Imagenes/google.png'
 </script>
 
 <style scoped>
@@ -94,8 +108,8 @@ import Logo_con_link from './logo_con_link.vue'
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   color: black;
   border-radius: 15px;
-  padding: 2.5rem;
-  margin: 1rem;
+  padding: 2rem;
+  margin: 0;
 }
 
 .login-wrapper h2 {
@@ -149,7 +163,7 @@ import Logo_con_link from './logo_con_link.vue'
   text-decoration: underline;
 }
 
-.login-wrapper button {
+.login-wrapper .btn {
   width: 100%;
   padding: 0.75rem;
   background-color: #10b68d;
@@ -163,7 +177,7 @@ import Logo_con_link from './logo_con_link.vue'
   transition: all 0.3s ease;
 }
 
-.login-wrapper button:hover {
+.login-wrapper .btn:hover {
   background-color: #004C45;
   transform: translateY(-2px);
 }
@@ -173,6 +187,51 @@ import Logo_con_link from './logo_con_link.vue'
   color: white;
   text-align: center;
   padding: 1rem;
+}
+
+.footer p{
+  margin-top: 30px;
+}
+
+.contenido_mostra_otro_acceso{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.contenido_mostra_otro_acceso span{
+  margin: 0px 10px;
+  font-size: 1rem;
+}
+
+.linea_separado{
+  width: 30%;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.contenido_extra_acceso{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-color: #004C45;
+  margin: 1.5rem 0;
+  gap: 10px;
+  padding: 5px 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.contenido_extra_acceso:hover{
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.contenedor_imagen img{
+  width: 24px;
+  height: 24px;
 }
 
 /* Area de Responsive */
@@ -191,6 +250,10 @@ import Logo_con_link from './logo_con_link.vue'
     gap: 0.5rem;
     align-items: center;
   }
+
+  .linea_separado{
+    width: 25%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -200,6 +263,10 @@ import Logo_con_link from './logo_con_link.vue'
   
   .contenedor_input input {
     padding: 0.75rem;
+  }
+
+  .linea_separado{
+    width: 15%;
   }
 }
 </style>

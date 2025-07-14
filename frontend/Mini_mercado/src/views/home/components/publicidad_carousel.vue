@@ -15,10 +15,10 @@
 
         <div class="controls">
           <button class="control-btn prev" @click="anterior">
-            <span > < </span>
+            <i class="fa-solid fa-arrow-left"></i>
           </button>
           <button class="control-btn next" @click="siguiente">
-            <span> > </span>
+            <i class="fa-solid fa-arrow-right"></i>
           </button>
         </div>
 
