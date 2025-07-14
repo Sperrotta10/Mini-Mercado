@@ -21,10 +21,10 @@ User.belongsTo(Role, { foreignKey: "rol_id", as: "role" });
 Role.hasMany(User, { foreignKey: "rol_id", as: "users" });
 
 Cart.belongsTo(User, { foreignKey: "user_id", as: "user" });
-User.hasMany(Cart, { foreignKey: "user_id", as: "carts" });
+User.hasMany(Cart, { foreignKey: "user_id", as: "carts", onDelete: 'CASCADE' });
 
 CartItem.belongsTo(Cart, { foreignKey: "cart_id", as: "cart" });
-Cart.hasMany(CartItem, { foreignKey: "cart_id", as: "cartItems" });
+Cart.hasMany(CartItem, { foreignKey: "cart_id", as: "cartItems", onDelete: 'CASCADE' });
 
 CartItem.belongsTo(Product, { foreignKey: "product_id", as: "product" });
 Product.hasOne(CartItem, { foreignKey: "product_id", as: "cartItem" });
