@@ -15,7 +15,7 @@
             
             <div class="cartel_carta">
                 <div class="carta_icon">
-                    <i class="fas fa-wine-bottle"></i>
+                    <i class="fa-solid fa-thumbs-up"></i>
                 </div>
                 <h3 class="carta_titulo">Servicio Excelente</h3>
                 <p class="carta_descripcion">Servicio amable, respuestas profesionales.</p>

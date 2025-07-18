@@ -9,7 +9,7 @@
           
           <div class="contendor_contenido_texto"> 
             <h2>Contacto:</h2>
-            <p><img :src="icon_correo" alt="correo"> msjsupemarket@pro.com</p>
+            <p><img :src="icon_correo" alt="correo"> msjmarket.soporte@gmail.com</p>
             <p><img :src="icon_telefono" alt="telefono"> 0212-8888888</p>
           </div>
       </div>

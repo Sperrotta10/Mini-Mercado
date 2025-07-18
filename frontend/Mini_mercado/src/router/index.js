@@ -4,6 +4,8 @@ import login_usuarios from '@/modules/login_usuarios.vue'
 import pagina_administrador from '@/views/admin/view/pagina_administrador.vue'
 import pagina_usuario from '@/views/usuarios/view/pagina_usuario.vue'
 import Detalles_producto from '@/views/home/components/Detalles_producto.vue'
+import Gestion_inventario from '@/views/admin/components/Gestion_inventario.vue'
+import Gestion_empleado from '@/views/admin/components/Gestion_empleado.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -27,7 +29,11 @@ const router = createRouter({
     {
       path: '/administrador',
       name: 'administrador', //Esto hasta momento es demo
-      component: pagina_administrador
+      component: pagina_administrador,
+      children:[
+        {path:'gestion_inventario', name:'Gestion_Inventario',component:Gestion_inventario, meta: { title: 'Gestión de Inventario' }},
+        {path:'gestion_empleado', name:'Gestion_Empleado',component:Gestion_empleado, meta: { title: 'Gestión de Empleados' }}
+      ]
     },
     {
       path: '/usuario',
