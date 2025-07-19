@@ -4,6 +4,9 @@ import { authRouter } from "../../modules/user/auth/router/auth.js";
 import { roleRouter } from "../../modules/role/router/role.js";
 import { categoriaRouter } from "../../modules/category/router/category.js";
 import { productRouter } from "../../modules/product/router/product.js";
+import { cartRouter } from "../../modules/cart/router/cart.js"
+import { cartItemRouter } from "../../modules/cart-item/router/cart_item.js";
+
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../../docs/swagger.json' assert { type: 'json' };
 
@@ -13,9 +16,10 @@ routerApiV1.use("/register", registerRouter);
 routerApiV1.get('/test', (req, res) => {
   res.json({ message: "¡Router funciona!" });
 });
+
 routerApiV1.use("/auth", authRouter);
-//routerApiV1.use("/cart", registerRouter);
-//routerApiV1.use("/cart-item", registerRouter);
+routerApiV1.use("/cart", cartRouter);
+routerApiV1.use("/cart-item", cartItemRouter);
 routerApiV1.use("/category", categoriaRouter);
 routerApiV1.use("/product", productRouter);
 routerApiV1.use("/role", roleRouter);
