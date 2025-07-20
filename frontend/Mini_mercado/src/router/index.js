@@ -7,6 +7,7 @@ import Detalles_producto from '@/views/home/components/Detalles_producto.vue'
 import BienvenidoComponente from '@/views/admin/components/BienvenidoComponente.vue'
 import Gestion_inventario from '@/views/admin/components/GestionInventario.vue'
 import Gestion_empleado from '@/views/admin/components/GestionEmpleado.vue'
+import GestionPublicidad from '@/views/admin/components/GestionPublicidad.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -34,7 +35,8 @@ const router = createRouter({
       children:[
         {path:'', name:'Bienvenido',component:BienvenidoComponente},
         {path:'gestion_inventario', name:'Gestion_Inventario',component:Gestion_inventario, meta: { title: 'Gestión de Inventario' }},
-        {path:'gestion_empleado', name:'Gestion_Empleado',component:Gestion_empleado, meta: { title: 'Gestión de Empleados' }}
+        {path:'gestion_empleado', name:'Gestion_Empleado',component:Gestion_empleado, meta: { title: 'Gestión de Empleados' }},
+        {path:'gestion_publicidad', name:'Gestion_Publicidad',component:GestionPublicidad, meta: { title: 'Gestión de Publicidad' }}
       ]
     },
     {

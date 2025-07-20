@@ -13,6 +13,14 @@
         </router-link>
       </li>
       <li>
+        <router-link to="/administrador/gestion_publicidad" class="nav_item" active-class="active">
+          <div class="nav_item_individual">
+            <i class="fa-solid fa-tag"></i>
+            <span class="text">Gestión Publicidad</span>
+          </div>
+        </router-link>
+      </li>
+      <li>
         <router-link to="/administrador/gestion_inventario" class="nav_item" active-class="active">
           <div class="nav_item_individual">
             <i class="fa-solid fa-warehouse"></i>
