@@ -42,28 +42,39 @@ import { useRouter } from 'vue-router';
 const router = useRouter()
 
 const entrar_editar = () => {
-  router.push('/usuario/editar_informacion')
+    router.push('/usuario/editar_informacion')
 }
 
-const activar_suscriptor = () =>{
+const activar_suscriptor = () => {
     alert("SUSCRIPTOR ACTIVO!!!")
 }
 
 // Permite que llama esta vista de una en otra template
-const props = defineProps({
-    customer: {
-        type: Object,
-        required: true,
-        default: () => ({
-            id: '01600',
-            name: 'Skirk',
-            phone: '14156328956',
-            email: 'pato_cute@teyvat.com',
-            avatar: Icon_User,
-            estado: 'Usuario Suscriptor'
-        })
+// const props = defineProps({
+//     customer: {
+//         type: Object,
+//         required: true,
+//         default: () => ({
+//             id: '01600',
+//             name: 'Skirk',
+//             phone: '14156328956',
+//             email: 'pato_cute@teyvat.com',
+//             avatar: Icon_User,
+//             estado: 'Usuario Suscriptor'
+//         })
+//     }
+// });
+
+const customer = 
+    {
+        id: '01600',
+        name: 'Skirk',
+        phone: '14156328956',
+        email: 'pato_cute@teyvat.com',
+        avatar: Icon_User,
+        estado: 'Usuario Suscriptor'
     }
-});
+;
 </script>
 
 <style scoped>
@@ -177,7 +188,7 @@ const props = defineProps({
         justify-content: center;
     }
 
-    .btn_editar{
+    .btn_editar {
         width: 50%;
     }
 }
