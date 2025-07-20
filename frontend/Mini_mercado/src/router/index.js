@@ -14,6 +14,7 @@ import BienvenidoUsuario from '@/views/usuarios/components/BienvenidoUsuario.vue
 import InformacionPersonal from '@/views/usuarios/components/InformacionPersonal.vue'
 import GestionCarritos from '@/views/usuarios/components/GestionCarritos.vue'
 import ConsultaDuda from '@/views/usuarios/components/ConsultaDuda.vue'
+import EditarInformacion from '@/views/usuarios/components/EditarInformacion.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -53,7 +54,8 @@ const router = createRouter({
         {path:'', name:'BienvenidoUsuario',component:BienvenidoUsuario},
         {path:'informacion_personal', name:'InformacionPersonal',component:InformacionPersonal, meta: { title: 'Información Personal' }},
         {path:'gestion_carrito', name:'Gestion_Carrito',component:GestionCarritos, meta: { title: 'Gestión de Carritos' }},
-        {path:'consulta', name:'Consulta',component:ConsultaDuda, meta: { title: 'Consulta' }}
+        {path:'consulta', name:'Consulta',component:ConsultaDuda, meta: { title: 'Consulta' }},
+        {path:'editar_informacion', name:'Editar_Informacion',component:EditarInformacion, meta: { title: 'Editar su información' }}
       ]
     },
     {
