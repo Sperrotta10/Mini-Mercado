@@ -1,10 +1,9 @@
 <template>
   <header class="header">
     <div class="header_izquierda">
-      <h2>{{ RouteTitulo }}</h2>
+      <h2 class="Colores_titulo">{{ RouteTitulo }}</h2>
     </div>
     <div class="header_derecha">
-      <span class="usuario_admin">ADMIN</span>
       <button class="btn_salir" @click="salir">Salir Sesión</button>
     </div>
   </header>
@@ -40,6 +39,10 @@ const salir = () => {
 .header_izquierda {
   display: flex;
   align-items: center;
+}
+
+.Colores_titulo{
+  color: #10b68d;
 }
 
 .menu-toggle {

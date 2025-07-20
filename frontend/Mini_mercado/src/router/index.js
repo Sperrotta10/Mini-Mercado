@@ -5,8 +5,8 @@ import pagina_administrador from '@/views/admin/view/pagina_administrador.vue'
 import pagina_usuario from '@/views/usuarios/view/pagina_usuario.vue'
 import Detalles_producto from '@/views/home/components/Detalles_producto.vue'
 import BienvenidoComponente from '@/views/admin/components/BienvenidoComponente.vue'
-import Gestion_inventario from '@/views/admin/components/Gestion_inventario.vue'
-import Gestion_empleado from '@/views/admin/components/Gestion_empleado.vue'
+import Gestion_inventario from '@/views/admin/components/GestionInventario.vue'
+import Gestion_empleado from '@/views/admin/components/GestionEmpleado.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
