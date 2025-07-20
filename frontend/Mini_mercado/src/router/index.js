@@ -8,6 +8,12 @@ import BienvenidoComponente from '@/views/admin/components/BienvenidoComponente.
 import Gestion_inventario from '@/views/admin/components/GestionInventario.vue'
 import Gestion_empleado from '@/views/admin/components/GestionEmpleado.vue'
 import GestionPublicidad from '@/views/admin/components/GestionPublicidad.vue'
+
+//Componentes para Usuario
+import BienvenidoUsuario from '@/views/usuarios/components/BienvenidoUsuario.vue'
+import InformacionPersonal from '@/views/usuarios/components/InformacionPersonal.vue'
+import GestionCarritos from '@/views/usuarios/components/GestionCarritos.vue'
+import ConsultaDuda from '@/views/usuarios/components/ConsultaDuda.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -42,7 +48,13 @@ const router = createRouter({
     {
       path: '/usuario',
       name: 'Pagina de Usuario', //Esto hasta momento es demo
-      component: pagina_usuario
+      component: pagina_usuario,
+      children:[
+        {path:'', name:'BienvenidoUsuario',component:BienvenidoUsuario},
+        {path:'informacion_personal', name:'InformacionPersonal',component:InformacionPersonal, meta: { title: 'Información Personal' }},
+        {path:'gestion_carrito', name:'Gestion_Carrito',component:GestionCarritos, meta: { title: 'Gestión de Carritos' }},
+        {path:'consulta', name:'Consulta',component:ConsultaDuda, meta: { title: 'Consulta' }}
+      ]
     },
     {
       //Ahora, modificando al ruta dinamicamente
