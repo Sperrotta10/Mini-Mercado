@@ -1,6 +1,8 @@
 <template>
   <div class="contenedor_suporte_producto_categorias">
-      <h3>Categorías</h3>
+    <div class="contenedor_titulo">
+      <h1>Categorías</h1>
+    </div>
     <div class="contenedor_categorias">
         <div 
           v-for="(categoria, index) in categorias" 
@@ -23,43 +25,49 @@
 
 <script setup>
 import { ref } from 'vue';
-import frutas from '@/assets/Imagenes/fruta.jpg'
-import vegetales from '@/assets/Imagenes/vegetal 2.jpg'
-import chucheria from '@/assets/Imagenes/chucheria.jpg'
-import refresco from '@/assets/Imagenes/refresco.jpg'
-import helados from '@/assets/Imagenes/helado.png'
-import carne from '@/assets/Imagenes/carne.jpg'
+import frutas from '@/assets/Imagenes/categorias/frutas_y_verduras.webp'
+import lacteos from '@/assets/Imagenes/categorias/lacteos.jpg'
+import chucheria from '@/assets/Imagenes/categorias/chucheria.jpg'
+import refresco from '@/assets/Imagenes/categorias/refresco.jpg'
+import abarrotes from '@/assets/Imagenes/categorias/abarrotes.jpg'
+import carne from '@/assets/Imagenes/categorias/carne.jpg'
+import limpieza from '@/assets/Imagenes/categorias/limpieza.webp'
 
 const categorias = ref([
   {
-    name: 'Frutas',
+    name: 'Frutas y verduras',
     imagen: frutas,
-    link:'/categoria/frutas'
-  },
-  {
-    name: 'Vegetales',
-    imagen: vegetales,
-    link:'/categoria/vegetales'
-  },
-  {
-    name: 'Chuchería',
-    imagen: chucheria,
-    link:'/categoria/chucheria'
-  },
-  {
-    name: 'Refresco',
-    imagen: refresco,
-    link:'/categoria/refresco'
-  },
-  {
-    name: 'Helados',
-    imagen: helados,
-    link:'/categoria/helados'
+    link:'/categoria/frutasyverduras'
   },
   {
     name: 'Carnicería',
     imagen: carne,
     link:'/categoria/carniceria'
+  },
+  {
+    name: 'Snacks y Dulces',
+    imagen: chucheria,
+    link:'/categoria/snacksydulces'
+  },
+  {
+    name: 'Bebidas',
+    imagen: refresco,
+    link:'/categoria/bebidas'
+  },
+  {
+    name: 'Lactéos',
+    imagen: lacteos,
+    link:'/categoria/lacteos'
+  },
+  {
+    name: 'Abarrotes',
+    imagen: abarrotes,
+    link:'/categoria/abarrotes'
+  },
+  {
+    name: 'Limpieza',
+    imagen: limpieza,
+    link:'/categoria/limpieza'
   }
 ]);
 </script>
@@ -83,16 +91,21 @@ const categorias = ref([
   margin: 0px 10px;
 }
 
-h3{
+.contenedor_titulo{
   text-align: center;
+  margin-bottom: 25px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e0e0e0
+}
+
+.contenedor_titulo h1{
   color: #018175;
-  margin: 20px 0px;
   font-size: 2.0rem;
 }
 
 .contenedor_categorias {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   gap: 25px;
   margin-bottom: 40px;
 }

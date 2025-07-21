@@ -15,10 +15,10 @@
 
         <div class="controls">
           <button class="control-btn prev" @click="anterior">
-            <span > < </span>
+            <i class="fa-solid fa-arrow-left"></i>
           </button>
           <button class="control-btn next" @click="siguiente">
-            <span> > </span>
+            <i class="fa-solid fa-arrow-right"></i>
           </button>
         </div>
 
@@ -38,9 +38,9 @@
 
 <script setup>
 //Imagenes
-import Imagen_cocacola from '@/assets/Imagenes/cocacola.png'
-import Imagen_dorito from '@/assets/Imagenes/doritos.jpg'
-import Imagen_pina from '@/assets/Imagenes/fanta_pina.jpg'
+import Imagen_cocacola from '@/assets/Imagenes/publicidad_carousel/cocacola.png'
+import Imagen_dorito from '@/assets/Imagenes/publicidad_carousel/doritos.jpg'
+import Imagen_pina from '@/assets/Imagenes/publicidad_carousel/fanta_pina.jpg'
 
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'

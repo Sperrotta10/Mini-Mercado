@@ -100,14 +100,14 @@ h1 {
 }
 
 .manzana {
-  background: url('@/assets/Imagenes/manzana.png') no-repeat center/contain;
+  background: url('@/assets/Imagenes/productos/manzana.png') no-repeat center/contain;
   top: 45%;
   left: 2%;
   animation-delay: 0.3s;
 }
 
 .naranja {
-  background: url('@/assets/Imagenes/naranja.png') no-repeat center/contain;
+  background: url('@/assets/Imagenes/productos/naranja.png') no-repeat center/contain;
   top: 50%;
   left: 45%;
   animation-delay: 0.6s;

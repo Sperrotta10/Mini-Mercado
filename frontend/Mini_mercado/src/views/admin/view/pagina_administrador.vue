@@ -1,3 +1,7 @@
 <template>
-    <h1>hola</h1>
+    <AdministradorLayout></AdministradorLayout>
 </template>
+
+<script setup>
+import AdministradorLayout from '../components/AdministradorLayout.vue';
+</script>

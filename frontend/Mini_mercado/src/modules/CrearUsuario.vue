@@ -1,40 +1,53 @@
 <template>
-  <div class="contenedor_login">
+  <div class="contenedor_registro">
     <header class="header">
       <Logo_con_link />
     </header>
     
     <main class="main_contenido">
-      <div class="contenido_login">
-        <div class='login-wrapper'>
+      <div class="contenido_registro">
+        <div class='registro-wrapper'>
           <form action=''>
-            <h2>Login</h2>
+            <h2>Registrar nuevo usuario</h2>
+            
             <div class="contenedor_input">
-              <input type="text" placeholder='Nombre de Usuario' required />
+              <input type="text" placeholder='Nombre completo' required />
             </div>
+            
+            <div class="contenedor_input">
+              <input type="text" placeholder='Cedula' required />
+            </div>
+
+            <div class="contenedor_input">
+              <input type="email" placeholder='Correo electrónico' required />
+            </div>
+
+            <div class="contenedor_input">
+              <input type="text" placeholder='Número Teléfono' required />
+            </div>
+            
+            <div class="contenedor_input">
+              <input type="text" placeholder='Nombre de usuario' required />
+            </div>
+            
             <div class="contenedor_input">
               <input type="password" placeholder='Contraseña' required />
             </div>
-
+            
+            <div class="contenedor_input">
+              <input type="password" placeholder='Confirmar contraseña' required />
+            </div>
+            
+            <!-- <div class="contenedor_terminos">
+              <input type="checkbox" id="terminos" required />
+              <label for="terminos">Acepto los términos y condiciones</label>
+            </div> -->
+            
+            <button type='submit' class="btn">Registrarse</button>
+            
             <div class="contenido_links">
-              <RouterLink to="/crear_usuario">¡Crear nuevo usuario!</RouterLink>
-              <a href="#">¿Se olvidó la contraseña?</a>
+              <RouterLink to="/login"> ¿Ya tienes una cuenta? Inicia sesión</RouterLink>
             </div>
-
-            <div class="contenido_mostra_otro_acceso">
-              <div class="linea_separado"></div>
-              <span>O desea entrar con</span>
-              <div class="linea_separado"></div>
-            </div>
-
-            <button class="contenido_extra_acceso">
-              <div class="contenedor_imagen">
-                <img :src="Icon_google" alt="icon">
-              </div>
-              <p>Google</p>
-            </button>
-
-            <button type='submit' class="btn">Entrar</button>
           </form>
         </div>
       </div>
@@ -48,11 +61,10 @@
 
 <script setup>
 import Logo_con_link from './logo_con_link.vue'
-import Icon_google from '@/assets/Imagenes/google.png'
 </script>
 
 <style scoped>
-.contenedor_login {
+.contenedor_registro {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -89,7 +101,7 @@ import Icon_google from '@/assets/Imagenes/google.png'
   z-index: 0;
 }
 
-.contenido_login {
+.contenido_registro {
   width: 100%;
   max-width: 1200px;
   display: flex;
@@ -99,7 +111,7 @@ import Icon_google from '@/assets/Imagenes/google.png'
   z-index: 1;
 }
 
-.login-wrapper {
+.registro-wrapper {
   width: 100%;
   max-width: 500px;
   background-color: rgba(255, 255, 255);
@@ -112,7 +124,7 @@ import Icon_google from '@/assets/Imagenes/google.png'
   margin: 0;
 }
 
-.login-wrapper h2 {
+.registro-wrapper h2 {
   font-size: 2rem;
   text-align: center;
   margin-bottom: 1.5rem;
@@ -121,7 +133,7 @@ import Icon_google from '@/assets/Imagenes/google.png'
 .contenedor_input {
   position: relative;
   width: 100%;
-  margin: 1.5rem 0;
+  margin: 1rem 0;
 }
 
 .contenedor_input input {
@@ -145,11 +157,22 @@ import Icon_google from '@/assets/Imagenes/google.png'
   color: rgba(0, 0, 0, 0.7);
 }
 
+.contenedor_terminos {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+.contenedor_terminos input {
+  margin-right: 0.5rem;
+}
+
 .contenido_links {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   font-size: 0.875rem;
-  margin: 1rem 0 1.5rem;
+  margin: 1.5rem 0 0;
 }
 
 .contenido_links a {
@@ -163,7 +186,7 @@ import Icon_google from '@/assets/Imagenes/google.png'
   text-decoration: underline;
 }
 
-.login-wrapper .btn {
+.registro-wrapper .btn {
   width: 100%;
   padding: 0.75rem;
   background-color: #10b68d;
@@ -177,7 +200,7 @@ import Icon_google from '@/assets/Imagenes/google.png'
   transition: all 0.3s ease;
 }
 
-.login-wrapper .btn:hover {
+.registro-wrapper .btn:hover {
   background-color: #004C45;
   transform: translateY(-2px);
 }
@@ -189,84 +212,45 @@ import Icon_google from '@/assets/Imagenes/google.png'
   padding: 1rem;
 }
 
-.footer p{
+.footer p {
   margin-top: 30px;
-}
-
-.contenido_mostra_otro_acceso{
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-}
-
-.contenido_mostra_otro_acceso span{
-  margin: 0px 10px;
-  font-size: 1rem;
-}
-
-.linea_separado{
-  width: 30%;
-  height: 1px;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-
-.contenido_extra_acceso{
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  border-color: #004C45;
-  margin: 1.5rem 0;
-  gap: 10px;
-  padding: 5px 0.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: rgba(0, 0, 0, 0.9);
-}
-
-.contenido_extra_acceso:hover{
-  background-color: rgba(0, 0, 0, 0.1);
-}
-.contenedor_imagen img{
-  width: 24px;
-  height: 24px;
 }
 
 /* Area de Responsive */
 @media (max-width: 768px) {
-  .login-wrapper {
+  .registro-wrapper {
     padding: 1.5rem;
     margin: 0.5rem;
   }
   
-  .login-wrapper h2 {
+  .registro-wrapper h2 {
     font-size: 1.5rem;
   }
   
-  .contenido_links {
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: center;
+  .contenedor_input {
+    margin: 0.8rem 0;
   }
-
-  .linea_separado{
-    width: 25%;
+  
+  .contenedor_terminos {
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
-  .login-wrapper {
+  .registro-wrapper {
     padding: 1rem;
   }
   
   .contenedor_input input {
     padding: 0.75rem;
   }
-
-  .linea_separado{
-    width: 15%;
+  
+  .registro-wrapper h2 {
+    font-size: 1.3rem;
+  }
+  
+  .contenido_links {
+    font-size: 0.8rem;
   }
 }
 </style>
