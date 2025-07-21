@@ -22,6 +22,9 @@ import ConsultaDuda from '@/views/usuarios/components/ConsultaDuda.vue'
 import EditarInformacion from '@/views/usuarios/components/EditarInformacion.vue'
 
 //Componentes para Empleado
+import BienvenidoEmpleado from '@/views/empleado/components/BienvenidoEmpleado.vue'
+import ConsultaInventario from '@/views/empleado/components/ConsultaInventario.vue'
+import AtencionClientePro from '@/views/empleado/components/AtencionClientePro.vue'
 
 
 import { createRouter, createWebHistory } from 'vue-router'
@@ -70,7 +73,12 @@ const router = createRouter({
     {
       path: '/empleado',
       name: 'Pagina de Empleado', //Esto hasta momento es demo
-      component: pagina_empleado
+      component: pagina_empleado,
+      children:[
+        {path:'', name:'BienvenidoEmpleado',component:BienvenidoEmpleado},
+        {path:'consulta_inventario', name:'ConsultaInventario',component:ConsultaInventario, meta: { title: 'Consulta al Inventario' }},
+        {path:'atencion_cliente', name:'AtencionCliente',component:AtencionClientePro, meta: { title: 'Atención al Cliente Suscriptor' }}
+      ]
     },
     {
       //Ahora, modificando al ruta dinamicamente
