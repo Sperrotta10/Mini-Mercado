@@ -15,6 +15,10 @@ export function defineCart(sequelize, DataTypes) {
                 key: 'user_id'
             }
         },
+        name : {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
     }, {
         timestamps: true,
         tableName: "carts"
