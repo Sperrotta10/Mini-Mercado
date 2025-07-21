@@ -1,9 +1,14 @@
 import Pagina_principal from '@/views/home/view/pagina_principal.vue'
 import pagina_404 from '@/views/pagina_404/pagina_404.vue'
 import login_usuarios from '@/modules/login_usuarios.vue'
+import Detalles_producto from '@/views/home/components/Detalles_producto.vue'
+
+//Rutas para diferentes de user
 import pagina_administrador from '@/views/admin/view/pagina_administrador.vue'
 import pagina_usuario from '@/views/usuarios/view/pagina_usuario.vue'
-import Detalles_producto from '@/views/home/components/Detalles_producto.vue'
+import pagina_empleado from '@/views/empleado/view/pagina_empleado.vue'
+
+//Componentes para Admin
 import BienvenidoComponente from '@/views/admin/components/BienvenidoComponente.vue'
 import Gestion_inventario from '@/views/admin/components/GestionInventario.vue'
 import Gestion_empleado from '@/views/admin/components/GestionEmpleado.vue'
@@ -15,6 +20,10 @@ import InformacionPersonal from '@/views/usuarios/components/InformacionPersonal
 import GestionCarritos from '@/views/usuarios/components/GestionCarritos.vue'
 import ConsultaDuda from '@/views/usuarios/components/ConsultaDuda.vue'
 import EditarInformacion from '@/views/usuarios/components/EditarInformacion.vue'
+
+//Componentes para Empleado
+
+
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -57,6 +66,11 @@ const router = createRouter({
         {path:'consulta', name:'Consulta',component:ConsultaDuda, meta: { title: 'Consulta' }},
         {path:'editar_informacion', name:'Editar_Informacion',component:EditarInformacion, meta: { title: 'Editar su información' }}
       ]
+    },
+    {
+      path: '/empleado',
+      name: 'Pagina de Empleado', //Esto hasta momento es demo
+      component: pagina_empleado
     },
     {
       //Ahora, modificando al ruta dinamicamente
