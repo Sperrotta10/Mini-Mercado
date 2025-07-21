@@ -4,72 +4,37 @@
       <h1>Categorías</h1>
     </div>
     <div class="contenedor_categorias">
-        <div 
-          v-for="(categoria, index) in categorias" 
-          :key="index" 
-          class="carta_categoria"
-        >
-        <RouterLink target="_blank" :to="categoria.link" class="carta_link">
+      <div 
+      v-for="(categoria) in categoriesList" 
+      :key="categoria.categoria_id" 
+      class="carta_categoria"
+      >
+        <RouterLink target="_blank" :to="`/categoria/${categoria.categoria_id}`" class="carta_link">
           <div class="imagen_categoria">
-            <img :src="categoria.imagen" alt="">
+            <img :src="categoria.image" loading="lazy" alt="">
           </div>
           <div class="contenido_categoria">
             <p class="nombre_categoria">{{ categoria.name }}</p>
           </div>
         </RouterLink>
-        </div>
+      </div>
     </div>
-  </div>
-    
+  </div> 
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import frutas from '@/assets/Imagenes/categorias/frutas_y_verduras.webp'
-import lacteos from '@/assets/Imagenes/categorias/lacteos.jpg'
-import chucheria from '@/assets/Imagenes/categorias/chucheria.jpg'
-import refresco from '@/assets/Imagenes/categorias/refresco.jpg'
-import abarrotes from '@/assets/Imagenes/categorias/abarrotes.jpg'
-import carne from '@/assets/Imagenes/categorias/carne.jpg'
-import limpieza from '@/assets/Imagenes/categorias/limpieza.webp'
+import { categoryService } from '@/utils/categoryServices';
+import { onMounted, ref } from 'vue';
 
-const categorias = ref([
-  {
-    name: 'Frutas y verduras',
-    imagen: frutas,
-    link:'/categoria/frutasyverduras'
-  },
-  {
-    name: 'Carnicería',
-    imagen: carne,
-    link:'/categoria/carniceria'
-  },
-  {
-    name: 'Snacks y Dulces',
-    imagen: chucheria,
-    link:'/categoria/snacksydulces'
-  },
-  {
-    name: 'Bebidas',
-    imagen: refresco,
-    link:'/categoria/bebidas'
-  },
-  {
-    name: 'Lactéos',
-    imagen: lacteos,
-    link:'/categoria/lacteos'
-  },
-  {
-    name: 'Abarrotes',
-    imagen: abarrotes,
-    link:'/categoria/abarrotes'
-  },
-  {
-    name: 'Limpieza',
-    imagen: limpieza,
-    link:'/categoria/limpieza'
-  }
-]);
+const categoriesList = ref([]);
+onMounted(() => {
+    categoryService.getCategories().then(categories => {
+        categoriesList.value = categories.data;
+        console.log('categories fetched:', categoriesList.value);
+    }).catch(error => {
+        console.error("Error fetching categories:", error);
+    });
+});
 </script>
 
 <style scoped>
