@@ -1,0 +1,68 @@
+import axios from 'axios'
+
+const api = axios.create({
+  baseURL: 'http://localhost:3000/api/v1',
+  withCredentials: true,
+})
+
+export const productService = {
+    async getProducts() {
+        try {
+            const res = await api.get('/product/')
+            return res.data
+        } catch (error) {
+            console.error('Error al obtener productos:', error)
+            return false
+        }
+    },
+
+    async createProduct(data) {
+        try {
+            const res = await api.post('/product/', data)
+            return res.data
+        } catch (error) {
+            console.error('Error al crear producto:', error)
+            return false
+        }
+    },
+
+    async getProductById(id) {
+        try {
+            const res = await api.get(`/product/${id}`)
+            return res.data
+        } catch (error) {
+            console.error('Error al obtener producto por ID:', error)
+            return false
+        }
+    },
+
+    async patchProduct(id, data) {
+        try {
+            const res = await api.patch(`/product/${id}`, data)
+            return res.data
+        } catch (error) {
+            console.error('Error al hacer patch al producto:', error)
+            return false
+        }
+    },
+
+    async deleteProduct(id) {
+        try {
+            const res = await api.delete(`/product/${id}`)
+            return res.data
+        } catch (error) {
+            console.error('Error al eliminar producto:', error)
+            return false
+        }
+    },
+
+    async getProductsPaginated(params) {
+        try {
+            const res = await api.get('/product/pagination', { params })
+            return res.data
+        } catch (error) {
+            console.error('Error al obtener productos paginados:', error)
+            return false
+        }
+    },
+}
