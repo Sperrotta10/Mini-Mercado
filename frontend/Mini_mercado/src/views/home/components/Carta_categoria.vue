@@ -1,19 +1,24 @@
 <template>
     <div class="categoria_carta">
         <div class="product_imagen">
-            <img :src="Imagen" alt="Imagen">
+            <img :src="props.imagen" alt="Imagen">
         </div>
 
         <div class="tapa_overlay">
             <RouterLink target="_blank" to="/ejemplo">
-                <span class="hover_texto">Frutas</span>
+                <span class="hover_texto">{{ props.categoria.name }}</span>
             </RouterLink>
         </div>
     </div>
 </template>
 
 <script setup>
-import Imagen from '@/assets/Imagenes/categorias/fruta.jpg'
+import { defineProps } from 'vue'
+
+const props = defineProps({
+    categoria: Object,
+    imagen: String
+})
 </script>
 
 <style scoped>
