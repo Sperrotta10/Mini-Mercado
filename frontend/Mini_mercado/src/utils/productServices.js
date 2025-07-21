@@ -56,9 +56,9 @@ export const productService = {
         }
     },
 
-    async getProductsPaginated(params) {
+    async getProductsPaginated(page, limit, minPrice,maxPrice,minOferta,categoria) {
         try {
-            const res = await api.get('/product/pagination', { params })
+            const res = await api.get('/product/pagination', { params: { page, limit, minPrice,maxPrice,minOferta,categoria } })
             return res.data
         } catch (error) {
             console.error('Error al obtener productos paginados:', error)
