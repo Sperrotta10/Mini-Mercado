@@ -1,3 +1,7 @@
 <template>
-    <h1>Hello World!</h1>
+    <EmpleadoLayout></EmpleadoLayout>
 </template>
+
+<script setup>
+import EmpleadoLayout from '../components/EmpleadoLayout.vue';
+</script>
