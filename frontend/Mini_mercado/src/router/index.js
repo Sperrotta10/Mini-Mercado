@@ -2,6 +2,7 @@ import Pagina_principal from '@/views/home/view/pagina_principal.vue'
 import pagina_404 from '@/views/pagina_404/pagina_404.vue'
 import login_usuarios from '@/modules/login_usuarios.vue'
 import Detalles_producto from '@/views/home/components/Detalles_producto.vue'
+import CrearUsuario from '@/modules/CrearUsuario.vue'
 
 //Rutas para diferentes de user
 import pagina_administrador from '@/views/admin/view/pagina_administrador.vue'
@@ -46,6 +47,11 @@ const router = createRouter({
       path: '/login',
       name: 'Pagina de Login usuario', //Esto hasta momento es demo
       component: login_usuarios
+    },
+    {
+      path: '/crear_usuario',
+      name: 'Pagina de Crear usuario', //Esto hasta momento es demo
+      component: CrearUsuario
     },
     {
       path: '/administrador',
