@@ -17,7 +17,7 @@ export class CategoryModel {
         }
     }
 
-    static async getById(categoria_id) {
+    static async getId(categoria_id) {
 
         try {
 
