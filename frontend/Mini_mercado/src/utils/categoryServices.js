@@ -55,4 +55,14 @@ export const categoryService = {
         return false
         }
     },
+
+    async getCategoryById(id){
+        try {
+        const res = await api.get(`/category/${id}`)
+        return res.data
+        } catch (error) {
+        console.error('Error al eliminar categoría:', error)
+        return false
+        }
+    },
 }

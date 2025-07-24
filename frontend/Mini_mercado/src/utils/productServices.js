@@ -65,4 +65,14 @@ export const productService = {
             return false
         }
     },
+
+    async getProductsByName(name){
+        try{
+            const res = await api.get(`/product/search/${name}`)
+            return res.data
+        }catch (error) {
+            console.error('Error al obtener productos paginados:', error)
+            return false
+        }
+    }
 }
