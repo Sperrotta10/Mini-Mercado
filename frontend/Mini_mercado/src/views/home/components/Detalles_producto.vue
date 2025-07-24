@@ -3,20 +3,18 @@
     <div class="contenedor">
         <div class="producto_detalle">
             <div class="product_imagen">
-                <img :src="Ejemplo_png" alt="Producto_imagen">
+                <img :src="producto?.image || Ejemplo_png" alt="Producto_imagen">
             </div>
             <div class="producto_informacion">
-                <h1 class="producto_titulo">{{ nombre_producto }}</h1>
-                <span class="producto_categoria">Frutas</span>
-                <div class="producto_precio">$29.90</div>
-                <div class="producto_disnonible">Disponible: </div>
-                
+                <h1 class="producto_titulo">{{ producto?.name || 'Cargando...' }}</h1>
+                <span class="producto_categoria">{{ categoria?.name || 'Cargando...' }}</span>
+                <div class="producto_precio">${{ producto?.price || '--' }}</div>
+                <div class="producto_disnonible">Disponible: {{ producto?.stock ?? '--' }}</div>
                 <div class="control_cantidad">
                     <button class="btn_cantidad menos" @click="decrementar">-</button>
                     <input type="text" class="input_cantidad" :value="cantidad_producto">
                     <button class="btn_cantidad mas" @click="incrementar">+</button>
                 </div>
-                
                 <button class="agregar_al_carrito">Agregar al carrito</button>
             </div>
         </div>
@@ -36,22 +34,29 @@
 </template>
 
 <script setup>
-import { computed, watch, onMounted,ref } from 'vue';
+import { watch, onMounted,ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Ejemplo_png from '@/assets/Imagenes/productos/pizza jamon.png'
 import header_general from '@/modules/header_general.vue';
 import footer_general from '@/modules/footer_general.vue';
 import Carta_producto from './Carta_producto.vue';
+import { productService } from '@/utils/productServices';
+import { categoryService } from '@/utils/categoryServices';
 
 const route = useRoute();
-const nombre_producto = computed(()=> route.params.nombre)
 
 const cantidad_producto = ref(1);
 
 //Para incrementar la cantidad de producto
 const incrementar = () => {
-  cantidad_producto.value++;
+    if(cantidad_producto.value>=producto.value.stock){
+        return
+    }else{
+        cantidad_producto.value++;
+    }
 }
+
+
 
 //Para decrementar 
 const decrementar = () => {
@@ -61,14 +66,34 @@ const decrementar = () => {
   
 }
 
-//Hacemos una funcion para que puede chequear para ver que si funciona
-const cargarProducto = (nombre) =>{
-    console.log('Cargado: ',nombre,' Niceeeee!')
+
+const producto = ref(null)
+const categoria = ref(null)
+const loading = ref(false)
+const error = ref(null)
+
+async function cargarProducto(name) {
+    loading.value = true
+    error.value = null
+    try {
+        const res = await productService.getProductsByName(name)
+        const prod = res.data[0]
+        if (!prod) throw new Error('Producto no encontrado')
+        const cat = await categoryService.getCategoryById(prod.categoria_id)
+        producto.value = prod
+        categoria.value = cat.data
+    } catch (err) {
+        error.value = err.message || 'Error al buscar producto'
+        producto.value = null
+        categoria.value = null
+        console.log("Error al buscar producto", err)
+    } finally {
+        loading.value = false
+    }
 }
 
-//Montando las cosas
-onMounted(()=>{
-    cargarProducto(route.params.nombre)
+onMounted(async () => {
+    await cargarProducto(route.params.nombre)
 })
 
 watch(

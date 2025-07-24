@@ -30,7 +30,6 @@ const categoriesList = ref([]);
 onMounted(() => {
     categoryService.getCategories().then(categories => {
         categoriesList.value = categories.data;
-        console.log('categories fetched:', categoriesList.value);
     }).catch(error => {
         console.error("Error fetching categories:", error);
     });
