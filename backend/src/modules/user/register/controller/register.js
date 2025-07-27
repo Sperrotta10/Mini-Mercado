@@ -94,9 +94,9 @@ export class UserRegisterController extends BaseController {
     const { id } = req.params;
     const result = this.validators.update(body);
 
-    if (!result.success && !image) return res.status(400).json({ message: "Error de validación", error: result.error.errors });
+    if (!result.success) return res.status(400).json({ message: "Error de validación", error: result.error.errors });
 
-    const payload = result.data || {};
+    const payload = result.data;
     let filePath = null;
     const FOLDER = 'perfiles';
     const BUCKET = 'perfil-images';
