@@ -1,5 +1,5 @@
 import { Category } from "../../../models/index.js"
-import { deleteFile } from "../../../utils/images.js"
+import { deleteFile, extractPathFromUrl } from "../../../utils/images.js"
 
 export class CategoryModel {
 
@@ -86,11 +86,16 @@ export class CategoryModel {
             
             const deleted = await Category.destroy({where : {categoria_id}});
 
-            if (deleted === 0) return { message: "Producto no encontrado", status: 404 };
+            if (deleted === 0) return { message: "Categoria no encontrado", status: 404 };
 
             if (categoriaExists.image) {
-                console.log("Eliminando imagen del producto:", productExists.image);
-                await deleteFile(productExists.image, BUCKET);
+                console.log("Eliminando imagen de la categoria:", categoriaExists.image);
+                const imagePath = extractPathFromUrl(categoriaExists.image);
+                if (!imagePath) {
+                    console.error("Error al extraer la ruta de la imagen de la categoria");
+                    throw new Error("Error al extraer la ruta de la imagen de la categoria");
+                }
+                await deleteFile(imagePath, BUCKET);
             }
 
             return {message : "Categoria eliminada", status : 200};
