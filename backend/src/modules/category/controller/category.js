@@ -38,6 +38,8 @@ export class CategoryController extends BaseController {
 
         // Subir imagen a Supabase
         const imageUrl = await uploadImage(image, FOLDER, BUCKET);
+        if (!imageUrl) return res.status(500).json({ message: "Error al subir la imagen" });
+
         filePath = extractPathFromUrl(imageUrl);
         payload.image = imageUrl; // agregamos la URL de la imagen en los datos
 
@@ -47,6 +49,7 @@ export class CategoryController extends BaseController {
 
     } catch (error) {
 
+        // Si ocurre un error, revertir la carga de la imagen
         await errorUploadImage(filePath, BUCKET);
 
         return res.status(500).json({ message: "Error interno", error: error.message });
@@ -78,7 +81,7 @@ export class CategoryController extends BaseController {
 
     let filePath = null;
     const payload = result.data;
-    const oldImageUrl = categoria.data.image;
+    const oldImageUrl = extractPathFromUrl(categoria.data?.image) || null;
     const BUCKET = 'category-images';
     const FOLDER = 'category';
 
@@ -87,19 +90,31 @@ export class CategoryController extends BaseController {
         // Actualizar imagen de Supabase si se proporciona
         if (image) {
             const imageUrl = await uploadImage(image, FOLDER, BUCKET);
+            if (!imageUrl) return res.status(500).json({ message: "Error al subir la imagen" });
+
             filePath = extractPathFromUrl(imageUrl);
             payload.image = imageUrl; // Actualizar la URL de la imagen en los datos
         }
 
         // Actualizar la categoría en la base de datos
         const update = await this.model.update(id, payload);
-        if (oldImageUrl && update.status === 201) {
-            await deleteFile(oldImageUrl, BUCKET); // Eliminar imagen antigua si la actualización es exitosa
+
+        // Si la actualización falla, revertir la carga de la imagen
+        if (update.status !== 200) {
+            await errorUploadImage(filePath, BUCKET);
+            return res.status(update.status).json({ message: update.message });
         }
+
+        // Verificar si la actualización fue exitosa
+        if (oldImageUrl && filePath && filePath !== oldImageUrl && update.status === 200) {
+            await deleteFile(oldImageUrl, BUCKET);
+        }
+
         return res.status(update.status).json({message : update.message, data: update.data ?? null});
 
     } catch (error) {
 
+        // Si ocurre un error, revertir la carga de la imagen
         await errorUploadImage(filePath, BUCKET);
 
         return res.status(500).json({ message: "Error interno", error: error.message });
