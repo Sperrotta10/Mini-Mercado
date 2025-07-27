@@ -63,7 +63,7 @@ export const deleteFile = async (filePath, bucket) => {
 // Helper para extraer la ruta del archivo desde una URL de Supabase
 export const extractPathFromUrl = (url) => {
   const matches = url.match(/\/storage\/v1\/object\/public\/[^/]+\/(.+)/);
-  return matches ? matches[1] : null;
+  return matches ? decodeURIComponent(matches[1]) : null;
 };
 
 const isSupabaseUrl = (url) => {
