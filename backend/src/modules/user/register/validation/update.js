@@ -10,8 +10,16 @@ const updateUser = zod.object({
         .regex(/[A-Z]/, { message : "Debe contener al menos una mayúscula"})
         .regex(/[0-9]/, { message : "Debe contener al menos un número"})
         .regex(/[^A-Za-z0-9]/, { message : "Debe contener al menos un carácter especial"}),
-    suscripcion: zod.boolean().optional().default(false),  
-    image_perfil: zod.string().url({ message : 'La imagen de perfil debe ser una URL válida' }),
+    suscripcion: zod.preprocess((val) => {
+        if (val === 'true' || val === '1') return true;
+        if (val === 'false' || val === '0') return false;
+        return undefined;
+    }, zod.boolean().optional()),
+    status: zod.preprocess((val) => {
+        if (val === 'true' || val === '1') return true;
+        if (val === 'false' || val === '0') return false;
+        return undefined;
+    }, zod.boolean().optional()),
 }).partial().refine((data) => Object.keys(data).length > 0, {
     message: 'Debes enviar al menos un campo para actualizar',
 });
