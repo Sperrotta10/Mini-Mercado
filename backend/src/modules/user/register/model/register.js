@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { User, Role } from "../../../../models/index.js"
 import { enviroment } from "../../../../config/enviroment.js"
+import { deleteFile } from '../../../../utils/images.js';
 
 export class ModelUserRegister {
 
@@ -11,7 +12,25 @@ export class ModelUserRegister {
 
             const exist = await User.findOne({where : {email : data.email}});
 
-            if(exist) return {message : "User ya existe", status : 409};
+            if(exist) {
+
+                const isClient = role_id === enviroment.ROLE_DEFAULT;
+                const isInactive = exist.status === false;
+
+                // Si el usuario (empleado) ya existe, pero esta inactivo, no se puede registrar
+                if (!isClient && isInactive) {
+                    return { message: "User inactivo, no se puede registrar", status: 403 };
+                }
+
+                // Si el usuario (cliente) ya existe, pero esta inactivo, se puede registrar
+                // y se actualiza su estado a activo
+                if (isClient && isInactive) {
+                    await User.update({ status: true }, { where: { email: data.email } });
+                    return { message: "User reactivado con éxito", status: 200 };
+                }
+
+                return { message: "User ya existe", status: 409 };
+            }
 
             const salt = parseInt(enviroment.SALT, 10);
             const hashPassword = await bcrypt.hash(data.password, salt);
@@ -152,11 +171,11 @@ export class ModelUserRegister {
         
         try {
 
-            const exist = await User.findByPk(user_id);
+            const userExist = await User.findByPk(user_id);
 
-            if(!exist) return {message : "User no encontrado", status : 404};
-            
-            await User.destroy({where : { user_id }});
+            if(!userExist) return {message : "User no encontrado", status : 404};
+
+            await User.update({status : false},{where : { user_id }});
 
             return {message : "User eliminado", status : 200};
 
