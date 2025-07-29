@@ -4,6 +4,7 @@ import { defineCart } from "../modules/cart/schemas/cart.js";
 import { defineCartItem } from "../modules/cart-item/schemas/cart-item.js";
 import { defineProduct } from "../modules/product/schemas/product.js";
 import { defineCategory } from "../modules/category/schemas/category.js";
+import { definePasswordRecovery } from "../modules/user/auth/schemas/password_recovery.js";
 import { sequelize } from "../config/dataBase.js";
 import { Sequelize } from "sequelize";
 import { DataTypes } from "sequelize";
@@ -15,6 +16,7 @@ const Cart = defineCart(sequelize, DataTypes);
 const CartItem = defineCartItem(sequelize, DataTypes);
 const Product = defineProduct(sequelize, DataTypes);
 const Category = defineCategory(sequelize, DataTypes);
+const PasswordRecovery = definePasswordRecovery(sequelize, DataTypes);
 
 // establecemos las relaciones entre las entidades
 User.belongsTo(Role, { foreignKey: "rol_id", as: "role" });
@@ -32,6 +34,9 @@ Product.hasOne(CartItem, { foreignKey: "product_id", as: "cartItem" });
 Product.belongsTo(Category, { foreignKey: "categoria_id", as: "category" });
 Category.hasMany(Product, { foreignKey: "categoria_id", as: "products" });
 
+PasswordRecovery.belongsTo(User, { foreignKey: "user_id", as: "user" });
+User.hasMany(PasswordRecovery, { foreignKey: "user_id", as: "passwordRecoveries", onDelete: 'CASCADE' });
+
 // Exportamos los modelos para que puedan ser utilizados en otros módulos
 export {
     sequelize,
@@ -42,4 +47,5 @@ export {
     CartItem,
     Product,
     Category,
+    PasswordRecovery
 };
