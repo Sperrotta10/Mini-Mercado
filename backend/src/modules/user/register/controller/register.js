@@ -19,23 +19,14 @@ export class UserRegisterController extends BaseController {
   }
 
   create = async (req, res) => {
-    const { rol } = req.user || {};
-    const { role, ...userData } = req.body;
-    const result = this.validators.create(userData);
+
+    const result = this.validators.create(req.body);
 
     if (!result.success) return res.status(400).json({ message: "Error de validación", error: result.error.errors });
 
     try {
 
-      let roleResult;
-      if(rol === 'admin') {
-
-        roleResult = await resolveRole(role);
-        if (!roleResult.success) return res.status(roleResult.status).json({ message: roleResult.message });
-
-      }
-
-      const rol_id = rol === 'admin' ? roleResult.rol_id : enviroment.ROLE_DEFAULT;
+      const rol_id = enviroment.ROLE_DEFAULT;
 
       const created = await this.model.create(result.data, rol_id);
       return res.status(created.status).json({ message: created.message, data: created.data ?? null });
@@ -44,6 +35,27 @@ export class UserRegisterController extends BaseController {
       return res.status(500).json({ message: "Error interno", error: error.message });
     }
   };
+
+
+  createByAdmin = async (req, res) => {
+    
+    const { role, ...userData } = req.body;
+    const result = this.validators.create(userData);
+
+    if (!result.success) return res.status(400).json({ message: "Error de validación", error: result.error.errors });
+
+    try {
+      
+      const roleResult = await resolveRole(role);
+      if (!roleResult.success) return res.status(roleResult.status).json({ message: roleResult.message });
+
+      const created = await this.model.create(result.data, roleResult.rol_id);
+      return res.status(created.status).json({ message: created.message, data: created.data ?? null });
+
+    } catch (error) {
+      return res.status(500).json({ message: "Error interno", error: error.message });
+    }
+  }
 
   getCedula = async (req, res) => {
 
