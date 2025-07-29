@@ -7,7 +7,8 @@ export const registerRouter = Router();
 const controller = new UserRegisterController();
 
 // definicion de rutas para el registro de usuarios
-registerRouter.post('/', authenticateHybrid, authorizeRoles('admin', 'cliente'), controller.create);
+registerRouter.post('/', controller.create);
+registerRouter.post('/admin-create', authenticateHybrid, authorizeRoles('admin'), controller.createByAdmin);
 registerRouter.get('/', controller.getAll);
 registerRouter.get('/cedula/:cedula', controller.getCedula);
 registerRouter.get('/empleado/pagination', controller.getPaginationEmpleado);
