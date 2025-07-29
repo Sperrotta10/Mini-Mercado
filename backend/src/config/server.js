@@ -7,6 +7,12 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import fileUpload from "express-fileupload"
 import { enviroment } from './enviroment.js';
+import path from 'path';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 
 export function createServer() {
@@ -21,7 +27,10 @@ export function createServer() {
 
     // middleware para parsear el cuerpo de las peticiones y las cookies
     app.use(express.json());
-    app.use(cookieParser());
+    app.use(cookieParser(enviroment.COOKIE_SECRET));
+
+    // Servir los archivos estáticos
+    app.use(express.static(path.join(__dirname, '../public')));
     
     // Middleware para parsear datos tipo form-urlencoded
     app.use(express.urlencoded({ extended: true }));
@@ -49,6 +58,19 @@ export function createServer() {
 
     app.get('/', (req, res) => {
         res.status(200).json({ message: 'Welcome to the backend server!' });
+    });
+
+    // Endpoints para mostrar HTMLs directamente
+    app.get('/login', (req, res) => {
+        res.sendFile(path.join(__dirname, '../public', 'login.html'));
+    });
+
+    app.get('/forgot-password', (req, res) => {
+        res.sendFile(path.join(__dirname, '../public', 'forgot-password.html'));
+    });
+
+    app.get('/reset-password', (req, res) => {
+        res.sendFile(path.join(__dirname, '../public', 'reset-password.html'));
     });
 
     return app;
