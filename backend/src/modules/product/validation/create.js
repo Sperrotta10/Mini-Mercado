@@ -33,8 +33,8 @@ const createProduct = zod.object({
   status: zod
     .string()
     .regex(/^(true|false)$/i, { message: 'El estado debe ser "true" o "false"' })
+    .default('true')
     .transform((val) => val.toLowerCase() === 'true')
-    .default(true)
 })
 .refine((data) => {
   return data.stock_min <= data.stock;

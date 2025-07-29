@@ -9,7 +9,7 @@ export const cartRouter = Router()
 const cartController = new CartController()
 
 cartRouter.post("/", authenticateHybrid, authorizeRoles('cliente'), cartController.create)
-cartRouter.get("/:id", authenticateHybrid, authorizeRoles('cliente'), verifyCartOwnership, cartController.getId)
 cartRouter.get("/", authenticateHybrid, authorizeRoles('cliente'), cartController.getAll)
+cartRouter.get("/:id", authenticateHybrid, authorizeRoles('cliente'), verifyCartOwnership, cartController.getId)
 cartRouter.put("/:id", authenticateHybrid, authorizeRoles('cliente'), verifyCartOwnership, cartController.update)
 cartRouter.delete("/:id", authenticateHybrid, authorizeRoles('cliente'), verifyCartOwnership, cartController.delete)

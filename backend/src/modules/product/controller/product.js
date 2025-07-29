@@ -49,16 +49,18 @@ export class ProductController extends BaseController {
             // guardar el producto en la base de datos
             const created = await this.model.create(payload);
 
-            if (created.status === 409) {
+            // Si la creación falla, revertir la carga de la imagen
+            if (created.status !== 201) {
                 
-                console.error("El producto ya existe:", created.message, filePath);
                 await errorUploadImage(filePath, BUCKET);
+                return res.status(created.status).json({ message: created.message });
             }
 
             return res.status(created.status).json({ message: created.message, data: created.data ?? null });
 
         } catch (error) {
 
+            // Si ocurre un error, revertir la carga de la imagen
             await errorUploadImage(filePath, BUCKET);
 
             return res.status(500).json({ message: "Error interno", error: error.message });
@@ -133,30 +135,34 @@ export class ProductController extends BaseController {
 
                         if (!imageUrl) return res.status(500).json({ message: "Error al subir la imagen" });
 
+                        // extraer la ruta de la imagen
                         filePath = extractPathFromUrl(imageUrl);
                         payload.image = imageUrl; // agregamos la URL de la imagen en los datos
                     }
                 
-
+                    // verificar si el producto existe
                     const product = await this.model.getId(id);
 
-                    if (product.status !== 200) {
+                    if (!product.data) return res.status(product.status).json({ message: product.message });
 
-                        await errorUploadImage(filePath, BUCKET);
-
-                        return res.status(product.status).json({ message: product.message, data: product.data ?? null });
-                    }
-                
                     // actualizar el producto en la base de datos
                     const updated = await this.model.update(id, payload, rol);
-                    if (updated.status === 200) {
-                        
-                        if (filePath && product.data.image && product.data.image !== payload.image) {
-                            await deleteFile(product.data.image, BUCKET);
-                        }
-                        return res.status(updated.status).json({ message: updated.message, data: updated.data ?? null });
+
+                    // Si la actualización falla, revertir la carga de la imagen
+                    if (updated.status !== 200) {
+                        await errorUploadImage(filePath, BUCKET);
+                        return res.status(updated.status).json({ message: updated.message });
                     }
-                    return res.status(updated.status).json({ message: updated.message, data: updated.data });
+
+                    // obtenemos la imagen antigua del producto
+                    const path = extractPathFromUrl(product.data.image) || null;
+
+                    // si la imagen ha cambiado, eliminar la imagen anterior
+                    if (path && filePath && path !== filePath) {
+                        await deleteFile(path, BUCKET);
+                    }
+
+                    return res.status(updated.status).json({ message: updated.message, data: updated.data ?? null });
 
                 } catch (error) {
 

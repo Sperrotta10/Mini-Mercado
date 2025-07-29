@@ -1,5 +1,5 @@
 import { Product, Category } from "../../../models/index.js"
-import { deleteFile } from "../../../utils/images.js"
+import { deleteFile, extractPathFromUrl } from "../../../utils/images.js"
 import { Op } from "sequelize";
 
 export class ProductModel {
@@ -23,6 +23,8 @@ export class ProductModel {
         try {
             
             const product = await Product.findByPk(product_id);
+
+            if(!product) return {message : "Producto no encontrado", status : 404};
 
             return {message : "Producto obtenido", data : product, status : 200};
 
@@ -181,7 +183,12 @@ export class ProductModel {
 
             if (productExists.image) {
                 console.log("Eliminando imagen del producto:", productExists.image);
-                await deleteFile(productExists.image, BUCKET);
+                const imagePath = extractPathFromUrl(productExists.image);
+                if (!imagePath) {
+                    console.error("Error al extraer la ruta de la imagen del producto");
+                    throw new Error("Error al extraer la ruta de la imagen del producto");
+                }
+                await deleteFile(imagePath, BUCKET);
             }
             
 

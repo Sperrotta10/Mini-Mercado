@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 export function authenticateHybrid(req, res, next) {
     
   // Verificar JWT
-  const token = req.cookies.access_token;
+  const token = req.signedCookies.access_token;
   if (token) {
     try {
       const user = jwt.verify(token, enviroment.JWT_SECRET);

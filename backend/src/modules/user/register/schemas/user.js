@@ -56,6 +56,10 @@ export function defineUser(sequelize, DataTypes){
             type: DataTypes.STRING,
             allowNull: true
         },
+        status: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
+        }
     }, {
         timestamps: true,
         tableName: "users",
