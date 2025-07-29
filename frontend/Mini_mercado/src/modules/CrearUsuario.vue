@@ -7,48 +7,38 @@
     <main class="main_contenido">
       <div class="contenido_registro">
         <div class='registro-wrapper'>
-          <form action=''>
+          <v-form ref="RegisterForm" @submit.prevent="onSubmit">
             <h2>Registrar nuevo usuario</h2>
             
             <div class="contenedor_input">
-              <input type="text" placeholder='Nombre completo' required />
+              <v-text-field type="email" v-model="registerData.email" :rules="email_rules" placeholder='Correo electrónico' required />
             </div>
             
             <div class="contenedor_input">
-              <input type="text" placeholder='Cedula' required />
-            </div>
-
-            <div class="contenedor_input">
-              <input type="email" placeholder='Correo electrónico' required />
-            </div>
-
-            <div class="contenedor_input">
-              <input type="text" placeholder='Número Teléfono' required />
+              <v-text-field type="text" v-model="registerData.username" :autocomplete="'MSJuser123'" :rules="username_rules" placeholder='Nombre de usuario' required />
             </div>
             
             <div class="contenedor_input">
-              <input type="text" placeholder='Nombre de usuario' required />
+              <v-text-field type="password" v-model="registerData.password" :autocomplete="'New@Password@123'" :rules="password_rules" placeholder='Contraseña' required />
             </div>
             
             <div class="contenedor_input">
-              <input type="password" placeholder='Contraseña' required />
+              <v-text-field type="password" :autocomplete="'New@Password@123'" v-model="registerData.confirmPassword" :rules="confirmPassword_rules" placeholder='Confirmar contraseña' required />
             </div>
             
-            <div class="contenedor_input">
-              <input type="password" placeholder='Confirmar contraseña' required />
+            <div class="contenedor_terminos">
+              <input type="checkbox" id="terminos" v-model="terminosAceptados" required />
+              <label for="terminos">
+                <RouterLink to="/terminos"> Términos y condiciones</RouterLink>
+              </label>
             </div>
-            
-            <!-- <div class="contenedor_terminos">
-              <input type="checkbox" id="terminos" required />
-              <label for="terminos">Acepto los términos y condiciones</label>
-            </div> -->
             
             <button type='submit' class="btn">Registrarse</button>
             
             <div class="contenido_links">
               <RouterLink to="/login"> ¿Ya tienes una cuenta? Inicia sesión</RouterLink>
             </div>
-          </form>
+          </v-form>
         </div>
       </div>
     </main>
@@ -61,6 +51,77 @@
 
 <script setup>
 import Logo_con_link from './logo_con_link.vue'
+
+import { ref } from 'vue'
+import { UserService } from '../utils/userServices.js'
+
+const RegisterForm = ref(null)
+const terminosAceptados = ref(false) 
+const UserServiceInstance = new UserService()
+
+const registerData = ref({
+  nombre_completo: '',
+  cedula: '',
+  email: '',
+  telefono: '',
+  username: '',
+  password: '',
+  confirmPassword: ''
+})
+
+
+
+const email_rules = ref([
+  v => !!v || 'El correo electrónico es obligatorio',
+  v => /.+@.+\..+/.test(v) || 'El correo electrónico debe ser válido'
+])
+
+const username_rules = ref([
+  v => !!v || 'El nombre de usuario es obligatorio',
+  v => (v && v.length <= 20) || 'El nombre de usuario debe tener menos de 20 caracteres'
+])
+
+const password_rules = ref([
+  v => !!v || 'La contraseña es obligatoria',
+  v => (v && v.length >= 8) || 'La contraseña debe tener al menos 8 caracteres'
+])
+
+const confirmPassword_rules = ref([
+  v => !!v || 'La confirmación de contraseña es obligatoria',
+  v => v === registerData.value.password || 'Las contraseñas no coinciden'
+])
+
+
+
+const onSubmit = async () => {
+  const result = await RegisterForm.value?.validate();
+
+  if (!result || !result.valid) {
+    alert('Por favor corrige los errores antes de continuar');
+    return;
+  }
+  if (!terminosAceptados.value) {
+    alert('Debes aceptar los términos y condiciones');
+    return;
+  }
+
+  // Prepara los datos (puedes omitir confirmPassword si no lo necesitas en el backend)
+  const dataToSend = {
+    email: registerData.value.email,
+    username: registerData.value.username,
+    password: registerData.value.password,
+  };
+  // Llama a la función para crear el usuario
+  const response = await UserServiceInstance.createUser(dataToSend);
+
+  if (response) {
+    alert('Usuario registrado correctamente');
+    // Aquí puedes redirigir o limpiar el formulario si lo deseas
+  } else {
+    alert('Hubo un error al registrar el usuario');
+  }
+}
+
 </script>
 
 <style scoped>
@@ -160,7 +221,7 @@ import Logo_con_link from './logo_con_link.vue'
 .contenedor_terminos {
   display: flex;
   align-items: center;
-  margin: 1.5rem 0;
+  margin: 1rem 0;
   font-size: 0.9rem;
 }
 
@@ -214,6 +275,12 @@ import Logo_con_link from './logo_con_link.vue'
 
 .footer p {
   margin-top: 30px;
+}
+
+.contenedor_terminos label {
+  margin-left: 0.5rem;
+  color: #004C45;
+  text-decoration: none;
 }
 
 /* Area de Responsive */
