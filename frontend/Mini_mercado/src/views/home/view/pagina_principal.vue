@@ -54,10 +54,11 @@ import Publicidad_carousel from '../components/publicidad_carousel.vue'
 import categorias_producto from '../components/categorias_producto.vue'
 import Carta_categoria from '../components/Carta_categoria.vue'
 import { ref, onMounted } from 'vue'
-import { productService } from '@/utils/productServices'
+import { ProductService } from '@/utils/productServices'
 import { categoryService } from '@/utils/categoryServices'
 
 const categoriasConProductos = ref([])
+const productService = new ProductService()
 
 onMounted(async () => {
   // Obtener categorías y productos de la base de datos

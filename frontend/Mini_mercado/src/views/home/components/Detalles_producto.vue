@@ -3,7 +3,7 @@
     <div class="contenedor">
         <div class="producto_detalle">
             <div class="product_imagen">
-                <img :src="producto?.image || Ejemplo_png" alt="Producto_imagen">
+                <img :src="producto?.image || placeholder" alt="Producto_imagen">
             </div>
             <div class="producto_informacion">
                 <h1 class="producto_titulo">{{ producto?.name || 'Cargando...' }}</h1>
@@ -40,12 +40,14 @@ import Ejemplo_png from '@/assets/Imagenes/productos/pizza jamon.png'
 import header_general from '@/modules/header_general.vue';
 import footer_general from '@/modules/footer_general.vue';
 import Carta_producto from './Carta_producto.vue';
-import { productService } from '@/utils/productServices';
+import { ProductService } from '@/utils/productServices';
 import { categoryService } from '@/utils/categoryServices';
+import placeholder from '@/assets/Imagenes/placeholder.webp';
 
 const route = useRoute();
-
+const productService = new ProductService();
 const cantidad_producto = ref(1);
+
 
 //Para incrementar la cantidad de producto
 const incrementar = () => {
