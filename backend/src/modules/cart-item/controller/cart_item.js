@@ -2,6 +2,7 @@ import { BaseController } from "../../../controller/controller.js";
 import { cartItemModel } from "../model/cart_item.js";
 import { validateCreateCartItem } from "../validation/create.js";
 import { validateUpdateCartItem } from "../validation/update.js";
+import { validateParamsId } from "../../../helpers/params_id.js";
 
 export class CartItemController extends BaseController {
     constructor() {
@@ -31,6 +32,9 @@ export class CartItemController extends BaseController {
     getAll = async (req, res) => {
 
         const { id } = req.params;
+        const isValidId = validateParamsId({ id });
+        if (!isValidId.success) return res.status(400).json({ message: "ID de carrito inválido", error: isValidId.error.errors });
+
         const userId = req.user.user_id;
 
         try {
@@ -47,6 +51,9 @@ export class CartItemController extends BaseController {
 
         const user_id = req.user.user_id;
         const { id } = req.params;
+        const isValidId = validateParamsId({ id });
+        if (!isValidId.success) return res.status(400).json({ message: "ID de carrito inválido", error: isValidId.error.errors });
+
         const validate = this.validators?.update;
         const result = validate ? validate(req.body) : { success: true, data: req.body };
 
@@ -65,6 +72,9 @@ export class CartItemController extends BaseController {
   delete = async (req, res) => {
 
         const { id } = req.params;
+        const isValidId = validateParamsId({ id });
+        if (!isValidId.success) return res.status(400).json({ message: "ID de carrito inválido", error: isValidId.error.errors });
+
         const user_id = req.user.user_id;
 
         try {

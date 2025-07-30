@@ -1,6 +1,7 @@
 import { ModelPublicity } from "../model/publicity.js";
 import { BaseController } from "../../../controller/controller.js";
 import { isImageFile } from "../../../helpers/images.js"
+import { validateParamsId } from "../../../helpers/params_id.js";
 import { errorUploadImage } from "../../../helpers/upload_image.js"
 import { uploadImage, extractPathFromUrl, deleteFile } from "../../../utils/images.js"
 
@@ -54,6 +55,9 @@ export class PublicityController extends BaseController {
     update = async (req, res) => {
 
         const { id } = req.params;
+        const isValidId = validateParamsId({ id });
+        if (!isValidId.success) return res.status(400).json({ message: "ID de publicidad inválido", error: isValidId.error.errors });
+
         const image = req.files?.image;
 
         if (!image) return res.status(400).json({ message: "Image is required" });

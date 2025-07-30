@@ -2,6 +2,8 @@ import { BaseController } from '../../../../controller/controller.js';
 import { validateCreateUser } from "../validation/create.js"
 import { validateUpdateUser } from "../validation/update.js";
 import { validatePagination } from '../validation/get_pagination.js';
+import { validateCedula } from "../validation/get_cedula.js"
+import { validateParamsId } from "../../../../helpers/params_id.js";
 import { resolveRole } from '../helpers/roleHelper.js';
 import { ModelUserRegister } from "../model/register.js"
 import { enviroment } from '../../../../config/enviroment.js';
@@ -59,11 +61,13 @@ export class UserRegisterController extends BaseController {
 
   getCedula = async (req, res) => {
 
-    const { cedula } = req.params;
+    const result = validateCedula(req.params);
+
+    if (!result.success) return res.status(400).json({ message: "Error de validación", error: result.error.errors });
 
     try {
 
-      const data = await this.model.getCedula(cedula);
+      const data = await this.model.getCedula(result.data.cedula);
       return res.status(data.status).json({ message: data.message, data: data.data ?? null});
 
     } catch (error) {
@@ -104,6 +108,9 @@ export class UserRegisterController extends BaseController {
     }
 
     const { id } = req.params;
+    const isValidId = validateParamsId({ id });
+    if (!isValidId.success) return res.status(400).json({ message: "ID de usuario inválido", error: isValidId.error.errors });
+
     const result = this.validators.update(body);
 
     if (!result.success) return res.status(400).json({ message: "Error de validación", error: result.error.errors });
@@ -139,7 +146,7 @@ export class UserRegisterController extends BaseController {
 
       // si la actualización fue exitosa y el usuario tiene una imagen, eliminar la imagen anterior
       if (user.status === 200 && user.data?.image_perfil) {
-        const imageBeforeUpdate = user.data.image_perfil;
+        const imageBeforeUpdate = extractPathFromUrl(user.data.image_perfil);
         await deleteFile(imageBeforeUpdate, BUCKET);
       }
 
