@@ -1,7 +1,11 @@
 import { cartModel } from "../../modules/cart/model/cart.js";
+import { validateParamsId } from "../../helpers/params_id.js"
 
 export const verifyCartOwnership = async (req, res, next) => {
     const cartId = req.params.id;
+    const isValidId = validateParamsId({ id: cartId });
+    if (!isValidId.success) return res.status(400).json({ message: "ID de carrito inválido", error: isValidId.error.errors });
+
     const userId = req.user.user_id;
 
     try {
