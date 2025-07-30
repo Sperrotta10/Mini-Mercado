@@ -6,22 +6,21 @@ import { categoriaRouter } from "../../modules/category/router/category.js";
 import { productRouter } from "../../modules/product/router/product.js";
 import { cartRouter } from "../../modules/cart/router/cart.js"
 import { cartItemRouter } from "../../modules/cart-item/router/cart_item.js";
+import { publicityRouter } from "../../modules/publicity/router/publicity.js";
 
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../../docs/swagger.json' assert { type: 'json' };
 
 export const routerApiV1 = Router();
 
+// Definimos las rutas de la API v1
 routerApiV1.use("/register", registerRouter);
-routerApiV1.get('/test', (req, res) => {
-  res.json({ message: "¡Router funciona!" });
-});
-
 routerApiV1.use("/auth", authRouter);
 routerApiV1.use("/cart", cartRouter);
 routerApiV1.use("/cart-item", cartItemRouter);
 routerApiV1.use("/category", categoriaRouter);
 routerApiV1.use("/product", productRouter);
+routerApiV1.use("/publicity", publicityRouter);
 routerApiV1.use("/role", roleRouter);
 routerApiV1.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
