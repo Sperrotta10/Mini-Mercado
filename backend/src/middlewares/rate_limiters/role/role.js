@@ -1,4 +1,4 @@
-import { createRateLimiter } from "../rateLimiterFactory";
+import { createRateLimiter } from "../rateLimiterFactory.js";
 
 // Rate limiter for getting all roles
 export const getLimiter = createRateLimiter({

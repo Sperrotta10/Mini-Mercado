@@ -1,4 +1,4 @@
-import { createRateLimiter } from "../rateLimiterFactory";
+import { createRateLimiter } from "../rateLimiterFactory.js";
 
 // Rate limiter for cart operations
 export const createLimiter = createRateLimiter({

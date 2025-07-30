@@ -1,4 +1,4 @@
-import { createRateLimiter } from "../rateLimiterFactory";
+import { createRateLimiter } from "../rateLimiterFactory.js";
 
 // 🔐 Login - proteger contra ataques de fuerza bruta
 export const loginLimiter = createRateLimiter({

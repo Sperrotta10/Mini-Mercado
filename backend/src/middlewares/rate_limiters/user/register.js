@@ -1,4 +1,4 @@
-import { createRateLimiter } from "../rateLimiterFactory";
+import { createRateLimiter } from "../rateLimiterFactory.js";
 
 // Registro público
 export const publicRegisterLimiter = createRateLimiter({

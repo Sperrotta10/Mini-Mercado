@@ -1,4 +1,4 @@
-import { createRateLimiter } from "../rateLimiterFactory";
+import { createRateLimiter } from "../rateLimiterFactory.js";
 
 // Las rutas GET son más expuestas, pero se les permite más tráfico.
 export const getListLimiter = createRateLimiter({ 
