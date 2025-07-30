@@ -5,6 +5,7 @@ import { defineCartItem } from "../modules/cart-item/schemas/cart-item.js";
 import { defineProduct } from "../modules/product/schemas/product.js";
 import { defineCategory } from "../modules/category/schemas/category.js";
 import { definePasswordRecovery } from "../modules/user/auth/schemas/password_recovery.js";
+import { definePublicity } from "../modules/publicity/schemas/publicity.js";
 import { sequelize } from "../config/dataBase.js";
 import { Sequelize } from "sequelize";
 import { DataTypes } from "sequelize";
@@ -16,6 +17,7 @@ const Cart = defineCart(sequelize, DataTypes);
 const CartItem = defineCartItem(sequelize, DataTypes);
 const Product = defineProduct(sequelize, DataTypes);
 const Category = defineCategory(sequelize, DataTypes);
+const Publicity = definePublicity(sequelize, DataTypes);
 const PasswordRecovery = definePasswordRecovery(sequelize, DataTypes);
 
 // establecemos las relaciones entre las entidades
@@ -47,5 +49,6 @@ export {
     CartItem,
     Product,
     Category,
-    PasswordRecovery
+    PasswordRecovery,
+    Publicity
 };
