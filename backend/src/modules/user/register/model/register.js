@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
-import { User, Role } from "../../../../models/index.js"
+import { User, Role, Cart } from "../../../../models/index.js"
 import { enviroment } from "../../../../config/enviroment.js"
-import { deleteFile } from '../../../../utils/images.js';
 
 export class ModelUserRegister {
 
@@ -99,15 +98,33 @@ export class ModelUserRegister {
         try {
             
             const user = await User.findOne( { where : { cedula }, 
-                attributes: { exclude: ['password'] }  
+                attributes: { exclude: ['password'] },
+                include: {
+                    model: Cart,
+                    as: 'carts'
+                }
             });
 
             if(!user) return {message : "User no encontrados", status : 404};
 
-            return {message : "User obtenido", status: 200, data : user};
+            const userResponse = {
+                user_id: user.user_id,
+                cedula: user.cedula,
+                nombre_completo: user.nombre_completo,
+                email: user.email,
+                telefono: user.telefono,
+                username: user.username,
+                suscripcion: user.suscripcion,
+                status: user.status,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt,
+                carts: user.carts
+            }
+
+            return {message : "User obtenido", status: 200, data : userResponse};
 
         } catch (error) {
-            console.error("Error al obtener user");
+            console.error("Error al obtener user", error);
             throw error;
         }
     }
@@ -155,7 +172,21 @@ export class ModelUserRegister {
 
             if(!exist) return {message : "User no encontrado", status : 404};
 
-            await User.update(data, {where : { user_id }});
+            // Clonamos data para no mutar el argumento original
+            const updateData = { ...data };
+            
+            if (updateData.password) {
+                try {
+                    const salt = parseInt(enviroment.SALT, 10);
+                    updateData.password = await bcrypt.hash(updateData.password, salt);
+                } catch (error) {
+                    return { message: "Error al validar el password", status: 400, error: error.message };
+                }
+            }
+
+            const [updated] = await User.update(updateData, {where : { user_id }});
+
+            if (!updated) return {message : "User no modificado", status : 400};
 
             return {message : "User modificado", status : 200};
             

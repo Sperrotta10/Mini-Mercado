@@ -19,7 +19,7 @@ export class AuthModel {
                 }
             });
 
-            if(!user) return {message : "El email no existe", status : 401};
+            if(!user) return {message : "Credenciales inválidas", status : 401};
 
             if(!user.status) return {message : "Usuario inactivo", status : 401};
 
@@ -33,7 +33,7 @@ export class AuthModel {
                 {expiresIn : '1h'}
             )
 
-            const userReturn = { user_id : user.user_id, username : user.username, email : user.email };
+            const userReturn = { user_id : user.user_id, username : user.username, email : user.email, role : user.role.name };
             
             return {message : "Login exitoso", data : userReturn, access_token : token};
 
@@ -104,6 +104,39 @@ export class AuthModel {
         } catch (error) {
             console.error("Error al hacer resetPassword:", error.message);
             throw error;
+        }
+    }
+
+    static async auth_me(data) {
+
+        try {
+
+            const user = await User.findOne({ 
+                where: { user_id: data.user_id }, 
+                include: [
+                    {
+                        model: Role,
+                        as: 'role',
+                        attributes: ['name']
+                    }
+                ] 
+            });
+
+            if (!user) return { message: "Usuario no encontrado", status: 404 };
+
+            const userReturn = {
+                user_id: user.user_id,
+                username: user.username,
+                email: user.email,
+                role: user.role.name
+            };
+
+            return { message: "Usuario autenticado", data: userReturn, status: 200 };
+
+        } catch (error) {
+            console.error("Error al obtener los datos del usuario autenticado", error.message);
+            throw error;
+            
         }
     }
 

@@ -1,3 +1,4 @@
+import { validateParamsId } from "../helpers/params_id.js";
 
 // clase base para manejar las operaciones CRUD de un controlador
 export class BaseController {
@@ -23,9 +24,13 @@ export class BaseController {
 
     const { id } = req.params;
 
+    const result = validateParamsId({ id });
+
+    if (!result.success) return res.status(400).json({ message: "Error de validación", error: result.error.errors });
+
     try {
 
-      const data = await this.model.getId(id);
+      const data = await this.model.getId(result.data.id);
       return res.status(data.status).json({ message: data.message, data: data.data ?? null});
 
     } catch (error) {
@@ -51,6 +56,10 @@ export class BaseController {
   update = async (req, res) => {
 
     const { id } = req.params;
+
+    const resultId = validateParamsId({ id });
+    if (!resultId.success) return res.status(400).json({ message: "Error de validación", error: resultId.error.errors });
+
     const validate = this.validators?.update;
     const result = validate ? validate(req.body) : { success: true, data: req.body };
 
@@ -59,7 +68,7 @@ export class BaseController {
 
     try {
 
-      const update = await this.model.update(id, result.data);
+      const update = await this.model.update(resultId.data.id, result.data);
       return res.status(update.status).json({message : update.message, data: update.data ?? null});
 
     } catch (error) {
@@ -71,9 +80,12 @@ export class BaseController {
 
     const { id } = req.params;
 
+    const resultId = validateParamsId({ id });
+    if (!resultId.success) return res.status(400).json({ message: "Error de validación", error: resultId.error.errors });
+
     try {
 
-      const destroy = await this.model.delete(id);
+      const destroy = await this.model.delete(resultId.data.id);
       return res.status(destroy.status).json({message : destroy.message, data: destroy.data ?? null});
 
     } catch (error) {

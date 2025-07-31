@@ -1,19 +1,27 @@
 import { Category } from '../../models/index.js';
 
+const imageCategory = {
+  imgLacteos: "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/category-images/category/1753574219176_lacteos.jpg",
+  imgFrutasVerduras: "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/category-images/category/1753574319538_frutas_y_verduras.webp",
+  imgCarniceria: "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/category-images/category/1753574403116_carne.jpg",
+  imgAbarrotes: "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/category-images/category/1753574446080_abarrotes.jpg",
+  imgBebidas: "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/category-images/category/1753574471691_refresco.jpg",
+  imgSnacksDulces: "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/category-images/category/1753574496351_chucheria.jpg",
+  imgLimpieza: "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/category-images/category/1753581692754_limpieza2.jpg"
+}
+
 export async function seedCategories() {
-  const categories = [
-    {name:'Lácteos',image:"https://infoalimentos.org.ar/images/temas/el_rol_del_consumidor/TEMAS_lacteos_interna_horiz_840x410.jpg"},
-    {name:'Frutas y Verduras',image:"https://mejorconsalud.as.com/wp-content/uploads/2021/04/frutas-verduras-colores.jpg"},
-    {name:'Carnicería',image:"https://agroproyectos.org/wp-content/uploads/2022/12/carniceria-negocio.jpg"},
-    {name:"Abarrotes",image:"https://i.pinimg.com/736x/28/8d/5b/288d5bd82a0c1a15b7aa14f0b685cfbf.jpg"},
-    {name:"Bebidas",image:"https://cursosmultimedia.es/wp-content/uploads/2021/03/las-bebidas-portada.jpg"},
-    {name:"Snacks y Dulces",image:"https://i.pinimg.com/736x/2e/1c/14/2e1c14ee2f47d84f285c267470033b2f.jpg"},
-    {name:"Limpieza",image:"https://cdn.shopify.com/s/files/1/0009/2304/1844/files/Cleaning_products_with_wook_background_1024x1024.png?v=1632247524"}
-];
-  for (const categoryData of categories) { 
-    await Category.findOrCreate({
-      where: { name: categoryData.name }, 
-      defaults: categoryData 
-    });
+
+  try {
+    const categories = [{ name : 'Lácteos', image : imageCategory.imgLacteos}, { name : 'Frutas y Verduras', image : imageCategory.imgFrutasVerduras}, { name : 'Carnicería', image : imageCategory.imgCarniceria}, { name : 'Abarrotes', image : imageCategory.imgAbarrotes}, { name : 'Bebidas', image : imageCategory.imgBebidas}, { name : 'Snacks y Dulces', image : imageCategory.imgSnacksDulces}, { name : 'Limpieza', image : imageCategory.imgLimpieza}];
+    for (const { name, image } of categories) {
+      await Category.findOrCreate({ where: { name }, defaults: { image } });
+    }
+
+    console.log("✅ Categorías seed cargadas correctamente.");
+  } catch (error) {
+    console.error("Error seeding categories:", error);
+    throw error;
+    
   }
 }

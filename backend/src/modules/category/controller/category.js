@@ -1,6 +1,7 @@
 import { BaseController } from "../../../controller/controller.js"
 import { validateCreateCategory } from "../validation/create.js"
 import { validateUpdateCategory } from "../validation/update.js"
+import { validateParamsId } from "../../../helpers/params_id.js"
 import { isImageFile } from "../../../helpers/images.js"
 import { errorUploadImage } from "../../../helpers/upload_image.js"
 import { uploadImage, extractPathFromUrl, deleteFile } from "../../../utils/images.js"
@@ -59,6 +60,9 @@ export class CategoryController extends BaseController {
   update = async (req, res) => {
 
     const { id } = req.params;
+    const isValidId = validateParamsId({ id });
+    if (!isValidId.success) return res.status(400).json({ message: "ID de categoría inválido", error: isValidId.error.errors });
+
     const image = req.files?.image;
     const body = req.body || {};
 

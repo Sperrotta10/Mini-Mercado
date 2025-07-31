@@ -3,6 +3,7 @@ import { validateCreateProduct } from "../validation/create.js"
 import { validateCreateAllProduct } from "../validation/create_all.js"
 import { validateUpdateProduct } from "../validation/update.js"
 import { validatePagination } from "../validation/get_pagination.js"
+import { validateParamsId } from "../../../helpers/params_id.js"
 import { isImageFile } from "../../../helpers/images.js"
 import { errorUploadImage } from "../../../helpers/upload_image.js"
 import { uploadImage, deleteFile, extractPathFromUrl } from "../../../utils/images.js"
@@ -113,6 +114,9 @@ export class ProductController extends BaseController {
 
         const { rol } = req.user;
         const { id } = req.params;
+        const isValidId = validateParamsId({ id });
+        if (!isValidId.success) return res.status(400).json({ message: "ID de producto inválido", error: isValidId.error.errors });
+
         const result = this.validators.update(body);
 
         if (!result.success) return res.status(400).json({ message: "Error de validación", error: result.error.errors });
