@@ -21,33 +21,9 @@ export class cartModel {
 
             const activeCarts = user.carts || [];
 
-            // Si no tiene suscripción, limitamos a 3 carritos activos
-            if (user.suscripcion === false) {
-
-                // Desactivamos carritos excedentes si existen
-                if (activeCarts.length >= 3) {
-                    // Ordenamos por fecha de creación (por ejemplo)
-                    activeCarts.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-                    const cartsToDeactivate = activeCarts.slice(3); // dejamos los 3 primeros activos
-
-                    for (const cart of cartsToDeactivate) {
-                        cart.status = false;
-                        await cart.save();
-                    }
-                }
-
-                // Recontamos después de desactivar para saber si puede crear otro
-                const updatedCarts = await Cart.findAll({
-                    where: {
-                        user_id: cartData.user_id,
-                        status: true
-                    }
-                });
-
-                if (updatedCarts.length >= 3) {
-                    return { message: "Límite de carritos alcanzado", status: 403 };
-                }
+            // Si el usuario no tiene suscripción activa (free), limitar a 3 carritos activos
+            if (user.suscripcion === false && activeCarts.length >= 3) {
+                return { message: "Límite de carritos alcanzado para usuarios free", status: 403 };
             }
 
             const cart = await Cart.create(cartData);
