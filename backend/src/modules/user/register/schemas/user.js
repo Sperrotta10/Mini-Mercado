@@ -52,6 +52,14 @@ export function defineUser(sequelize, DataTypes){
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
+        subscription_started_at: {
+            type: DataTypes.DATE,
+            allowNull: true
+        },
+        subscription_expires_at: {
+            type: DataTypes.DATE,
+            allowNull: true
+        },
         image_perfil: {
             type: DataTypes.STRING,
             allowNull: true
