@@ -3,6 +3,7 @@ import { validateEmail } from "../validation/email.js";
 import { validateResetPasswordData } from "../validation/reset_password.js";
 import { AuthModel } from '../model/auth.js';
 import { enviroment } from '../../../../config/enviroment.js';
+import jwt from 'jsonwebtoken';
 
 export class AuthController {
 
@@ -106,6 +107,24 @@ export class AuthController {
 
         } catch (error) {
             return res.status(500).json({ message: "Error interno del servidor", error: error.message });
+        }
+    }
+
+    static async auth_me(req, res) {
+
+        const user = req.user;
+        if (!user) return res.status(401).json({ message: "Usuario no autenticado" });
+
+        try {
+            const userExists = await AuthModel.auth_me(user);
+
+            if (userExists.status !== 200) return res.status(404).json({ message: "Usuario no encontrado" });
+
+            return res.status(userExists.status).json({ message: userExists.message, data: userExists.data });
+
+        } catch (error) {
+            return res.status(500).json({ message: "Error interno del servidor", error: error.message });
+
         }
     }
 }

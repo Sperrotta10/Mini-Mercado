@@ -15,10 +15,12 @@ authRouter.get('/google', googleRedirectLimiter,
 
 authRouter.get('/google/callback', googleCallbackLimiter,
   passport.authenticate('google', { 
-    failureRedirect: '/login',
-    successRedirect: 'http://localhost:3000/' // Redirige al frontend
+    failureRedirect: 'http://localhost:3000', // Redirige a la página de login
+    successRedirect: 'http://localhost:3000' // Redirige a la página principal
   })
 );
+
+authRouter.get('/me', authenticateHybrid, AuthController.auth_me);
 
 authRouter.post('/logout', authenticateHybrid, logoutLimiter, AuthController.logout);
 authRouter.post('/google/logout', authenticateHybrid, logoutLimiter, AuthController.googleLogout);
