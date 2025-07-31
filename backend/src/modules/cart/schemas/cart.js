@@ -15,6 +15,10 @@ export function defineCart(sequelize, DataTypes) {
                 key: 'user_id'
             }
         },
+        status: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
+        },
         name : {
             type: DataTypes.STRING,
             allowNull: false
