@@ -1,4 +1,4 @@
-import { Cart } from "../../../models/index.js"
+import { Cart, User } from "../../../models/index.js"
 
 export class cartModel {
 
@@ -6,6 +6,50 @@ export class cartModel {
     static async create(cartData) {
         
         try {
+
+            const user = await User.findOne({ 
+                where: { user_id: cartData.user_id },
+                include: { 
+                    model: Cart,
+                    as: 'carts',
+                    where: { status: true },
+                    required: false // Permite que el usuario se devuelva incluso si no tiene carritos
+                }
+            });
+
+            if (!user) return { message: "Usuario no encontrado", status: 404 };
+
+            const activeCarts = user.carts || [];
+
+            // Si no tiene suscripción, limitamos a 3 carritos activos
+            if (user.suscripcion === false) {
+
+                // Desactivamos carritos excedentes si existen
+                if (activeCarts.length >= 3) {
+                    // Ordenamos por fecha de creación (por ejemplo)
+                    activeCarts.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+                    const cartsToDeactivate = activeCarts.slice(3); // dejamos los 3 primeros activos
+
+                    for (const cart of cartsToDeactivate) {
+                        cart.status = false;
+                        await cart.save();
+                    }
+                }
+
+                // Recontamos después de desactivar para saber si puede crear otro
+                const updatedCarts = await Cart.findAll({
+                    where: {
+                        user_id: cartData.user_id,
+                        status: true
+                    }
+                });
+
+                if (updatedCarts.length >= 3) {
+                    return { message: "Límite de carritos alcanzado", status: 403 };
+                }
+            }
+
             const cart = await Cart.create(cartData);
             return { message: "Carrito creado", data: cart, status: 201 };
         } catch (error) {
@@ -47,7 +91,7 @@ export class cartModel {
     static async update(cartId, cartData) {
         
         try {
-            const cart = await Cart.findByPk(cartId);
+            const cart = await Cart.findOne({ where: { id: cartId, status: true } });
             if (!cart) {
                 return { message: "Carrito no encontrado", status: 404 };
             }

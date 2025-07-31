@@ -9,7 +9,7 @@ export class cartItemModel {
             const { cart_id, product_id } = cartItemData;
 
             const cartExists = await Cart.findOne({
-                where: { cart_id: cart_id, user_id: user_id },
+                where: { cart_id: cart_id, user_id: user_id, status: true },
             });
 
             if (!cartExists) return { message: "Carrito no encontrado", status: 404 };
@@ -30,7 +30,12 @@ export class cartItemModel {
     static async getId(itemId) {
         try {
             const cartItem = await CartItem.findByPk(itemId, {
-                include: [{ model: Cart, as: 'cart' }]
+                include: [{ 
+                    model: Cart, 
+                    as: 'cart',
+                    required: true, // Asegura que el carrito exista
+                    where: { status: true } // Solo carritos activos
+                }]
             });
             if (!cartItem) {
                 return { message: "Item de carrito no encontrado", status: 404 };
@@ -48,7 +53,18 @@ export class cartItemModel {
         try {
             const cartItems = await CartItem.findAll({
                 where: { cart_id: cartId },
-                include: [{ model: Cart, as: 'cart', where: { user_id } }, { model: Product, as: 'product' }],
+                include: [
+                    { 
+                        model: Cart, 
+                        as: 'cart', 
+                        required: true,
+                        where: { user_id, status: true } 
+                    }, 
+                    { 
+                        model: Product, 
+                        as: 'product' 
+                    }
+                ],
             });
 
             if (cartItems.length === 0) {
@@ -71,7 +87,8 @@ export class cartItemModel {
                 include: {
                     model: Cart,
                     as: "cart",
-                    where: { user_id },
+                    required: true,
+                    where: { user_id, status: true },
                 },
             });
 
@@ -96,7 +113,8 @@ export class cartItemModel {
                 include: {
                     model: Cart,
                     as: "cart",
-                    where: { user_id },
+                    required: true,
+                    where: { user_id, status: true },
                 },
             });
             
