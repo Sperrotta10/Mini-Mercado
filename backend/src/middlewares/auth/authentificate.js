@@ -17,6 +17,13 @@ export function authenticateHybrid(req, res, next) {
 
   // Verificar sesión de Passport
   if (req.isAuthenticated && req.isAuthenticated()) {
+    const { user_id, username, email, rol_id } = req.user;
+    req.user = {
+      user_id,
+      username,
+      email,
+      rol: rol_id
+    };
     return next();
   }
 

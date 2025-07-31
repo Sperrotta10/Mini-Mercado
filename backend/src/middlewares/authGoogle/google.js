@@ -10,21 +10,37 @@ export const setupGoogleAuth = (passport) => {
         scope: ['profile', 'email'] // Añade email para obtener el correo
         },
         async (accessToken, refreshToken, profile, done) => {
-        try {
-            const [user, created] = await User.findOrCreate({
-            where: { googleId: profile.id },
-            defaults: {
-                googleId: profile.id,
-                email: profile.emails[0].value,
-                username: profile.displayName,
-                rol_id : enviroment.ROLE_DEFAULT
+            try {
+                // Busca si ya existe un usuario con el googleId
+                let user = await User.findOne({ where: { googleId: profile.id } });
+                
+                if (!user) {
+                    // No existe usuario con googleId, buscamos por email
+                    user = await User.findOne({ where: { email: profile.emails[0].value } });
+
+                    if (user) {
+                        // Existe usuario con email, actualizamos googleId
+                        user.googleId = profile.id;
+                        await user.save();
+                    } else {
+                        // No existe usuario con googleId ni email, creamos uno nuevo
+                        user = await User.create({
+                            googleId: profile.id,
+                            email: profile.emails[0].value,
+                            username: profile.displayName,
+                            rol_id: enviroment.ROLE_DEFAULT
+                        });
+                    }
+                }
+
+                return done(null, user);
+
+            } catch (error) {
+                console.error("Error al autenticar con Google:", error);
+                return done(error, null);
             }
-            });
-            return done(null, user);
-        } catch (error) {
-            return done(error, null);
         }
-        }
+
     ));
 
     passport.serializeUser((user, done) => {
