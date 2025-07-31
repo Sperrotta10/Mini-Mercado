@@ -104,6 +104,9 @@ export class PublicityController extends BaseController {
             res.status(updatedPublicity.status).json({ message: updatedPublicity.message, data: updatedPublicity.data });
 
         } catch (error) {
+
+            // If an error occurs, revert the image upload
+            await errorUploadImage(filePath, BUCKET);
             res.status(500).json({ message: error.message });
         }
     }
