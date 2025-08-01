@@ -15,12 +15,6 @@ export function defineRole(sequelize, DataTypes) {
     }, {
         timestamps: true,
         tableName: "roles",
-        indexes : [
-            {
-                unique: true,
-                fields: ['name']
-            }
-        ]
     });
 
     return Role;

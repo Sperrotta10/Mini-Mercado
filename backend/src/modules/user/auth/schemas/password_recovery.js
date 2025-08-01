@@ -35,12 +35,6 @@ export function definePasswordRecovery(sequelize, DataTypes) {
     }, {
         tableName: 'password_recovery',
         timestamps: false,
-        indexes: [
-            {
-                unique: true,
-                fields: ['token']
-            }
-        ]
     });
 
     return PasswordRecovery;

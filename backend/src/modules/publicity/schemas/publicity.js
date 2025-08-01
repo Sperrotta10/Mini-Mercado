@@ -10,6 +10,8 @@ export function definePublicity(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false
         }
+    }, {
+        tableName: 'publicities',
     });
 
     return Publicity;
