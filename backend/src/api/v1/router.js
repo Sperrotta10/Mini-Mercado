@@ -13,7 +13,7 @@ import { authenticateHybrid } from "../../middlewares/auth/authentificate.js";
 import { authorizeRoles } from "../../middlewares/auth/authRole.js";
 
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from '../../docs/swagger.json' assert { type: 'json' };
+import swaggerDocument from '../../docs/swagger.json' with { type: 'json' };
 
 export const routerApiV1 = Router();
 

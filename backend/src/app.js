@@ -1,8 +1,8 @@
 import { enviroment } from './config/enviroment.js';
 import { sequelize } from './config/dataBase.js';
 import { createServer } from './config/server.js';
-import { seedRoles } from './seeders/auto-seeding/seed-roles.js';
-import { seedCategories } from './seeders/auto-seeding/seed-categorias.js';
+//import { seedRoles } from './seeders/auto-seeding/seed-roles.js';
+//import { seedCategories } from './seeders/auto-seeding/seed-categorias.js';
 import './models/index.js';
 
 
@@ -16,15 +16,20 @@ async function startApp() {
     
     // Initialize database connection
     await sequelize.authenticate();
+    
+    /*
     if (enviroment.SECURE_DB === 'development') {
-      await sequelize.sync({ alter: true });
+      await sequelize.sync({ force: true });
       console.log("================================================");
       console.log("✅ Tables created successfully.");
     }
+    */
 
+    /*
     // Seed initial data
     await seedRoles();
     await seedCategories();
+    */
 
     // Start the server
     app.listen(PORT, () => {
