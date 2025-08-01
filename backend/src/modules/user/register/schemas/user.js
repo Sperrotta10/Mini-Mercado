@@ -71,28 +71,6 @@ export function defineUser(sequelize, DataTypes){
     }, {
         timestamps: true,
         tableName: "users",
-        indexes: [
-            {
-                unique: true,
-                fields: ['email'],
-                name: 'idx_user_email_unique'
-            },
-            {
-                unique: true,
-                fields: ['username'],
-                name: 'idx_user_username_unique'
-            },
-            {
-                unique: true,
-                fields: ['cedula'],
-                name: 'idx_user_cedula_unique'
-            },
-            {
-                unique: true,
-                fields: ['googleId'],
-                name: 'idx_user_googleId_unique'
-            }
-        ]
     });
 
     return User;

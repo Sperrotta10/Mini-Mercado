@@ -14,7 +14,7 @@ registerRouter.post('/admin-create', authenticateHybrid, authorizeRoles('admin')
 registerRouter.get('/', authenticateHybrid, authorizeRoles('admin'), adminGetLimiter, controller.getAll);
 registerRouter.get('/cedula/:cedula', authenticateHybrid, authorizeRoles('admin', 'empleado'), cedulaLimiter, controller.getCedula);
 registerRouter.get('/empleado/pagination', authenticateHybrid, authorizeRoles('admin'), paginationLimiter, controller.getPaginationEmpleado);
-registerRouter.get('/:id', authenticateHybrid, authorizeRoles('admin'), getIdLimiter, controller.getId);
+registerRouter.get('/:id', authenticateHybrid, authorizeRoles('admin', 'cliente'), verifyUserOwnership, getIdLimiter, controller.getId);
 registerRouter.patch('/:id', authenticateHybrid, authorizeRoles('admin', 'empleado', 'cliente'), updateLimiter, verifyUserOwnership, controller.update);
 registerRouter.delete('/:id', authenticateHybrid, authorizeRoles('admin', 'cliente'), deleteLimiter, verifyUserOwnership, controller.delete);
 
