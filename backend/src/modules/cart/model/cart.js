@@ -67,7 +67,7 @@ export class cartModel {
     static async update(cartId, cartData) {
         
         try {
-            const cart = await Cart.findOne({ where: { id: cartId, status: true } });
+            const cart = await Cart.findOne({ where: { cart_id: cartId, status: true } });
             if (!cart) {
                 return { message: "Carrito no encontrado", status: 404 };
             }

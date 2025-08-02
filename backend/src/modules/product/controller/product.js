@@ -70,7 +70,7 @@ export class ProductController extends BaseController {
 
     getPaginatedWithFilters = async (req, res) => {
         
-        const { rol } = req.user;
+        const { rol } = req.user || {};
         const result = validatePagination(req.query);
 
         if (!result.success) return res.status(400).json({ message: "Error de validación", error: result.error.errors });
@@ -112,7 +112,7 @@ export class ProductController extends BaseController {
             if (!resultImage.success) return res.status(resultImage.status).json({ message: resultImage.message });
         }
 
-        const { rol } = req.user;
+        const { rol } = req.user || {};
         const { id } = req.params;
         const isValidId = validateParamsId({ id });
         if (!isValidId.success) return res.status(400).json({ message: "ID de producto inválido", error: isValidId.error.errors });
