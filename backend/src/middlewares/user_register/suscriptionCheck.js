@@ -10,6 +10,7 @@ export const updateSubscriptionStatus = async (req, res, next) => {
             include: {
                 model: Cart,
                 as: 'carts',
+                required: false, // Permite que el usuario se devuelva incluso si no tiene carritos
                 where: { status: true },
             }
         });
@@ -18,7 +19,7 @@ export const updateSubscriptionStatus = async (req, res, next) => {
 
         const now = new Date();
 
-        if (userExists.suscripcion && userExists.subscription_expires_at && new Date(userExists.subscription_expires_at) <= now) {
+        if (userExists.suscripcion === false && userExists.subscription_expires_at && new Date(userExists.subscription_expires_at) <= now) {
 
             // Si la suscripción ha expirado, actualizamos el estado
             await User.update({
@@ -43,7 +44,7 @@ export const updateSubscriptionStatus = async (req, res, next) => {
 
                 await Cart.update(
                     { status: false },
-                    { where: { id: cartsToDeactivate.map(c => c.id) } }
+                    { where: { cart_id: cartsToDeactivate.map(c => c.cart_id) } }
                 );
 
                 console.log(`Suscripción expirada para ${userExists.email}. ${cartsToDeactivate.length} carritos desactivados.`);
