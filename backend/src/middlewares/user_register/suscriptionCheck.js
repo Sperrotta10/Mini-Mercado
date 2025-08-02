@@ -1,62 +1,43 @@
 import { User, Cart } from "../../models/index.js";
+import { updateCartSubscription } from "../../utils/updateCartSuscription.js"
 
 export const updateSubscriptionStatus = async (req, res, next) => {
   
     try {
         const userId = req.user.user_id;
-
-        const userExists = await User.findOne({ 
-            where: { user_id: userId },
-            include: {
-                model: Cart,
-                as: 'carts',
-                required: false, // Permite que el usuario se devuelva incluso si no tiene carritos
-                where: { status: true },
-            }
-        });
-
-        if (!userExists) return res.status(404).json({ message: "Usuario no encontrado" });
-
         const now = new Date();
 
-        if (userExists.suscripcion === false && userExists.subscription_expires_at && new Date(userExists.subscription_expires_at) <= now) {
+        // Obtener usuario con TODOS los carritos (activos y desactivados)
+        const user = await User.findOne({ where: { user_id: userId } });
 
-            // Si la suscripción ha expirado, actualizamos el estado
+        if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+        const expired = user.subscription_expires_at && new Date(user.subscription_expires_at) <= now;
+
+        // 🟥 CASO 1: La suscripción expiró → pasar a free
+        if (user.suscripcion === false && expired) {
             await User.update({
                 suscripcion: false,
                 subscription_expires_at: null,
                 subscription_started_at: null,
             }, {
-                where: {
-                    user_id: userId
-                }
+                where: { user_id: userId }
             });
 
-            const activeCarts = userExists.carts || [];
-
-            // Si no tiene suscripción, limitamos a 3 carritos activo
-            // Desactivamos carritos excedentes si existen
-            if (activeCarts.length >= 3) {
-
-                // Ordenamos por fecha de creación (por ejemplo)
-                const sorted = [...activeCarts].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-                const cartsToDeactivate = sorted.slice(3);
-
-                await Cart.update(
-                    { status: false },
-                    { where: { cart_id: cartsToDeactivate.map(c => c.cart_id) } }
-                );
-
-                console.log(`Suscripción expirada para ${userExists.email}. ${cartsToDeactivate.length} carritos desactivados.`);
-            } else {
-                console.log(`Suscripción expirada para ${userExists.email}. No había carritos excedentes.`);
-            }
-
+            await updateCartSubscription(user, 'free');
         }
+
+        /*
+        // 🟩 CASO 2: El usuario renovó a premium y aún no reactivó sus carritos
+        if (user.suscripcion === true && !expired) {
+            // Reactivar hasta 15 carritos si están desactivados
+            await updateCartSubscription(user, 'premium');
+        }
+        */
 
         next();
     } catch (error) {
         console.error("Error al actualizar la suscripción:", error);
-        next(); // Siempre continuar, incluso si hay error, para no bloquear al usuario
+        next(); // Continuar la ejecución a pesar del error
     }
 };
