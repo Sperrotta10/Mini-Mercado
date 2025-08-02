@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { User, Role, Cart } from "../../../../models/index.js"
 import { enviroment } from "../../../../config/enviroment.js"
+import { updateCartSubscription } from "../../../../utils/updateCartSuscription.js"
 
 export class ModelUserRegister {
 
@@ -182,6 +183,31 @@ export class ModelUserRegister {
                 } catch (error) {
                     return { message: "Error al validar el password", status: 400, error: error.message };
                 }
+            }
+
+            // Si la suscripción se activa, establecemos la fecha actual
+            const now = new Date();
+
+            // 🟩 SUSCRIPCIÓN ACTIVADA O RENOVADA
+            if (updateData.suscripcion === true) {
+                const startedAt = now;
+                const expiresAt = new Date();
+                expiresAt.setMonth(now.getMonth() + 1);
+
+                updateData.subscription_started_at = startedAt;
+                updateData.subscription_expires_at = expiresAt;
+
+                // Reactivar carritos si es premium
+                await updateCartSubscription(exist, 'premium');
+            }
+
+            // 🟥 SUSCRIPCIÓN CANCELADA O EXPIRADA
+            if (updateData.suscripcion === false) {
+                updateData.subscription_started_at = null;
+                updateData.subscription_expires_at = null;
+
+                // Desactivar carritos si es free
+                await updateCartSubscription(exist, 'free');
             }
 
             const [updated] = await User.update(updateData, {where : { user_id }});

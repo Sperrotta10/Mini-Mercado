@@ -26,6 +26,11 @@ export class cartModel {
                 return { message: "Límite de carritos alcanzado para usuarios free", status: 403 };
             }
 
+            // Si el usuario tiene suscripción premium, limitar a 15 carritos activos
+            if (user.suscripcion === true && activeCarts.length >= 15) {
+                return { message: "Límite de carritos alcanzado para usuarios premium", status: 403 };
+            }
+
             const cart = await Cart.create(cartData);
             return { message: "Carrito creado", data: cart, status: 201 };
         } catch (error) {
