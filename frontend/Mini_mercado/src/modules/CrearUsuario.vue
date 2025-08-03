@@ -54,7 +54,7 @@ import Logo_con_link from './logo_con_link.vue'
 
 import { ref } from 'vue'
 import { UserService } from '../utils/userServices.js'
-
+import { useRouter } from 'vue-router'
 const RegisterForm = ref(null)
 const terminosAceptados = ref(false) 
 const UserServiceInstance = new UserService()
@@ -69,6 +69,7 @@ const registerData = ref({
   confirmPassword: ''
 })
 
+const router = useRouter()
 
 
 const email_rules = ref([
@@ -116,6 +117,7 @@ const onSubmit = async () => {
 
   if (response) {
     alert('Usuario registrado correctamente');
+    router.push('/login'); // Redirige al usuario a la página de inicio de sesión
     // Aquí puedes redirigir o limpiar el formulario si lo deseas
   } else {
     alert('Hubo un error al registrar el usuario');
