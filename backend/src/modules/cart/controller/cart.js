@@ -15,6 +15,8 @@ export class CartController extends BaseController {
     create = async (req, res) => {
         const validate = this.validators?.create;
         const result = validate ? validate(req.body) : { success: true, data: req.body };
+        console.log("user_id:", req.user.user_id);
+        const userId = req.user.user_id;
 
         if (!result.success)
         return res.status(400).json({ message: "Error de validación", error: result.error.errors });
@@ -23,7 +25,7 @@ export class CartController extends BaseController {
 
             const cartData = {
                 ...result.data,
-                user_id: req.user.user_id
+                user_id: userId
             };
 
             const created = await this.model.create(cartData);

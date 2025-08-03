@@ -21,33 +21,14 @@ export class cartModel {
 
             const activeCarts = user.carts || [];
 
-            // Si no tiene suscripción, limitamos a 3 carritos activos
-            if (user.suscripcion === false) {
+            // Si el usuario no tiene suscripción activa (free), limitar a 3 carritos activos
+            if (user.suscripcion === false && activeCarts.length >= 3) {
+                return { message: "Límite de carritos alcanzado para usuarios free", status: 403 };
+            }
 
-                // Desactivamos carritos excedentes si existen
-                if (activeCarts.length >= 3) {
-                    // Ordenamos por fecha de creación (por ejemplo)
-                    activeCarts.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-                    const cartsToDeactivate = activeCarts.slice(3); // dejamos los 3 primeros activos
-
-                    for (const cart of cartsToDeactivate) {
-                        cart.status = false;
-                        await cart.save();
-                    }
-                }
-
-                // Recontamos después de desactivar para saber si puede crear otro
-                const updatedCarts = await Cart.findAll({
-                    where: {
-                        user_id: cartData.user_id,
-                        status: true
-                    }
-                });
-
-                if (updatedCarts.length >= 3) {
-                    return { message: "Límite de carritos alcanzado", status: 403 };
-                }
+            // Si el usuario tiene suscripción premium, limitar a 15 carritos activos
+            if (user.suscripcion === true && activeCarts.length >= 15) {
+                return { message: "Límite de carritos alcanzado para usuarios premium", status: 403 };
             }
 
             const cart = await Cart.create(cartData);
@@ -91,7 +72,7 @@ export class cartModel {
     static async update(cartId, cartData) {
         
         try {
-            const cart = await Cart.findOne({ where: { id: cartId, status: true } });
+            const cart = await Cart.findOne({ where: { cart_id: cartId, status: true } });
             if (!cart) {
                 return { message: "Carrito no encontrado", status: 404 };
             }

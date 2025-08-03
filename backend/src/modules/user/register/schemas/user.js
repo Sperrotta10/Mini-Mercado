@@ -52,6 +52,14 @@ export function defineUser(sequelize, DataTypes){
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
+        subscription_started_at: {
+            type: DataTypes.DATE,
+            allowNull: true
+        },
+        subscription_expires_at: {
+            type: DataTypes.DATE,
+            allowNull: true
+        },
         image_perfil: {
             type: DataTypes.STRING,
             allowNull: true
@@ -63,28 +71,6 @@ export function defineUser(sequelize, DataTypes){
     }, {
         timestamps: true,
         tableName: "users",
-        indexes: [
-            {
-                unique: true,
-                fields: ['email'],
-                name: 'idx_user_email_unique'
-            },
-            {
-                unique: true,
-                fields: ['username'],
-                name: 'idx_user_username_unique'
-            },
-            {
-                unique: true,
-                fields: ['cedula'],
-                name: 'idx_user_cedula_unique'
-            },
-            {
-                unique: true,
-                fields: ['googleId'],
-                name: 'idx_user_googleId_unique'
-            }
-        ]
     });
 
     return User;

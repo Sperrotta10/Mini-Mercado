@@ -36,6 +36,14 @@ const updateUser = zod.object({
         if (val === 'false' || val === '0') return false;
         return undefined;
     }, zod.boolean().optional()),
+    subscription_started_at: zod.preprocess(
+      (val) => (typeof val === "string" ? new Date(val) : val),
+      zod.date().optional()
+    ),
+    subscription_expires_at: zod.preprocess(
+      (val) => (typeof val === "string" ? new Date(val) : val),
+      zod.date().optional()
+    ),
     status: zod.preprocess((val) => {
         if (val === 'true' || val === '1') return true;
         if (val === 'false' || val === '0') return false;

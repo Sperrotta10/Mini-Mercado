@@ -48,17 +48,6 @@ export function defineProduct(sequelize, DataTypes) {
     }, {
         timestamps: true,
         tableName: "products",
-        indexes: [
-            {
-                fields: ['name'] 
-            },
-            {
-                fields: ['price'] 
-            },
-            {
-                fields: ['categoria_id'] 
-            }
-        ]
     });
 
     return Product;

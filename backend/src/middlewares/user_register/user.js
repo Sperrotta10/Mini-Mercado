@@ -6,8 +6,9 @@ export const verifyUserOwnership = async (req, res, next) => {
     if (!isValidId.success) return res.status(400).json({ message: "ID de usuario inválido", error: isValidId.error.errors });
     
     const currentUserId = req.user.user_id;
+    const isAdmin = req.user.rol === 'admin';
 
-    if (userId !== currentUserId) {
+    if (Number(userId) !== Number(currentUserId) && !isAdmin) {
         return res.status(403).json({ message: "No tienes permiso para acceder a este usuario" });
     }
 

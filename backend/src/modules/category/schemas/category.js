@@ -19,12 +19,6 @@ export function defineCategory(sequelize, DataTypes) {
     }, {
         timestamps: true,
         tableName: "categories",
-        indexes: [
-            {
-                unique: true,
-                fields: ['name'] 
-            }
-        ]
     });
 
     return Category;

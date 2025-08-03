@@ -8,16 +8,20 @@ import { cartRouter } from "../../modules/cart/router/cart.js"
 import { cartItemRouter } from "../../modules/cart-item/router/cart_item.js";
 import { publicityRouter } from "../../modules/publicity/router/publicity.js";
 
+import { updateSubscriptionStatus } from "../../middlewares/user_register/suscriptionCheck.js";
+import { authenticateHybrid } from "../../middlewares/auth/authentificate.js";
+import { authorizeRoles } from "../../middlewares/auth/authRole.js";
+
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from '../../docs/swagger.json' assert { type: 'json' };
+import swaggerDocument from '../../docs/swagger.json' with { type: 'json' };
 
 export const routerApiV1 = Router();
 
 // Definimos las rutas de la API v1
 routerApiV1.use("/register", registerRouter);
 routerApiV1.use("/auth", authRouter);
-routerApiV1.use("/cart", cartRouter);
-routerApiV1.use("/cart-item", cartItemRouter);
+routerApiV1.use("/cart", authenticateHybrid, authorizeRoles('cliente'), updateSubscriptionStatus, cartRouter);
+routerApiV1.use("/cart-item", authenticateHybrid, authorizeRoles('cliente'), updateSubscriptionStatus, cartItemRouter);
 routerApiV1.use("/category", categoriaRouter);
 routerApiV1.use("/product", productRouter);
 routerApiV1.use("/publicity", publicityRouter);
