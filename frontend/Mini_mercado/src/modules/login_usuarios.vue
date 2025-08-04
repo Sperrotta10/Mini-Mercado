@@ -7,18 +7,33 @@
     <main class="main_contenido">
       <div class="contenido_login">
         <div class='login-wrapper'>
-          <form action=''>
+          <v-form ref="LoginForm" @submit.prevent="onLogin">
             <h2>Login</h2>
             <div class="contenedor_input">
-              <input type="text" placeholder='Nombre de Usuario' required />
+              <v-text-field
+                v-model="loginData.email"
+                :rules="email_rules"
+                placeholder="Correo Electrónico"
+                required
+                prepend-icon="mdi-account"
+                autocomplete="username"
+              />
             </div>
             <div class="contenedor_input">
-              <input type="password" placeholder='Contraseña' required />
+              <v-text-field
+                v-model="loginData.password"
+                :rules="password_rules"
+                placeholder="Contraseña"
+                type="password"
+                required
+                prepend-icon="mdi-lock"
+                autocomplete="current-password"
+              />
             </div>
 
             <div class="contenido_links">
-              <RouterLink to="/crear_usuario">¡Crear nuevo usuario!</RouterLink>
-              <a href="#">¿Se olvidó la contraseña?</a>
+              <RouterLink to="/crear_usuario">Regístrese ahora</RouterLink>
+              <a href="#">¿Olvidó su contraseña?</a>
             </div>
 
             <div class="contenido_mostra_otro_acceso">
@@ -27,15 +42,15 @@
               <div class="linea_separado"></div>
             </div>
 
-            <button class="contenido_extra_acceso">
+            <v-btn class="contenido_extra_acceso" color="white" @click="loginWithGoogle">
               <div class="contenedor_imagen">
                 <img :src="Icon_google" alt="icon">
               </div>
-              <p>Google</p>
-            </button>
+              <span>Google</span>
+            </v-btn>
 
-            <button type='submit' class="btn">Entrar</button>
-          </form>
+            <v-btn type="submit" class="btn">Entrar</v-btn>
+          </v-form>
         </div>
       </div>
     </main>
@@ -47,8 +62,67 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import Logo_con_link from './logo_con_link.vue'
 import Icon_google from '@/assets/Imagenes/google.png'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/Auth.js'
+import Swal from 'sweetalert2'
+
+const router = useRouter()
+const loginData = ref({
+  email: '',
+  password: ''
+})
+const LoginForm = ref(null)
+const AuthStore = useAuthStore()
+
+const email_rules = [
+  v => !!v || 'El correo electrónico es requerido',
+  v => /.+@.+\..+/.test(v) || 'El correo electrónico debe ser válido'
+]
+const password_rules = [
+  v => !!v || 'La contraseña es requerida',
+  v => v.length >= 6 || 'Mínimo 6 caracteres'
+]
+
+
+const onLogin = async () => {
+  const result = await LoginForm.value?.validate()
+  if (!result || !result.valid) {
+    alert('Por favor corrige los errores antes de continuar')
+    return
+  }
+  // Prepara los datos para enviar
+  const dataToSend = {
+    email: loginData.value.email,
+    password: loginData.value.password,
+  }
+  console.log('Datos a enviar:', dataToSend)
+  // Llama al servicio de login
+  const response = await AuthStore.login({email: dataToSend.email, password: dataToSend.password})
+  if (response) {
+    await Swal.fire({
+        icon: 'success',
+        title: 'Inicio de sesión exitoso',
+        text: `Bienvenido de nuevo ${AuthStore.user.user_name ?? 'usuario'}.`,
+        confirmButtonColor: '#3085d6',
+      })
+    router.push('/') // Redirige a la página principal
+  } else {
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Credenciales incorrectas. Inténtalo de nuevo.',
+      confirmButtonColor: '#d33',
+    })
+  }
+}
+
+
+function loginWithGoogle() {
+  // Lógica para login con Google
+}
 </script>
 
 <style scoped>

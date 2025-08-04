@@ -9,15 +9,40 @@
             </div>
 
             <div class="contendor_accion_usuarios">
-                <router-link to ="/login" class="btn_link"><button class="btn_login"><i class="fas fa-user"></i> Login</button></router-link>
-                <button class="btn_carrito"><i class="fas fa-shopping-cart"></i> Carrito</button>
-            </div>
+                <template v-if="!auth.isAuthenticated">
+                    <router-link to="/login" class="btn_link">
+                    <button class="btn_login"><i class="fas fa-user"></i> Login</button>
+                    </router-link>
+                </template>
+                <template v-else>
+                    <router-link
+                    v-if="auth.user?.role === 'admin'"
+                    to="/administrador"
+                    class="btn_link"
+                    >
+                    <button class="btn_login"><i class="fas fa-user-shield"></i> Administrador</button>
+                    </router-link>
+
+                    <router-link
+                    v-else-if="auth.user?.role === 'cliente'"
+                    to="/usuario"
+                    class="btn_link"
+                    >
+                    <button class="btn_login"><i class="fas fa-user"></i> Usuario</button>
+                    </router-link>
+                </template>
+
+                <button v-if="auth.user?.role === 'cliente'" class="btn_carrito"><i class="fas fa-shopping-cart"></i> Carrito</button>
+                </div>
         </div>
     </header>
 </template>
 
 <script setup>
+import { useAuthStore } from '@/stores/Auth';
 import logo_con_link from './logo_con_link.vue';
+
+const auth = useAuthStore();
 </script>
 
 <style scoped>
