@@ -55,6 +55,8 @@ import Logo_con_link from './logo_con_link.vue'
 import { ref } from 'vue'
 import { UserService } from '../utils/userServices.js'
 import { useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
+
 const RegisterForm = ref(null)
 const terminosAceptados = ref(false) 
 const UserServiceInstance = new UserService()
@@ -98,29 +100,42 @@ const onSubmit = async () => {
   const result = await RegisterForm.value?.validate();
 
   if (!result || !result.valid) {
-    alert('Por favor corrige los errores antes de continuar');
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Por favor corrige los errores antes de continuar'
+    });
     return;
   }
   if (!terminosAceptados.value) {
-    alert('Debes aceptar los términos y condiciones');
+    await Swal.fire({
+      icon: 'warning',
+      title: 'Términos y condiciones',
+      text: 'Debes aceptar los términos y condiciones'
+    });
     return;
   }
 
-  // Prepara los datos (puedes omitir confirmPassword si no lo necesitas en el backend)
   const dataToSend = {
     email: registerData.value.email,
     username: registerData.value.username,
     password: registerData.value.password,
   };
-  // Llama a la función para crear el usuario
   const response = await UserServiceInstance.createUser(dataToSend);
 
   if (response) {
-    alert('Usuario registrado correctamente');
-    router.push('/login'); // Redirige al usuario a la página de inicio de sesión
-    // Aquí puedes redirigir o limpiar el formulario si lo deseas
+    await Swal.fire({
+      icon: 'success',
+      title: '¡Registro exitoso!',
+      text: 'Usuario registrado correctamente'
+    });
+    router.push('/login');
   } else {
-    alert('Hubo un error al registrar el usuario');
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Hubo un error al registrar el usuario'
+    });
   }
 }
 

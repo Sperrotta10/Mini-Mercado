@@ -98,8 +98,6 @@ const onLogin = async () => {
     email: loginData.value.email,
     password: loginData.value.password,
   }
-  console.log('Datos a enviar:', dataToSend)
-  // Llama al servicio de login
   const response = await AuthStore.login({email: dataToSend.email, password: dataToSend.password})
   if (response) {
     await Swal.fire({
