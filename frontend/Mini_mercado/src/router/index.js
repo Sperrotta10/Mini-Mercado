@@ -26,7 +26,7 @@ import EditarInformacion from '@/views/usuarios/components/EditarInformacion.vue
 import BienvenidoEmpleado from '@/views/empleado/components/BienvenidoEmpleado.vue'
 import ConsultaInventario from '@/views/empleado/components/ConsultaInventario.vue'
 import AtencionClientePro from '@/views/empleado/components/AtencionClientePro.vue'
-
+import { useAuthStore } from '@/stores/Auth.js'
 
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -48,54 +48,81 @@ const router = createRouter({
     },
     {
       path: '/login',
-      name: 'Pagina de Login usuario', //Esto hasta momento es demo
-      component: login_usuarios
+      name: 'Pagina de Login usuario', 
+      component: login_usuarios,
+      meta: { title: 'Login', requiresAuth: false }
     },
     {
       path: '/crear_usuario',
-      name: 'Pagina de Crear usuario', //Esto hasta momento es demo
-      component: CrearUsuario
+      name: 'Pagina de Crear usuario', 
+      component: CrearUsuario,
+      meta: { title: 'Crear Usuario', requiresAuth: false }
     },
     {
       path: '/administrador',
-      name: 'administrador', //Esto hasta momento es demo
+      name: 'administrador', 
+      meta: { requiredRole: 'admin', requiresAuth: true },
       component: pagina_administrador,
       children:[
         {path:'', name:'Bienvenido',component:BienvenidoComponente},
-        {path:'gestion_inventario', name:'Gestion_Inventario',component:Gestion_inventario, meta: { title: 'Gestión de Inventario' }},
-        {path:'gestion_empleado', name:'Gestion_Empleado',component:Gestion_empleado, meta: { title: 'Gestión de Empleados' }},
-        {path:'gestion_publicidad', name:'Gestion_Publicidad',component:GestionPublicidad, meta: { title: 'Gestión de Publicidad' }}
+        {path:'gestion_inventario', name:'Gestion_Inventario',component:Gestion_inventario, meta: { title: 'Gestión de Inventario', requiresAuth: true, requiredRole: 'admin' }},
+        {path:'gestion_empleado', name:'Gestion_Empleado',component:Gestion_empleado, meta: { title: 'Gestión de Empleados', requiresAuth: true, requiredRole: 'admin' }},
+        {path:'gestion_publicidad', name:'Gestion_Publicidad',component:GestionPublicidad, meta: { title: 'Gestión de Publicidad', requiresAuth: true, requiredRole: 'admin' }}
       ]
     },
     {
       path: '/usuario',
-      name: 'Pagina de Usuario', //Esto hasta momento es demo
+      name: 'Pagina de Usuario', 
       component: pagina_usuario,
+      meta: { requiredRole: 'cliente', requiresAuth: true },
       children:[
         {path:'', name:'BienvenidoUsuario',component:BienvenidoUsuario},
-        {path:'informacion_personal', name:'InformacionPersonal',component:InformacionPersonal, meta: { title: 'Información Personal' }},
-        {path:'gestion_carrito', name:'Gestion_Carrito',component:GestionCarritos, meta: { title: 'Gestión de Carritos' }},
-        {path:'consulta', name:'Consulta',component:ConsultaDuda, meta: { title: 'Consulta' }},
-        {path:'editar_informacion', name:'Editar_Informacion',component:EditarInformacion, meta: { title: 'Editar su información' }}
+        {path:'informacion_personal', name:'InformacionPersonal',component:InformacionPersonal, meta: { title: 'Información Personal', requiresAuth: true, requiredRole: 'cliente' }},
+        {path:'gestion_carrito', name:'Gestion_Carrito',component:GestionCarritos, meta: { title: 'Gestión de Carritos', requiresAuth: true, requiredRole: 'cliente' }},
+        {path:'consulta', name:'Consulta',component:ConsultaDuda, meta: { title: 'Consulta', requiresAuth: true, requiredRole: 'cliente' }},
+        {path:'editar_informacion', name:'Editar_Informacion',component:EditarInformacion, meta: { title: 'Editar su información', requiresAuth: true, requiredRole: 'cliente' }}
       ]
     },
     {
       path: '/empleado',
-      name: 'Pagina de Empleado', //Esto hasta momento es demo
+      name: 'Pagina de Empleado', 
       component: pagina_empleado,
+      meta: { requiredRole: 'empleado', requiresAuth: true },
       children:[
-        {path:'', name:'BienvenidoEmpleado',component:BienvenidoEmpleado},
-        {path:'consulta_inventario', name:'ConsultaInventario',component:ConsultaInventario, meta: { title: 'Consulta al Inventario' }},
-        {path:'atencion_cliente', name:'AtencionCliente',component:AtencionClientePro, meta: { title: 'Atención al Cliente Suscriptor' }}
+        {path:'', name:'BienvenidoEmpleado',component:BienvenidoEmpleado, meta: { title: 'Bienvenido Empleado', requiresAuth: true, requiredRole: 'empleado' }},
+        {path:'consulta_inventario', name:'ConsultaInventario',component:ConsultaInventario, meta: { title: 'Consulta al Inventario', requiresAuth: true, requiredRole: 'empleado' }},
+        {path:'atencion_cliente', name:'AtencionCliente',component:AtencionClientePro, meta: { title: 'Atención al Cliente Suscriptor', requiresAuth: true, requiredRole: 'empleado' }}
       ]
     },
     {
       //Ahora, modificando al ruta dinamicamente
       path: '/producto_detalles/:nombre',
-      name: 'Pagina de producto detalle', //Esto hasta momento es demo
+      name: 'Pagina de producto detalle', 
       component: Detalles_producto
     }
   ],
 })
+
+router.beforeEach(async (to, from, next) => {
+  const auth = useAuthStore()
+  // Si no hay usuario en memoria, intenta verificar sesión con backend
+  if (!auth.user && to.meta.requiresAuth) {
+    const valid = await auth.checkSession()
+    if (!valid) return next({ name: 'auth' })
+  }
+
+  // Redirige si no está autenticado
+  if (to.meta.requiresAuth && !auth.isAuthenticated) {
+    return next({ name: 'auth' })
+  }
+
+  // Verifica rol si se especifica en meta
+  if (to.meta.requiredRole && auth.user?.role !== to.meta.requiredRole) {
+    return next({ name: 'home' }) // o página 403
+  }
+
+  next()
+})
+
 
 export default router
