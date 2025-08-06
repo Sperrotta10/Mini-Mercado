@@ -6,6 +6,7 @@ export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: JSON.parse(localStorage.getItem('user') || 'null') as null | { user_id: string; user_name: string, email: string; role: string },
         loading: false,
+        userData: null as null,
     }),
 
     actions: {
@@ -53,6 +54,20 @@ export const useAuthStore = defineStore('auth', {
             }
             return false
         },
+
+        async GetThisUserData() {
+            try {
+                const res = await userService.getUserByID(this.user?.user_id)
+                if (res && res.status) {
+                    this.userData = res.data
+                    return res.data
+                }
+            } catch (e) {
+                console.error('User data fetch error:', e)
+                this.userData = null
+            }
+            return false
+        }
     },
 
     getters: {

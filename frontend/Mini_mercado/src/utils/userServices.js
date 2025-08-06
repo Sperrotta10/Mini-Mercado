@@ -54,4 +54,30 @@ export class UserService {
         return false
     }
 
+    async getUserByID(id) {
+        try {
+            const res = await this.api.get(`/register/${id}`)
+            if (res.status === 200) {
+                return { status: true, data: res.data.data }
+            }
+        } catch (error) {
+            console.error('Error al obtener datos del usuario:', error)
+            return false
+        }
+        return false
+    }
+
+    async updateUser(id, data) {
+        try {
+            const res = await this.api.patch(`/register/${id}`, data)
+            if (res.status === 200) {
+                return { status: true, data: res.data.data }
+            }
+        } catch (error) {
+            console.error('Error al actualizar usuario:', error)
+            return false
+        }
+        return false
+    }
+
 }
