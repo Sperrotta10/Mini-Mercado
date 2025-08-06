@@ -1,36 +1,36 @@
 <template>
     <div class="carta_cliente">
         <div class="avatar-container">
-            <img :src="customer.avatar || 'no hay'" :alt="customer.name + 'su perfil'" class="avatar">
+            <img :src="Icon_User" alt="Perfil_usuario" class="avatar">
         </div>
 
         <div class="contenedor_informacion">
-            <h3 class="cliente_nombre">{{ customer.name }}</h3>
-
-            <div class="item_informacion">
-                <span class="icon">Teléfono 📱: </span>
-                <span class="text">{{ customer.phone || 'NO HAY TLF' }}</span>
-            </div>
-
-            <div class="item_informacion">
-                <span class="icon">Correo Electrónico ✉️: </span>
-                <span class="text">{{ customer.email || 'NO HAY CORREO' }}</span>
-            </div>
-
-            <div class="item_informacion">
-                <span class="icon">ID 🆔: </span>
-                <span class="text">{{ customer.id }}</span>
-            </div>
-
-            <div class="item_informacion">
-                <span class="icon">Estado: </span>
-                <span class="text">{{ customer.estado }}</span>
-            </div>
-
-            <div class="accion_btn">
-                <button class="btn_editar" @click="activar_suscriptor">ACTIVAR SUSCRIPTOR ⭐</button>
-                <button class="btn_editar" @click="entrar_editar">Editar</button>
-            </div>
+            <template v-if="loading">
+                <h3 class="cliente_nombre">Cargando datos...</h3>
+            </template>
+            <template v-else>
+                <h3 class="cliente_nombre">{{ userData.nombre_completo || userData.username || 'Usuario' }}</h3>
+                <div class="item_informacion">
+                    <span class="icon">Teléfono 📱: </span>
+                    <span class="text">{{ userData.telefono || 'NO HAY TLF' }}</span>
+                </div>
+                <div class="item_informacion">
+                    <span class="icon">Correo Electrónico ✉️: </span>
+                    <span class="text">{{ userData.email || 'NO HAY CORREO' }}</span>
+                </div>
+                <div class="item_informacion">
+                    <span class="icon">ID 🆔: </span>
+                    <span class="text">{{ userData.user_id || 'Cargando...' }}</span>
+                </div>
+                <div class="item_informacion">
+                    <span class="icon">Estado: </span>
+                    <span class="text">{{ userData.suscripcion || 'Usuario Suscriptor' }}</span>
+                </div>
+                <div class="accion_btn">
+                    <button class="btn_editar" @click="activar_suscriptor">ACTIVAR SUSCRIPTOR ⭐</button>
+                    <button class="btn_editar" @click="entrar_editar">Editar</button>
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -38,8 +38,39 @@
 <script setup>
 import Icon_User from '@/assets/Imagenes/user_example.png'
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/Auth';
+import { onMounted, ref } from 'vue';
 
+const authStore = useAuthStore();
 const router = useRouter()
+
+const userData = ref({});
+const loading = ref(true);
+
+function mapUserData(raw) {
+    return {
+        user_id: raw.user_id ?? '',
+        username: raw.username ?? 'Usuario',
+        image_perfil: raw.image_perfil ?? Icon_User,
+        nombre_completo: raw.nombre_completo ?? raw.username ?? 'Usuario',
+        email: raw.email ?? 'NO HAY CORREO',
+        telefono: raw.telefono ?? 'NO HAY TLF',
+        cedula: raw.cedula ?? 'No disponible',
+        suscripcion: raw.suscripcion ? 'Suscriptor Activo' : 'Usuario Suscriptor',
+        rol_id: raw.rol_id ?? 'N/A',
+    }
+}
+
+async function fetchUserData() {
+    loading.value = true;
+    const raw = authStore.userData;
+    userData.value = mapUserData(raw);
+    loading.value = false;
+}
+
+onMounted(() => {
+    fetchUserData();
+});
 
 const entrar_editar = () => {
     router.push('/usuario/editar_informacion')
@@ -48,33 +79,6 @@ const entrar_editar = () => {
 const activar_suscriptor = () => {
     alert("SUSCRIPTOR ACTIVO!!!")
 }
-
-// Permite que llama esta vista de una en otra template
-// const props = defineProps({
-//     customer: {
-//         type: Object,
-//         required: true,
-//         default: () => ({
-//             id: '01600',
-//             name: 'Skirk',
-//             phone: '14156328956',
-//             email: 'pato_cute@teyvat.com',
-//             avatar: Icon_User,
-//             estado: 'Usuario Suscriptor'
-//         })
-//     }
-// });
-
-const customer = 
-    {
-        id: '01600',
-        name: 'Skirk',
-        phone: '14156328956',
-        email: 'pato_cute@teyvat.com',
-        avatar: Icon_User,
-        estado: 'Usuario Suscriptor'
-    }
-;
 </script>
 
 <style scoped>

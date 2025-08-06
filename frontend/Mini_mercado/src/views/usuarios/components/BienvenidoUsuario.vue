@@ -1,7 +1,7 @@
 <template>    
     <div class="contenedor">
         <div class="carta_bienvenida">
-            <h1>¡Bienvenido de nuevo! {Nombre de Usuario} 🎉</h1>
+            <h1>¡Bienvenido de nuevo {{userName}}!🎉</h1>
             <div class="contenedor_imagenes">
                 <img :src="Icon_User" alt="Perfil_usuario" class="perfil">
                 <img :src="imagen_logo" alt="imagen_logo" style="width: 50%; height: auto;">
@@ -17,6 +17,11 @@
 <script setup>
 import imagen_logo from '@/assets/Imagenes/LogoMSJ.png'
 import Icon_User from '@/assets/Imagenes/user_example.png'
+import { useAuthStore } from '@/stores/Auth';
+
+const authStore = useAuthStore();
+const userName = authStore.user?.username || 'Usuario';
+
 
 </script>
 
