@@ -11,7 +11,7 @@
       <categorias_producto></categorias_producto>
 
       <!--Area de Productos-->
-        <div class="contendor_producto">
+        <div class="contenedor_producto">
 
 
           <div

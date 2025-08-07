@@ -7,42 +7,52 @@
                 <input type="text" placeholder="Buscar producto">
                 <button>Buscar</button>
             </div>
-
+            
             <div class="contendor_accion_usuarios">
+                <button
+                    v-if="auth.user?.role != 'admin'"
+                    class="btn_carrito"
+                    @click="showCart = true"
+                >
+                    <i class="fas fa-shopping-cart"></i> Carrito
+                </button>
                 <template v-if="!auth.isAuthenticated">
                     <router-link to="/login" class="btn_link">
-                    <button class="btn_login"><i class="fas fa-user"></i> Login</button>
+                        <button class="btn_login"><i class="fas fa-user"></i> Login</button>
                     </router-link>
                 </template>
                 <template v-else>
                     <router-link
-                    v-if="auth.user?.role === 'admin'"
-                    to="/administrador"
-                    class="btn_link"
+                        v-if="auth.user?.role === 'admin'"
+                        to="/administrador"
+                        class="btn_link"
                     >
-                    <button class="btn_login"><i class="fas fa-user-shield"></i> Administrador</button>
+                        <button class="btn_login"><i class="fas fa-user-shield"></i> Administrador</button>
                     </router-link>
 
                     <router-link
-                    v-else-if="auth.user?.role === 'cliente'"
-                    to="/usuario"
-                    class="btn_link"
+                        v-else-if="auth.user?.role === 'cliente'"
+                        to="/usuario"
+                        class="btn_link"
                     >
-                    <button class="btn_login"><i class="fas fa-user"></i> Usuario</button>
+                        <button class="btn_login"><i class="fas fa-user"></i> Usuario</button>
                     </router-link>
                 </template>
-
-                <button v-if="auth.user?.role === 'cliente'" class="btn_carrito"><i class="fas fa-shopping-cart"></i> Carrito</button>
-                </div>
+            </div>
         </div>
+        <CartSidebar :show="showCart" @close="showCart = false" />
     </header>
 </template>
 
 <script setup>
 import { useAuthStore } from '@/stores/Auth';
 import logo_con_link from './logo_con_link.vue';
+import { ref } from 'vue';
+import CartSidebar from './CartSidebar.vue';
 
 const auth = useAuthStore();
+const showCart = ref(false);
+
 </script>
 
 <style scoped>
@@ -131,5 +141,49 @@ header{
     .barra_principal {
         flex-direction: column;
     }
+}
+
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 350px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.15);
+    z-index: 2000;
+    padding: 24px 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    animation: slideInCart 0.3s;
+}
+@keyframes slideInCart {
+    from { right: -400px; }
+    to { right: 0; }
+}
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #10b68d;
+}
+.cart-content {
+    flex: 1;
+    overflow-y: auto;
+}
+.cart-backdrop {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.2);
+    z-index: 1500;
 }
 </style>

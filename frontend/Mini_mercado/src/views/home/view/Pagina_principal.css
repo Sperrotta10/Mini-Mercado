@@ -58,3 +58,8 @@
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+.contenedor_producto {
+    max-width: 90%;
+    margin: 10px auto;
+}

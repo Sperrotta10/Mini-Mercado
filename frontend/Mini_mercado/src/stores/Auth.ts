@@ -20,6 +20,7 @@ export const useAuthStore = defineStore('auth', {
                     role: res.data.data.role?.name || res.data.data.role,
                 }
                 localStorage.setItem('user', JSON.stringify(this.user))
+                await this.GetThisUserData();
                 return true
                 }
             } catch (e) {
