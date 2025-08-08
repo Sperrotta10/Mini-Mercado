@@ -30,6 +30,16 @@ export class CartService {
         }
     }
 
+    async DeleteCart(cart_id){
+        try {
+            const res = await this.api.delete(`/cart/${cart_id}`);
+            return res.data;
+        } catch (error) {
+            console.error('Error al eliminar el carrito:', error);
+            return false;
+        }
+    }
+
     
 
     
