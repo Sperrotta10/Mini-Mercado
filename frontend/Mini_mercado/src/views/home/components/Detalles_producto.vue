@@ -112,7 +112,7 @@ async function cargarProducto(name) {
 async function CargarProductosRecomendados() {
     try {
         const res = await productService.getProductsPaginated(
-        1, 10, 0, 100, 0, categoria.value.categoria_id
+        1, 20, 0, 100, 0, categoria.value.categoria_id
         );
         // Filtra el producto actual
         productos.value = (Array.isArray(res.data.products) ? res.data.products : [])

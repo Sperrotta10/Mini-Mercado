@@ -25,7 +25,6 @@
           <div v-for="carrito in carritos" :key="carrito.id" class="carrito-card">
             <div class="carrito-info">
               <span class="carrito-nombre">{{ carrito.nombre }}</span>
-              <span class="carrito-detalle">Productos: {{ carrito.productos }}</span>
             </div>
             <div class="carrito-actions">
               <button class="btn_edit" @click="editarCarrito(carrito)">

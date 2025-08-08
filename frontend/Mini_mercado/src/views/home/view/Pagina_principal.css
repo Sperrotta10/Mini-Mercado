@@ -8,10 +8,9 @@
 }
 
 /*Areas de producto ------------------------------------------------------------------*/
-.contendor_producto {
+.contenedor_producto {
     max-width: 1400px;
     margin: 40px auto;
-    padding: 0 20px;
 }
 
 .contenedor_caja_producto {
