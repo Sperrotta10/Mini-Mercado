@@ -40,7 +40,6 @@ export const useAuthStore = defineStore('auth', {
         async checkSession() {
             try {
                 const res = await userService.getSectionId()
-                console.log('Session check response:', res)
                 if (res && res.status) {
                 this.user = {
                     ...res.data,

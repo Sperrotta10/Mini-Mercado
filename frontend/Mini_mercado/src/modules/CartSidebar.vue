@@ -65,9 +65,11 @@ import { ref } from 'vue';
 import { useAuthStore } from '@/stores/Auth';
 import { CartService } from '@/utils/cartService';
 import Swal from 'sweetalert2';
+import { useRouter } from 'vue-router';
+
 const auth = useAuthStore();
 const cartService = new CartService();
-
+const router = useRouter();
 const carritos = ref([]);
 const showModal = ref(false);
 const nuevoCarritoNombre = ref('');
@@ -75,7 +77,6 @@ const nuevoCarritoNombre = ref('');
 async function fetchCarritos() {
   if (auth.isAuthenticated && auth.user?.role === 'cliente') {
     const data = await cartService.getAllCarts();
-    console.log(data);
     carritos.value = data.data.map(c => ({
       id: c.cart_id,
       nombre: c.name,
@@ -123,12 +124,29 @@ function closeModal() {
 
 
 function editarCarrito(carrito) {
-  alert(`Editar carrito: ${carrito.nombre}`);
+    router.push({ name: 'DetallesCarrito', params: { id: carrito.id }, query: { nombre: carrito.nombre } });
 }
 
-function eliminarCarrito(carrito) {
-  if (confirm(`¿Eliminar el carrito "${carrito.nombre}"?`)) {
+async function eliminarCarrito(carrito) {
+  const result = await Swal.fire({
+    title: `¿Eliminar el carrito "${carrito.nombre}"?`,
+    text: "Esta acción no se puede deshacer.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#10b68d",
+    cancelButtonColor: "#e74c3c",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+  });
+
+  if (result.isConfirmed) {
+    const response = await cartService.DeleteCart(carrito.id);
+    if (!response) {
+      Swal.fire('Error', 'No se pudo eliminar el carrito.', 'error');
+      return;
+    }
     carritos.value = carritos.value.filter(c => c.id !== carrito.id);
+    Swal.fire('Eliminado', 'El carrito ha sido eliminado.', 'success');
   }
 }
 
@@ -149,7 +167,7 @@ defineEmits(['close']);
     height: 100vh;
     background: #fff;
     box-shadow: -2px 0 10px rgba(0,0,0,0.15);
-    z-index: 2000;
+    z-index: 1000;
     padding: 24px 20px 20px 20px;
     display: flex;
     flex-direction: column;
@@ -287,7 +305,7 @@ defineEmits(['close']);
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.2);
-    z-index: 1500;
+    z-index: 500;
 }
 @media (max-width: 600px) {
   .cart-sidebar {
@@ -301,7 +319,7 @@ defineEmits(['close']);
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.25);
-  z-index: 3000;
+  z-index: 1100;
   display: flex;
   align-items: center;
   justify-content: center;
