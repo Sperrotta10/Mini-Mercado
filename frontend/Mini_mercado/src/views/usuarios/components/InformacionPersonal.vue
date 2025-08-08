@@ -63,6 +63,8 @@ function mapUserData(raw) {
 
 async function fetchUserData() {
     loading.value = true;
+    authStore.GetThisUserData();
+    await new Promise(resolve => setTimeout(resolve, 500)); // Simula tiempo de carga
     const raw = authStore.userData;
     userData.value = mapUserData(raw);
     loading.value = false;
