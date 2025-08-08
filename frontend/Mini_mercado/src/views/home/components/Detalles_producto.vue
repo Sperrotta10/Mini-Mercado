@@ -9,7 +9,7 @@
                 <h1 class="producto_titulo">{{ producto?.name || 'Cargando...' }}</h1>
                 <span class="producto_categoria">{{ categoria?.name || 'Cargando...' }}</span>
                 <div class="producto_precio">${{ producto?.price || '--' }}</div>
-                <div class="producto_disnonible">Disponible: {{ producto?.stock ?? '--' }}</div>
+                <div class="producto_disponible">Disponible: {{ producto?.stock ?? '--' }}</div>
                 <div class="control_cantidad">
                     <button class="btn_cantidad menos" @click="decrementar">-</button>
                     <input type="text" class="input_cantidad" :value="cantidad_producto">
@@ -18,23 +18,37 @@
                 <button class="agregar_al_carrito">Agregar al carrito</button>
             </div>
         </div>
-        
-        <h2 class="section_titulo">Producto recomendado</h2>
-        <div class="producto_aleatorio_recomendado">
-            <carta_producto
-                v-for="producto in productos" 
-                :key="producto.id"
-                :imagen="producto.imagen"
-                :nombre="producto.nombre"
-                :precio="producto.precio"
-            ></carta_producto>
+
+        <h2 class="section_titulo">Productos recomendados</h2>
+        <div class="carousel-container">
+            <button @click="prev" class="nav-btn">‹</button>
+            <div class="carousel-window">
+                <div
+                    class="carousel-track"
+                    :style="trackStyle"
+                >
+                    <div
+                    v-for="producto in productos"
+                    :key="producto.product_id"
+                    class="carousel-item"
+                    >
+                    <carta_producto
+                        :imagen="producto.image || Ejemplo_png"
+                        :nombre="producto.name"
+                        :precio="producto.price"
+                    />
+                    </div>
+                </div>
+                </div>
+
+            <button @click="next" class="nav-btn">›</button>
         </div>
     </div>
     <footer_general></footer_general>
 </template>
 
 <script setup>
-import { watch, onMounted,ref } from 'vue';
+import { watch, onMounted,ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import Ejemplo_png from '@/assets/Imagenes/productos/pizza jamon.png'
 import header_general from '@/modules/header_general.vue';
@@ -73,6 +87,7 @@ const producto = ref(null)
 const categoria = ref(null)
 const loading = ref(false)
 const error = ref(null)
+const productos = ref([{}])
 
 async function cargarProducto(name) {
     loading.value = true
@@ -94,8 +109,23 @@ async function cargarProducto(name) {
     }
 }
 
+async function CargarProductosRecomendados() {
+    try {
+        const res = await productService.getProductsPaginated(
+        1, 10, 0, 100, 0, categoria.value.categoria_id
+        );
+        // Filtra el producto actual
+        productos.value = (Array.isArray(res.data.products) ? res.data.products : [])
+        .filter(p => p.product_id !== producto.value.product_id);
+    } catch (err) {
+        console.error('Error al cargar productos recomendados:', err);
+        productos.value = [];
+    }
+}
+
 onMounted(async () => {
     await cargarProducto(route.params.nombre)
+    await CargarProductosRecomendados()
 })
 
 watch(
@@ -105,45 +135,32 @@ watch(
     }
 )
 
-//Simulando datos conectados:
-const productos = [
-  {
-    id: 1,
-    nombre: 'Pizza',
-    precio: '19.90',
-    imagen: Ejemplo_png
-  },
-  {
-    id: 2,
-    nombre: 'Pizza2',
-    precio: '15.90',
-    imagen: Ejemplo_png
-  },
-  {
-    id: 3,
-    nombre: 'Pizza3',
-    precio: '15.90',
-    imagen: Ejemplo_png
-  },
-  {
-    id: 4,
-    nombre: 'Pizza4',
-    precio: '15.90',
-    imagen: Ejemplo_png
-  },
-  {
-    id: 5,
-    nombre: 'Pizza5',
-    precio: '15.90',
-    imagen: Ejemplo_png
-  },
-  {
-    id: 6,
-    nombre: 'Pizza5',
-    precio: '20.22',
-    imagen: Ejemplo_png
+const startIndex = ref(0)
+const itemsToShow = 3
+
+const trackStyle = computed(() => {
+  return {
+    transform: `translateX(-${startIndex.value * (100 / itemsToShow)}%)`,
+    transition: 'transform 0.5s ease'
   }
-]
+})
+
+function next() {
+  if (startIndex.value < productos.value.length - itemsToShow) {
+    startIndex.value++
+  } else {
+    startIndex.value = 0
+  }
+}
+
+function prev() {
+  if (startIndex.value > 0) {
+    startIndex.value--
+  } else {
+    startIndex.value = productos.value.length - itemsToShow
+  }
+}
+
 </script>
 
 <style scoped>
@@ -203,7 +220,7 @@ const productos = [
     font-weight: bold;
 }
 
-.producto_disnonible {
+.producto_disnpZnible {
     color: #10b68d;
     margin-bottom: 20px;
     font-size: 14px;
@@ -251,9 +268,10 @@ const productos = [
 
 .producto_aleatorio_recomendado {
     margin-top: 40px;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
     gap: 25px;
+    max-width: 100%;
+    margin: auto;
+    
 }
 
 .section_titulo {
@@ -263,26 +281,44 @@ const productos = [
     border-bottom: 1px solid #eee;
 }
 
-@media (max-width: 1200px) {
-    .producto_aleatorio_recomendado {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-}
 
 @media (max-width: 768px) {
     .producto_detalle {
         flex-direction: column;
     }
-
-    .producto_aleatorio_recomendado {
-        grid-template-columns: repeat(3, 1fr);
-    }
 }
 
-@media (max-width: 576px) {
-    .producto_aleatorio_recomendado {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.carousel-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+
+.carousel-window {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 15px; /* espacio entre tarjetas */
+}
+
+.carousel-item {
+  flex: 0 0 calc((90% / 3)); /* 3 elementos visibles menos el gap */
+}
+
+
+.nav-btn {
+    background: white;
+    border: 0.5px solid #00a86b;
+    color: #00a86b;
+    font-size: 24px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    height: 120px;
+}
+
+
 </style>

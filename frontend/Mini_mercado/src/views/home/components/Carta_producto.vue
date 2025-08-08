@@ -1,11 +1,11 @@
 <template>
     <div class="producto_carta">
        <!--Aqui agregamos la cosa de routerlink para que puede conectarse, permitiendo abrir otra ruta-->
-        <img :src="imagen" alt="Producto" class="producto_carta_imagen">
+        <img :src="imagen || placeholder" alt="Producto" class="producto_carta_imagen">
         <div class="producto_informacion">
 
             <h3 class="producto_nombre">{{ nombre }}</h3>
-            <div class="producto_precio">{{precio}}</div>
+            <div class="producto_precio"> Precio: ${{precio}}</div>
 
             <button class="btn_agregar_carrito" @click="showModal = true">Agregar carrito</button>
             <RouterLink :to="`/producto_detalles/${nombre}`" class="link">
@@ -96,7 +96,7 @@ export default {
 <script setup>
 import { ref } from 'vue';
 const cantidad_producto = ref(1);
-
+const placeholder = '../../../assets/Imagenes/placeholder.webp';
 //Para incrementar la cantidad de producto
 const incrementar = () => {
   cantidad_producto.value++;
