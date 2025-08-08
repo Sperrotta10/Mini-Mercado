@@ -19,6 +19,7 @@ import GestionPublicidad from '@/views/admin/components/GestionPublicidad.vue'
 import BienvenidoUsuario from '@/views/usuarios/components/BienvenidoUsuario.vue'
 import InformacionPersonal from '@/views/usuarios/components/InformacionPersonal.vue'
 import GestionCarritos from '@/views/usuarios/components/GestionCarritos.vue'
+import DetallesCarrito from '@/views/usuarios/components/DetallesCarrito.vue'
 import ConsultaDuda from '@/views/usuarios/components/ConsultaDuda.vue'
 import EditarInformacion from '@/views/usuarios/components/EditarInformacion.vue'
 
@@ -79,6 +80,7 @@ const router = createRouter({
         {path:'', name:'BienvenidoUsuario',component:BienvenidoUsuario},
         {path:'informacion_personal', name:'InformacionPersonal',component:InformacionPersonal, meta: { title: 'Información Personal', requiresAuth: true, requiredRole: 'cliente' }},
         {path:'gestion_carrito', name:'Gestion_Carrito',component:GestionCarritos, meta: { title: 'Gestión de Carritos', requiresAuth: true, requiredRole: 'cliente' }},
+        { path:'gestion_carrito/:id', name:'DetallesCarrito', component:DetallesCarrito, meta: { title: 'Detalles del Carrito', requiresAuth: true, requiredRole: 'cliente' }},
         {path:'consulta', name:'Consulta',component:ConsultaDuda, meta: { title: 'Consulta', requiresAuth: true, requiredRole: 'cliente' }},
         {path:'editar_informacion', name:'Editar_Informacion',component:EditarInformacion, meta: { title: 'Editar su información', requiresAuth: true, requiredRole: 'cliente' }}
       ]
@@ -104,25 +106,26 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  const auth = useAuthStore()
-  // Si no hay usuario en memoria, intenta verificar sesión con backend
-  if (!auth.user && to.meta.requiresAuth) {
-    const valid = await auth.checkSession()
-    if (!valid) return next({ name: 'auth' })
+  const auth = useAuthStore();
+
+  // Si la ruta requiere autenticación
+  if (to.meta.requiresAuth) {
+    // Siempre verifica la sesión con el backend (o token válido)
+    const valid = await auth.checkSession();
+    if (!valid) {
+      // Limpia el usuario si la sesión no es válida
+      await auth.logout();
+      return next({ name: 'Pagina de Login usuario' });
+    }
+
+    // Verifica rol si se especifica en meta
+    if (to.meta.requiredRole && auth.user?.role !== to.meta.requiredRole) {
+      return next({ name: 'home' }); // o página 403
+    }
   }
 
-  // Redirige si no está autenticado
-  if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    return next({ name: 'auth' })
-  }
-
-  // Verifica rol si se especifica en meta
-  if (to.meta.requiredRole && auth.user?.role !== to.meta.requiredRole) {
-    return next({ name: 'home' }) // o página 403
-  }
-
-  next()
-})
+  next();
+});
 
 
 export default router
