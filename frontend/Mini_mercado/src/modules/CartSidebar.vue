@@ -15,9 +15,7 @@
         <p class="cart-text">Solo los clientes pueden acceder al carrito.</p>
       </template>
       <template v-else>
-        <button class="btn_add_cart" @click="showModal = true">
-          <i class="fas fa-plus"></i> Agregar carrito
-        </button>
+        <AgregarCarrito @carrito-agregado="fetchCarritos" />
         <div v-if="carritos.length === 0" class="cart-text">
           No posees carritos personalizados.
         </div>
@@ -38,23 +36,7 @@
         </div>
       </template>
     </div>
-    <!-- Modal para agregar carrito -->
-    <div v-if="showModal" class="modal-backdrop" @click.self="closeModal">
-      <div class="modal">
-        <h3>Nuevo carrito</h3>
-        <input
-          v-model="nuevoCarritoNombre"
-          class="modal-input"
-          type="text"
-          placeholder="Nombre del carrito"
-          @keyup.enter="confirmarAgregarCarrito"
-        />
-        <div class="modal-actions">
-          <button class="btn_modal" @click="confirmarAgregarCarrito">Agregar</button>
-          <button class="btn_modal_cancel" @click="closeModal">Cancelar</button>
-        </div>
-      </div>
-    </div>
+    
   </div>
   <div v-if="show" class="cart-backdrop" @click="$emit('close')"></div>
 </template>
@@ -65,13 +47,12 @@ import { useAuthStore } from '@/stores/Auth';
 import { CartService } from '@/utils/cartService';
 import Swal from 'sweetalert2';
 import { useRouter } from 'vue-router';
+import AgregarCarrito from './AddCartBtn.vue'
 
 const auth = useAuthStore();
 const cartService = new CartService();
 const router = useRouter();
 const carritos = ref([]);
-const showModal = ref(false);
-const nuevoCarritoNombre = ref('');
 
 async function fetchCarritos() {
   if (auth.isAuthenticated && auth.user?.role === 'cliente') {
@@ -85,41 +66,6 @@ async function fetchCarritos() {
   }
 }
 fetchCarritos();
-
-// Modifica confirmarAgregarCarrito para mostrar un Swal si status es 401
-async function confirmarAgregarCarrito() {
-  const nombre = nuevoCarritoNombre.value.trim();
-  if (!nombre) return;
-
-  const nuevoCarrito = {
-    name: nombre,
-  };
-
-  try {
-    const response = await cartService.createCart(nuevoCarrito);
-    if (response ==false) {
-      Swal.fire('Límite alcanzado', 'Has alcanzado el límite de carritos permitidos.', 'warning');
-    } else if (response) {
-      Swal.fire('Éxito', 'Carrito agregado correctamente', 'success');
-      fetchCarritos();
-    } else {
-      Swal.fire('Error', 'No se pudo agregar el carrito', 'error');
-    }
-  } catch (error) {
-    if (error?.response?.status === 401) {
-      Swal.fire('Límite alcanzado', 'Has alcanzado el límite de carritos permitidos.', 'warning');
-    } else {
-      Swal.fire('Error', 'No se pudo agregar el carrito', 'error');
-    }
-  }
-  closeModal();
-}
-
-function closeModal() {
-  showModal.value = false;
-  nuevoCarritoNombre.value = '';
-}
-
 
 
 function editarCarrito(carrito) {
