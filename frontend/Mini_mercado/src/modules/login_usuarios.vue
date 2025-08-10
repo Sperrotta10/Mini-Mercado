@@ -99,6 +99,15 @@ const onLogin = async () => {
     password: loginData.value.password,
   }
   const response = await AuthStore.login({email: dataToSend.email, password: dataToSend.password})
+  if (response==false) {
+    await Swal.fire({
+      icon: 'warning',
+      title: 'Demasiados intentos',
+      text: 'Has realizado demasiados intentos de inicio de sesión. Por favor, inténtalo de nuevo más tarde.',
+      confirmButtonColor: '#d33',
+    })
+    return
+  }
   if (response) {
     await Swal.fire({
         icon: 'success',
