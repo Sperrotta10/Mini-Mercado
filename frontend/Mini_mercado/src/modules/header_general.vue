@@ -38,6 +38,9 @@
                         <button class="btn_login"><i class="fas fa-user"></i> Usuario</button>
                     </router-link>
                 </template>
+                <template v-if="auth.isAuthenticated">
+                        <button class="btn_logout" @click="auth.logout"><i class="fas fa-sign-out-alt"></i></button>
+                </template>
             </div>
         </div>
         <CartSidebar :show="showCart" @close="showCart = false" />
@@ -119,6 +122,24 @@ header{
     display: flex;
     align-items: center;
     transition: all 0.3s ease;
+}
+
+.btn_logout {
+    background: none;
+    color: #10b68d;
+    border: none;
+    padding: 10px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.btn_logout:hover {
+    background: rgba(255, 0, 0, 0.1);
 }
 
 .btn_login:hover,
