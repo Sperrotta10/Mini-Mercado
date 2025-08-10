@@ -43,4 +43,24 @@ export class CartItemService {
             return false;
         }
     }
+
+    async updateCartItem( cartItemId, updateData) {
+        try {
+            const res = await this.api.put(`/cart-item/${cartItemId}`, updateData);
+            return res.data;
+        } catch (error) {
+            console.error('Error al actualizar el item del carrito:', error);
+            return false;
+        }
+    }
+
+    async deleteCartItem(cartItemId) {
+        try {
+            const res = await this.api.delete(`/cart-item/${cartItemId}`);
+            return res.data;
+        } catch (error) {
+            console.error('Error al eliminar el item del carrito:', error);
+            return false;
+        }
+    }
 }
