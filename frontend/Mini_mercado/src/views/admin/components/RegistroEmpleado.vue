@@ -5,26 +5,14 @@
         <form @submit.prevent="Funcion_Entregar" class="registrar_formulario">
             <!-- Nombre ingreso -->
             <div class="form-group">
-                <label for="name">Nombre</label>
-                <input id="name" v-model="form.name" type="text" required placeholder="Ingresa Nombre" class="form-input" />
+                <label for="name">Nombre de usuario</label>
+                <input id="name" v-model="form.username" type="text" required placeholder="Ingresa Nombre" class="form-input" />
             </div>
-
-            <!-- Cedula -->
-            <div class="form-group">
-                <label for="cedula">Cedula</label>
-                <input id="cedula" v-model="form.cedula" type="text" required placeholder="Ingresa Cedula" class="form-input" />
-            </div>
-
+            
             <!-- Correo -->
             <div class="form-group">
                 <label for="email">Correo</label>
                 <input id="email" v-model="form.email" type="email" required placeholder="Ingresa Correo" class="form-input" />
-            </div>
-
-            <!-- Telefono -->
-            <div class="form-group">
-                <label for="phone">Número de telefono</label>
-                <input id="phone" v-model="form.phone" type="tel" required placeholder="Ingresa Número de telefono" class="form-input" />
             </div>
 
             <!-- Contraseña -->
@@ -48,23 +36,40 @@
 
 <script setup>
 import { ref } from 'vue';
+import { UserService } from '@/utils/userServices';
+import Swal from 'sweetalert2';
 
+const userService = new UserService();
 const form = ref({
-    name: '',
+    username: '',
     email: '',
     phone: '',
     cedula:'',
     contrasena:''
 });
 
-const Funcion_Entregar = () => {
-    console.log('Información de empleado:', form.value);
+
+const Funcion_Entregar = async () => {
+    const userData = {
+        username: form.value.username,
+        email: form.value.email,
+        password: form.value.contrasena,
+        role:'empleado',
+    };
+    const res = await userService.createEmpleado(userData);
+    if (res) {
+        await Swal.fire('¡Éxito!', 'Empleado registrado con éxito.', 'success');
+    } else {
+        await Swal.fire('Error', 'Error al registrar empleado.', 'error');
+    }
 
     // reset
     form.value = {
-        name: '',
+        username: '',
         email: '',
-        phone: ''
+        phone: '',
+        cedula: '',
+        contrasena: ''
     };
 };
 </script>

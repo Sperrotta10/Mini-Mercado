@@ -6,47 +6,28 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nombre y Apellido</th>
+                            <th>Correo</th>
                             <th>Estado</th>
                             <th>Operación</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1001</td>
-                            <td>Juan Da</td>
-                            <td><span style="color: green;">Activo</span></td>
+                        <tr v-for="empleado in empleados" :key="empleado.user_id">
+                            <td>{{ empleado.user_id }}</td>
+                            <td>{{empleado.email}}</td>
+                            <td>
+                                <span :style="{ color: empleado.status ? 'green' : 'orange' }">
+                                    {{ empleado.status ? 'Activo' : 'Inactivo 👻' }}
+                                </span>
+                            </td>
                             <td class="contendor_separador">
-                                <button class="btn_general"><i class="fas fa-edit"></i></button>
-                                <button class="btn_general"><i class="fas fa-trash"></i></button>
+                                <button class="btn_general" @click="toggleEmpleadoStatus(empleado)"><i class="deshabilitar-btn fas fa-user-slash"><span>
+                                    {{ empleado.status == 1 ? 'Deshabilitar' : 'Habilitar' }}
+                                </span></i></button>
                             </td>
                         </tr>
-                        <tr>
-                            <td>1002</td>
-                            <td>Santiago Ramirez</td>
-                            <td><span style="color: green;">Activo</span></td>
-                            <td class="contendor_separador">
-                                <button class="btn_general"><i class="fas fa-edit"></i></button>
-                                <button class="btn_general"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1003</td>
-                            <td>Manuel Paimon</td>
-                            <td><span style="color: green;">Activo</span></td>
-                            <td class="contendor_separador">
-                                <button class="btn_general"><i class="fas fa-edit"></i></button>
-                                <button class="btn_general"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1004</td>
-                            <td>Jesus Antonio</td>
-                            <td><span style="color: orange;">Inactivo 👻</span></td>
-                            <td class="contendor_separador">
-                                <button class="btn_general"><i class="fas fa-edit"></i></button>
-                                <button class="btn_general"><i class="fas fa-trash"></i></button>
-                            </td>
+                        <tr v-if="empleados.length === 0">
+                            <td colspan="4" style="text-align:center;">No hay empleados para mostrar.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -54,6 +35,61 @@
         </div>
     </div>
 </template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import { UserService } from '@/utils/userServices'; 
+import Swal from 'sweetalert2'; 
+
+const empleados = ref([]);
+const userService = new UserService();
+async function cargarEmpleados() {
+    try {
+        const res = await userService.getAll();
+        // Filtra por rol_id == 3 (empleados)
+        empleados.value = (res.data || []).filter(u => u.rol_id === 2);
+    } catch (e) {
+        empleados.value = [];
+        console.error('Error al cargar empleados:', e);
+    }
+}
+
+async function toggleEmpleadoStatus(empleado) {
+    const accion = empleado.status == 1 ? 'deshabilitar' : 'habilitar';
+    const confirm = await Swal.fire({
+        title: `¿Seguro que deseas ${accion} a este empleado?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#10b68d',
+        cancelButtonColor: '#e74c3c',
+        confirmButtonText: 'Sí',
+        cancelButtonText: 'Cancelar'
+    });
+    if (!confirm.isConfirmed) return;
+
+    try {
+        const newStatus = empleado.status == 1 ? 0 : 1;
+        const data = {
+            status:newStatus
+        }
+        console.log(empleado.user_id)
+        await userService.updateUser(empleado.user_id, data);
+        empleado.status = newStatus;
+        Swal.fire(
+            '¡Listo!',
+            `Empleado ${accion === 'deshabilitar' ? 'deshabilitado' : 'habilitado'} correctamente.`,
+            'success'
+        );
+    } catch (e) {
+        console.error('Error al cambiar estado del empleado:', e);
+        Swal.fire('Error', 'No se pudo cambiar el estado del empleado.', 'error');
+    }
+}
+
+onMounted(() => {
+    cargarEmpleados();
+});
+</script>
 
 <style scoped>
 /* Css para el diseño */
@@ -127,5 +163,12 @@ tr:hover {
 
 .btn_general i {
     color: white;
+}
+
+.deshabilitar-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
 }
 </style>
