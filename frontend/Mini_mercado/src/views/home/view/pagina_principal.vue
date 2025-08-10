@@ -26,7 +26,8 @@
               <Carta_categoria :categoria="categoria" :imagen="categoria.image" />
               <Carta_producto
                 v-for="producto in categoria.productos"
-                :key="producto.id"
+                :key="producto.product_id"
+                :id="producto.product_id"
                 :imagen="producto.image"
                 :nombre="producto.name"
                 :precio="producto.price"
