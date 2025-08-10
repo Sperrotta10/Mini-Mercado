@@ -25,6 +25,9 @@
               <span class="carrito-nombre">{{ carrito.nombre }}</span>
             </div>
             <div class="carrito-actions">
+              <button class="btn_edit" @click="abrirModal(carrito)">
+                      <i class="fas fa-eye"></i>
+              </button>
               <button class="btn_edit" @click="editarCarrito(carrito)">
                 <i class="fas fa-edit"></i>
               </button>
@@ -36,8 +39,13 @@
         </div>
       </template>
     </div>
-    
   </div>
+    <ModalCartItems
+            v-if="modalVisible"
+            :carritoId="carritoSeleccionadoId"
+            :visible="modalVisible"
+            @close="modalVisible = false"
+    />
   <div v-if="show" class="cart-backdrop" @click="$emit('close')"></div>
 </template>
 
@@ -48,11 +56,20 @@ import { CartService } from '@/utils/cartService';
 import Swal from 'sweetalert2';
 import { useRouter } from 'vue-router';
 import AgregarCarrito from './AddCartBtn.vue'
+import ModalCartItems from '@/views/usuarios/components/ModalCartItems.vue';
+import { watch } from 'vue';
 
 const auth = useAuthStore();
 const cartService = new CartService();
 const router = useRouter();
 const carritos = ref([]);
+const modalVisible = ref(false);
+const carritoSeleccionadoId = ref(null);
+
+function abrirModal(carrito) {
+  carritoSeleccionadoId.value = carrito.id;
+  modalVisible.value = true;
+}
 
 async function fetchCarritos() {
   if (auth.isAuthenticated && auth.user?.role === 'cliente') {
@@ -95,10 +112,19 @@ async function eliminarCarrito(carrito) {
   }
 }
 
-defineProps({
+const props = defineProps({
   show: Boolean
 });
 defineEmits(['close']);
+
+watch(
+  () => props.show,
+  (nuevoValor) => {
+    if (nuevoValor) {
+      fetchCarritos();
+    }
+  }
+);
 </script>
 
 <style scoped>
