@@ -80,4 +80,27 @@ export class UserService {
         return false
     }
 
+    async getAll(){
+        try {
+            const res = await this.api.get('/register/')
+            if (res.status === 200) {
+                return { status: true, data: res.data.data }
+            }
+        } catch (error) {
+            console.error('Error al obtener todos los usuarios:', error)
+            return false
+        }
+        return false
+    }
+
+    async createEmpleado(data) {
+        try {
+            const res = await this.api.post('/register/admin-create', data)
+            return res.data
+        } catch (error) {
+            console.error('Error al crear empleado:', error)
+            return false
+        }
+    }
+
 }
