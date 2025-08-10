@@ -15,7 +15,12 @@
                     <input type="text" class="input_cantidad" :value="cantidad_producto">
                     <button class="btn_cantidad mas" @click="incrementar">+</button>
                 </div>
-                <button class="agregar_al_carrito">Agregar al carrito</button>
+                <AddToCart
+                    :id="producto?.product_id"
+                    :imagen="producto?.image || placeholder"
+                    :nombre="producto?.name || 'Cargando...'"
+                    :precio="producto?.price || '--'"
+                />
             </div>
         </div>
 
@@ -33,6 +38,7 @@
                     class="carousel-item"
                     >
                     <carta_producto
+                        :id="producto.product_id"
                         :imagen="producto.image || Ejemplo_png"
                         :nombre="producto.name"
                         :precio="producto.price"
@@ -57,7 +63,7 @@ import Carta_producto from './Carta_producto.vue';
 import { ProductService } from '@/utils/productServices';
 import { categoryService } from '@/utils/categoryServices';
 import placeholder from '@/assets/Imagenes/placeholder.webp';
-
+import AddToCart from './AddToCart.vue';
 const route = useRoute();
 const productService = new ProductService();
 const cantidad_producto = ref(1);
