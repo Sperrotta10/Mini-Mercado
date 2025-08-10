@@ -12,8 +12,8 @@
                       Última actualización: {{ formatFecha(carrito.updatedAt) }}
                     </span>                </div>
                 <div class="carrito-actions">
-                    <button class="btn_ver" @click="verCarrito(carrito)">
-                        <i class="fas fa-eye"></i> Ver
+                    <button class="btn_ver" @click="abrirModal(carrito)">
+                      <i class="fas fa-eye"></i> Ver
                     </button>
                     <button class="btn_edit" @click="editarCarrito(carrito)">
                         <i class="fas fa-edit"></i> Editar
@@ -24,6 +24,15 @@
                 </div>
             </div>
         </div>
+        <ModalCartItems
+          v-if="modalVisible"
+          :carritoId="carritoSeleccionadoId"
+          :visible="modalVisible"
+          @close="modalVisible = false"
+        />
+        <div class="add-btn">
+          <AddCartBtn @carrito-agregado="fetchCarritos" />
+        </div>
     </div>
 </template>
 
@@ -31,10 +40,20 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { CartService } from '@/utils/cartService';
+import AddCartBtn from '@/modules/AddCartBtn.vue';
+import ModalCartItems from './ModalCartItems.vue';
+import Swal from 'sweetalert2';
 
 const router = useRouter();
 const cartService = new CartService();
 const carritos = ref([{}]);
+const modalVisible = ref(false);
+const carritoSeleccionadoId = ref(null);
+
+function abrirModal(carrito) {
+  carritoSeleccionadoId.value = carrito.cart_id;
+  modalVisible.value = true;
+}
 
 async function fetchCarritos() {
     const data = await cartService.getAllCarts();
@@ -55,19 +74,39 @@ onMounted(() => {
     fetchCarritos();
 });
 
-function verCarrito(carrito) {
-    alert(`Ver carrito: ${carrito.name}`);
-}
 function editarCarrito(carrito) {
-    alert(`Editar carrito: ${carrito.name}`);
     router.push({ name: 'DetallesCarrito', params: { id: carrito.cart_id }, query: { nombre: carrito.name } });
 
 }
+
+
+
+
 function eliminarCarrito(carrito) {
-    if (confirm(`¿Eliminar el carrito "${carrito.name}"?`)) {
-        carritos.value = carritos.value.filter(c => c.cart_id !== carrito.cart_id);
-    }
+    Swal.fire({
+        title: `¿Eliminar el carrito "${carrito.name}"?`,
+        text: "Esta acción no se puede deshacer.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#e74c3c',
+        cancelButtonColor: '#10b68d',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            carritos.value = carritos.value.filter(c => c.cart_id !== carrito.cart_id);
+            cartService.DeleteCart(carrito.cart_id)
+                .then(() => {
+                    Swal.fire('Eliminado', `Carrito "${carrito.name}" eliminado.`, 'success');
+                })
+                .catch(error => {
+                    console.error('Error al eliminar el carrito:', error);
+                    Swal.fire('Error', 'No se pudo eliminar el carrito.', 'error');
+                });
+        }
+    });
 }
+
 </script>
 
 <style scoped>
@@ -209,5 +248,10 @@ function eliminarCarrito(carrito) {
     align-items: stretch;
     gap: 8px;
   }
+}
+
+.add-btn{
+  padding: 10px 20px;
+  margin-top: 15px;
 }
 </style>
