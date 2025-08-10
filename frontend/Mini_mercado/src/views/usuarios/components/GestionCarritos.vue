@@ -30,7 +30,7 @@
           :visible="modalVisible"
           @close="modalVisible = false"
         />
-        <div class="add-btn">
+        <div class="add-btn" v-if="carritos.length < 3">
           <AddCartBtn @carrito-agregado="fetchCarritos" />
         </div>
     </div>
