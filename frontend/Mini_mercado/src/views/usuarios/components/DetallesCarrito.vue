@@ -8,15 +8,15 @@
       <div v-for="producto in productos" :key="producto.id" class="producto-card">
         <div class="producto-row">
           <img
-            v-if="producto.imagen"
-            :src="producto.imagen"
+            v-if="producto.item_data.imagen"
+            :src="producto.item_data.imagen"
             alt="Imagen"
             class="producto-imagen"
             style="width:60px; height:60px; object-fit:cover; border-radius:8px; margin-right:5px;"
           />
           <div class="producto-info">
-            <span class="producto-nombre">{{ producto.nombre }}</span>
-            <span class="producto-precio">{{ currency(producto.precio) }}</span>
+            <span class="producto-nombre">{{ producto.item_data.nombre }}</span>
+            <span class="producto-precio">{{ currency(producto.item_data.precio) }}</span>
           </div>
           <div class="producto-actions">
             <button class="btn_counter" @click="disminuirCantidad(producto)" :disabled="producto.cantidad <= 1">-</button>
@@ -29,19 +29,25 @@
         </div>
       </div>
     </div>
+    <button class="btn_guardar" @click="guardarCambios">Guardar cambios</button>
+
   </div>
 </template>
 
+
 <script setup>
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { CartItemService } from '@/utils/cartItemService';
 import { onMounted } from 'vue';
+import Swal from 'sweetalert2';
 
 const route = useRoute();
+const router = useRouter();
 const cartItemService = new CartItemService();
 const nombreCarrito = ref(route.query.nombre || 'Sin nombre');
-const productos = ref([{}]);
+const productos = ref([]);
+const productosOriginales = ref([]); // <-- Guarda el estado original
 
 async function fetchCartItems() {
   try {
@@ -50,20 +56,28 @@ async function fetchCartItems() {
       const data = await cartItemService.getAllCartItems(cartId);
       if (!data) {
         productos.value = [];
+        productosOriginales.value = [];
         return;
       }
-      const items = data.data;
-      productos.value = items.map(item => ({
-        id: item.product.product_id,
-        nombre: item.product.name,
-        precio: item.product.price,
-        cantidad: item.quantity,
-        imagen: item.product.image 
-      }));
+      const items = data.data.map(item => (
+        {
+          item_id: item.item_id,
+          cantidad: item.quantity,
+          item_data:{  
+            id: item.product.product_id,
+            nombre: item.product.name,
+            precio: item.product.price,
+            imagen: item.product.image 
+          }
+        }
+      ));
+      productos.value = items;
+      productosOriginales.value = JSON.parse(JSON.stringify(items));
     }
   } catch (error) {
     console.error('Error al cargar los productos del carrito:', error);
     productos.value = [];
+    productosOriginales.value = [];
   }
 }
 
@@ -79,11 +93,72 @@ function disminuirCantidad(producto) {
     producto.cantidad--;
   }
 }
-function eliminarProducto(producto) {
-  productos.value = productos.value.filter(p => p.id !== producto.id);
+
+async function eliminarProducto(producto) {
+  const confirm = await Swal.fire({
+    title: `¿Eliminar "${producto.item_data.nombre}"?`,
+    text: "Esta acción no se puede deshacer.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#e74c3c',
+    cancelButtonColor: '#10b68d',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  });
+  if (confirm.isConfirmed) {
+    productos.value = productos.value.filter(p => p.item_id !== producto.item_id);
+    await cartItemService.deleteCartItem(producto.item_id);
+    Swal.fire('Eliminado', 'El producto fue eliminado del carrito.', 'success');
+  }
 }
+
 function currency(value) {
   return '$' + Number(value).toFixed(2);
+}
+
+// --- GUARDAR CAMBIOS ---
+async function guardarCambios() {
+  // 1. Productos eliminados
+  const eliminados = productosOriginales.value.filter(
+    orig => !productos.value.some(p => p.item_id === orig.item_id)
+  );
+  // 2. Productos con cantidad cambiada
+  const modificados = productos.value.filter(
+    p => {
+      const orig = productosOriginales.value.find(o => o.item_id === p.item_id);
+      return orig && orig.cantidad !== p.cantidad;
+    }
+  );
+
+  if (eliminados.length === 0 && modificados.length === 0) {
+    await Swal.fire('Sin cambios', 'No hay cambios para guardar.', 'info');
+    return;
+  }
+
+  const confirm = await Swal.fire({
+    title: '¿Guardar cambios?',
+    text: 'Se actualizarán los productos modificados y se eliminarán los eliminados.',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#10b68d',
+    cancelButtonColor: '#e74c3c',
+    confirmButtonText: 'Guardar',
+    cancelButtonText: 'Cancelar'
+  });
+
+  if (!confirm.isConfirmed) return;
+
+  // Eliminar productos
+  for (const prod of eliminados) {
+    await cartItemService.deleteCartItem(prod.item_id);
+  }
+  // Actualizar cantidades
+  for (const prod of modificados) {
+    await cartItemService.updateCartItem(prod.item_id, { quantity: prod.cantidad });
+  }
+
+  await Swal.fire('¡Listo!', 'Los cambios se guardaron correctamente.', 'success');
+  router.push({ name: 'Gestion_Carrito' });
 }
 </script>
 
@@ -216,5 +291,22 @@ function currency(value) {
     justify-content: flex-start;
     gap: 8px;
   }
+}
+
+.btn_guardar {
+  margin: 24px auto 0 auto;
+  display: block;
+  background: #10b68d;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 32px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn_guardar:hover {
+  background: #018175;
 }
 </style>
