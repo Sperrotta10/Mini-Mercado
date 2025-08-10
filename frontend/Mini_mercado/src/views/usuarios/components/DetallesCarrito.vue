@@ -7,6 +7,13 @@
     <div v-else class="productos-grid">
       <div v-for="producto in productos" :key="producto.id" class="producto-card">
         <div class="producto-row">
+          <img
+            v-if="producto.imagen"
+            :src="producto.imagen"
+            alt="Imagen"
+            class="producto-imagen"
+            style="width:60px; height:60px; object-fit:cover; border-radius:8px; margin-right:5px;"
+          />
           <div class="producto-info">
             <span class="producto-nombre">{{ producto.nombre }}</span>
             <span class="producto-precio">{{ currency(producto.precio) }}</span>
@@ -45,12 +52,13 @@ async function fetchCartItems() {
         productos.value = [];
         return;
       }
-      const items = data;
+      const items = data.data;
       productos.value = items.map(item => ({
-        id: item.producto.id,
-        nombre: item.producto.nombre,
-        precio: item.producto.precio,
-        cantidad: item.cantidad
+        id: item.product.product_id,
+        nombre: item.product.name,
+        precio: item.product.price,
+        cantidad: item.quantity,
+        imagen: item.product.image 
       }));
     }
   } catch (error) {
