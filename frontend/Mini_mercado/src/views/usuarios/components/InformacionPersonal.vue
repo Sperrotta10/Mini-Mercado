@@ -27,7 +27,6 @@
                     <span class="text">{{ userData.suscripcion || 'Usuario Suscriptor' }}</span>
                 </div>
                 <div class="accion_btn">
-                    <button class="btn_editar" @click="activar_suscriptor">ACTIVAR SUSCRIPTOR ⭐</button>
                     <button class="btn_editar" @click="entrar_editar">Editar</button>
                 </div>
             </template>
@@ -78,9 +77,6 @@ const entrar_editar = () => {
     router.push('/usuario/editar_informacion')
 }
 
-const activar_suscriptor = () => {
-    alert("SUSCRIPTOR ACTIVO!!!")
-}
 </script>
 
 <style scoped>

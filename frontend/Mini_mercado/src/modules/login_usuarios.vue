@@ -106,7 +106,12 @@ const onLogin = async () => {
         text: `Bienvenido de nuevo ${AuthStore.user.user_name ?? 'usuario'}.`,
         confirmButtonColor: '#3085d6',
       })
-    router.push('/') // Redirige a la página principal
+
+    if (AuthStore.user?.role=="empleado"){
+      router.push('/empleado') 
+    }else{
+        router.push('/') // Redirige a la página principal
+    }
   } else {
     await Swal.fire({
       icon: 'error',
