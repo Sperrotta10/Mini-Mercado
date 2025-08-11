@@ -60,10 +60,11 @@
                 </button>
               </div>
             </div>
-            <div v-if="carritos.length < 3" class="btn_agregar_para_carrito">
+            
+          </div>
+          <div v-if="carritos.length < 3" class="btn_agregar_para_carrito">
               <AddCartBtn @carrito-agregado="cargarCarritos"  />
             </div>
-          </div>
         </div>
       </div>
     </Teleport>
