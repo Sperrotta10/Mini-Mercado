@@ -1,86 +1,49 @@
 <template>
   <div id="inventory" class="page">
     <div class="card">
-      <div class="carta_header">
-        <h3></h3>
+      <div class="card-header">
+        <h3>Inventario</h3>
       </div>
-      <div class="contendor_carta">
-        <div class="tabla_responsive">
+      <div class="card-body">
+        <div class="table-responsive">
           <table>
             <thead>
               <tr>
                 <th>Nombre de producto</th>
                 <th>Categoría</th>
                 <th>Stock</th>
-                <th>Minimo stock</th>
+                <th>Mínimo stock</th>
                 <th>Estado de cantidad</th>
-                <th>Operación</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(product, index) in products" :key="index">
-                <td>{{ product.name }}</td>
-                <td>{{ product.category }}</td>
-                <td>{{ product.stock }}</td>
-                <td>{{ product.minStock }}</td>
+              <tr v-for="producto in productosPaginados" :key="producto.product_id">
+                <td>{{ producto.name }}</td>
+                <td>{{ producto.categoria_id }}</td>
+                <td>{{ producto.stock }}</td>
+                <td>{{ producto.stock_min }}</td>
                 <td>
                   <div class="progress-container">
-                    <div 
-                      class="progress-bar" 
-                      :class="{
-                        'bg-success': product.status === 'Bien',
-                        'bg-warning': product.status === 'Bajo',
-                        'bg-danger': product.status === 'Muy bajo'
-                      }" 
-                      :style="{
-                        width: `${Math.min(100, (product.stock / product.minStock) * 100)}%`
-                      }"
+                    <div
+                      class="progress-bar"
+                      :class="getBarClass(producto)"
+                      :style="{ width: getBarWidth(producto) }"
                     ></div>
                   </div>
-                  <small>{{ product.status }}</small>
+                  <small>{{ getEstadoStock(producto) }}</small>
                 </td>
-                <td class="contendor_separador">
-                  <button 
-                    class="btn_general" 
-                    @click="openEditModal(product)"
-                  >
-                    <i class="fas fa-edit"></i>
-                  </button>
-                </td>
+              </tr>
+              <tr v-if="productos.length === 0">
+                <td colspan="6" style="text-align:center;">No hay productos para mostrar.</td>
               </tr>
             </tbody>
           </table>
         </div>
-      </div>
-    </div>
-
-    <!-- Modal para reducir cantidad -->
-    <div v-if="showModal" class="modal-overlay">
-      <div class="modal-content">
-        <h3>Reducir cantidad de {{ selectedProduct.name }}</h3>
-        
-        <div class="modal-body">
-          <p>Stock actual: {{ selectedProduct.stock }}</p>
-          
-          <div class="form-group">
-            <label for="reduceAmount">Cantidad a reducir:</label>
-            <input 
-              type="number" 
-              id="reduceAmount" 
-              v-model.number="reduceAmount" 
-              min="1" 
-              :max="selectedProduct.stock"
-            >
-          </div>
-        </div>
-        
-        <div class="modal-footer">
-          <button class="btn-cancel" @click="showModal = false">
-            Cancelar
-          </button>
-          <button class="btn-confirm" @click="reduceStock">
-            Confirmar
-          </button>
+        <!-- Paginación -->
+        <div class="paginacion" v-if="totalPaginas > 1">
+          <button :disabled="paginaActual === 1" @click="paginaActual--">Anterior</button>
+          <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
+          <button :disabled="paginaActual === totalPaginas" @click="paginaActual++">Siguiente</button>
         </div>
       </div>
     </div>
@@ -88,88 +51,54 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { ProductService } from '@/utils/productServices';
 
-// Estado para controlar la visibilidad del modal
-const showModal = ref(false);
-// Producto seleccionado para editar
-const selectedProduct = ref(null);
-// Cantidad a reducir
-const reduceAmount = ref(1);
+const productos = ref([]);
+const productService = new ProductService();
 
-// Datos de productos (podrían venir de una API)
-const products = ref([
-  {
-    name: 'Manzana',
-    category: 'Frutas',
-    stock: 156,
-    minStock: 50,
-    status: 'Bien'
-  },
-  {
-    name: 'Naranja',
-    category: 'Frutas',
-    stock: 89,
-    minStock: 100,
-    status: 'Bajo'
-  },
-  {
-    name: 'Doritos',
-    category: 'Chucheria',
-    stock: 203,
-    minStock: 150,
-    status: 'Bien'
-  },
-  {
-    name: 'Coca cola',
-    category: 'Refresco',
-    stock: 32,
-    minStock: 100,
-    status: 'Muy bajo'
+// Paginación
+const paginaActual = ref(1);
+const productosPorPagina = 7;
+const totalPaginas = computed(() => Math.ceil(productos.value.length / productosPorPagina));
+const productosPaginados = computed(() => {
+  const inicio = (paginaActual.value - 1) * productosPorPagina;
+  return productos.value.slice(inicio, inicio + productosPorPagina);
+});
+
+async function cargarProductos() {
+  try {
+    const res = await productService.getProducts();
+    productos.value = (res.data || []).map(p => ({
+      ...p,
+    }));
+    paginaActual.value = 1;
+  } catch (e) {
+    productos.value = [];
+    console.error('Error al cargar productos:', e);
   }
-]);
+}
 
-// Abre el modal con el producto seleccionado
-const openEditModal = (product) => {
-  selectedProduct.value = product;
-  reduceAmount.value = 1;
-  showModal.value = true;
-};
 
-// Reduce el stock del producto seleccionado
-const reduceStock = () => {
-  if (selectedProduct.value && reduceAmount.value > 0) {
-    const productIndex = products.value.findIndex(
-      p => p.name === selectedProduct.value.name
-    );
-    
-    if (productIndex !== -1) {
-      // No permitir que el stock sea negativo
-      const newStock = Math.max(0, products.value[productIndex].stock - reduceAmount.value);
-      products.value[productIndex].stock = newStock;
-      
-      // Actualizar el estado según el nuevo stock
-      updateProductStatus(productIndex);
-      
-      // Cerrar el modal
-      showModal.value = false;
-    }
-  }
-};
 
-// Actualiza el estado del producto basado en el stock
-const updateProductStatus = (index) => {
-  const product = products.value[index];
-  const percentage = (product.stock / product.minStock) * 100;
-  
-  if (percentage >= 70) {
-    product.status = 'Bien';
-  } else if (percentage >= 30) {
-    product.status = 'Bajo';
-  } else {
-    product.status = 'Muy bajo';
-  }
-};
+function getBarWidth(producto) {
+  const percent = Math.min(100, Math.round((producto.stock / producto.stock_min) * 100));
+  return percent + '%';
+}
+function getBarClass(producto) {
+  if (producto.stock < producto.stock_min * 0.5) return 'bg-danger';
+  if (producto.stock < producto.stock_min) return 'bg-warning';
+  return 'bg-success';
+}
+function getEstadoStock(producto) {
+  if (producto.stock < producto.stock_min * 0.5) return 'Muy bajo';
+  if (producto.stock < producto.stock_min) return 'Bajo';
+  return 'Bien';
+}
+
+onMounted(() => {
+  cargarProductos();
+});
 </script>
 
 <style scoped>
@@ -183,7 +112,7 @@ const updateProductStatus = (index) => {
     overflow: hidden;
 }
 
-.carta_header {
+.card-header {
     padding: 15px 20px;
     border-bottom: 1px solid var(--border);
     display: flex;
@@ -191,17 +120,17 @@ const updateProductStatus = (index) => {
     align-items: center;
 }
 
-.carta_header h3 {
+.card-header h3 {
     font-size: 1.3rem;
     color: var(--dark);
 }
 
-.contendor_carta {
+.card-body {
     padding: 20px;
 }
 
 /* La tabla */
-.tabla_responsive {
+.table-responsive {
     overflow-x: auto;
 }
 
@@ -210,8 +139,7 @@ table {
     border-collapse: collapse;
 }
 
-th,
-td {
+th, td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid var(--border);
@@ -253,13 +181,13 @@ tr:hover {
     background: #f72585;
 }
 
-.contendor_separador {
+.contendor_separador{
     width: 100%;
     display: flex;
     gap: 20px;
 }
 
-.btn_general {
+.btn_general{
     background-color: #10b68d;
     border: none;
     padding: 10px 15px;
@@ -268,74 +196,130 @@ tr:hover {
     color: white;
 }
 
-.btn_general i {
+.btn_general i{
     color: white;
 }
 
-.modal-overlay {
+/* Estilos para el modal */
+.modal-backdrop {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background: rgba(0,0,0,0.35); /* Más oscuro para mejor contraste */
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  background: #f8fafc; /* Fondo más claro y suave */
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(16,182,141,0.22);
+  padding: 36px 28px 28px 28px;
+  min-width: 340px;
+  max-width: 98vw;
+  max-height: 92vh;
+  overflow-y: auto;
+  position: relative;
+  border: 1.5px solid #10b68d22;
+}
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 22px;
+  background: none;
+  border: none;
+  font-size: 2.2rem;
+  color: #10b68d;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.modal-close:hover {
+  color: #018175;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.modal-form label {
+  font-weight: 600;
+  color: #10b68d;
+  margin-bottom: 4px;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+
+.modal-form input,
+.modal-form select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #e0e7ef;
+  background: #fff;
+  font-size: 1rem;
+  color: #222;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  margin-bottom: 2px;
+  box-shadow: 0 1px 2px rgba(16,182,141,0.04);
+}
+
+.modal-form input:focus,
+.modal-form select:focus {
+  border-color: #10b68d;
+  box-shadow: 0 0 0 2px #10b68d22;
+}
+
+.modal-form button.btn_general {
+  margin-top: 12px;
+  background: linear-gradient(90deg, #10b68d 60%, #4cc9f0 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  font-size: 1.08rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(16,182,141,0.10);
+}
+
+.modal-form button.btn_general:hover {
+  background: linear-gradient(90deg, #018175 60%, #4cc9f0 100%);
+}
+
+.modal-form img {
+  display: block;
+  margin: 0 auto;
+  border-radius: 10px;
+  border: 1.5px solid #10b68d33;
+  box-shadow: 0 2px 8px rgba(16,182,141,0.10);
+  background: #fff;
+  padding: 4px;
+}
+
+/* Paginación */
+.paginacion {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  gap: 18px;
+  margin: 18px 0 0 0;
 }
-
-.modal-content {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  width: 400px;
-  max-width: 90%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.modal-body {
-  margin: 20px 0;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 500;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.btn-cancel {
-  background-color: #f0f0f0;
-  color: #333;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-confirm {
-  background-color: #10b68d;
+.paginacion button {
+  background: #10b68d;
   color: white;
   border: none;
-  padding: 8px 15px;
-  border-radius: 4px;
+  border-radius: 5px;
+  padding: 6px 18px;
+  font-weight: bold;
   cursor: pointer;
+  transition: background 0.2s;
+}
+.paginacion button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>    
     <div class="contenedor">
         <div class="carta_bienvenida">
-            <h1>¡Bienvenido de nuevo! {Nombre de Empleado}🎉</h1>
+            <h1>¡Bienvenido de nuevo, {{nombre}}! 🎉</h1>
             <p class="sub_titulo">Tu panel de control está listo para ayudarte hoy.</p>
             <img :src="imagen_logo" alt="imagen_logo" style="width: 65%; height: auto;">
         </div>
@@ -14,6 +14,10 @@
 
 <script setup>
 import imagen_logo from '@/assets/Imagenes/LogoMSJ.png'
+import { useAuthStore } from '@/stores/Auth';
+
+const AuthStore = useAuthStore();
+const nombre = AuthStore.user?.username
 </script>
 
 <style scoped>

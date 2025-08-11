@@ -24,7 +24,7 @@
         <router-link to="/empleado/atencion_cliente" class="nav_item" active-class="active">
           <div class="nav_item_individual">
             <i class="fa-solid fa-calendar-week"></i>
-            <span class="text">Atención al Cliente Suscriptor</span>
+            <span class="text">Consultar Carritos de Clientes</span>
           </div>
         </router-link>
       </li>

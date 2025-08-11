@@ -12,15 +12,17 @@
 <script setup>
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-
+import { useAuthStore } from '@/stores/Auth'
 const router = useRouter()
 const route = useRoute()
+const authStore = useAuthStore()
 
 const RouteTitulo = computed(() => {
   return route.meta.title || '¡Bienvenidos!'
 })
 
 const salir = () => {
+  authStore.logout()
   router.push('/login')
 }
 </script>
