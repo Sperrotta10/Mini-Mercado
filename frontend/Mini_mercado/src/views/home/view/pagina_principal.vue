@@ -12,7 +12,16 @@
 
       <!--Area de Productos-->
         <div class="contenedor_producto">
-
+          <div 
+            class="cedula"
+            v-if="AuthStore.user?.role === 'cliente' && !AuthStore.userData?.cedula"
+            >
+            <CedulaCliente 
+              :show="mostrarModal" 
+              @close="mostrarModal = false" 
+              @cedula-submitted="manejarCedula" 
+            />
+          </div>
 
           <div
             v-for="categoria in categoriasConProductos"
@@ -47,6 +56,7 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '@/stores/Auth'
 import header_general from '@/modules/header_general.vue'
 import FooterComponente from '../components/Footer_Detalles.vue'
 import PresentacionMarket from '../components/PresentacionMarket.vue'
@@ -57,7 +67,10 @@ import Carta_categoria from '../components/Carta_categoria.vue'
 import { ref, onMounted } from 'vue'
 import { ProductService } from '@/utils/productServices'
 import { categoryService } from '@/utils/categoryServices'
+import CedulaCliente from '../components/CedulaCliente.vue'
 
+const AuthStore = useAuthStore();
+AuthStore.GetThisUserData();
 const categoriasConProductos = ref([])
 const productService = new ProductService()
 
@@ -72,6 +85,12 @@ onMounted(async () => {
     productos: productos.data.filter(p => p.categoria_id === cat.categoria_id).slice(0, 5)
   }))
 })
+
+const mostrarModal = ref(true);
+function manejarCedula() {
+  mostrarModal.value = false; // Esto también cierra la modal
+  console.log("modal cerrada")
+}
 </script>
 
 <style scoped>
