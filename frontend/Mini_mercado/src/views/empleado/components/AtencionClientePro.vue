@@ -1,6 +1,18 @@
 <template>
   <div class="carritos-usuarios">
     <h2 class="titulo">Carritos de Usuarios</h2>
+    <div class="busqueda-cedula">
+      <input
+        v-model="cedula"
+        type="text"
+        maxlength="8"
+        placeholder="Ingrese cédula (Ej: 12345678)"
+        @input="soloNumeros"
+        class="input-cedula"
+      />
+      <button class="btn-buscar" @click="buscarCarritos">Buscar</button>
+    </div>
+    <p v-if="error" class="error">{{ error }}</p>
     <div class="tabla-container">
       <table>
         <thead>
@@ -9,20 +21,21 @@
             <th>Nombre</th>
             <th>Usuario</th>
             <th>Fecha de actualización</th>
-            <th>Operación</th>
+            <!--<th>Operación</th>-->
           </tr>
         </thead>
         <tbody>
           <tr v-for="carrito in carritosPaginados" :key="carrito.cart_id">
             <td>{{ carrito.cart_id }}</td>
             <td>{{ carrito.name }}</td>
-            <td>{{ carrito.user?.username || carrito.user_id }}</td>
+            <td>{{ username || carrito.user_id }}</td>
             <td>{{ formatFecha(carrito.updatedAt) }}</td>
-            <td>
+            <!-- Future Feature -->
+            <!--<td>
               <button class="btn_ver" @click="abrirModal(carrito.cart_id)">
                 <i class="fas fa-eye"></i> Ver
               </button>
-            </td>
+            </td>-->
           </tr>
           <tr v-if="carritos.length === 0">
             <td colspan="5" style="text-align:center;">No hay carritos para mostrar.</td>
@@ -47,17 +60,20 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { CartService } from '@/utils/cartService';
+import { ref, computed } from 'vue';
 import ModalCartItems from '@/views/usuarios/components/ModalCartItems.vue';
+import { UserService } from '@/utils/userServices';
 
+const username = ref('');
 const carritos = ref([]);
 const paginaActual = ref(1);
 const carritosPorPagina = 8;
 const modalVisible = ref(false);
-const carritoSeleccionadoId = ref(null);
+// const carritoSeleccionadoId = ref(null); #Future Feature
+const userServiceInstance = new UserService();
 
-const cartService = new CartService();
+const cedula = ref('');
+const error = ref('');
 
 const totalPaginas = computed(() => Math.ceil(carritos.value.length / carritosPorPagina));
 const carritosPaginados = computed(() => {
@@ -65,22 +81,42 @@ const carritosPaginados = computed(() => {
   return carritos.value.slice(inicio, inicio + carritosPorPagina);
 });
 
-async function cargarCarritos() {
+function soloNumeros(e) {
+  let valor = e.target.value.replace(/[^\d]/g, '');
+  if (valor.length > 8) {
+    valor = valor.slice(0, 8);
+  }
+  cedula.value = valor;
+}
+
+async function buscarCarritos() {
+  error.value = '';
+  if (!cedula.value || cedula.value.length < 1 || cedula.value.length > 8) {
+    error.value = 'Ingrese una cédula válida (1 a 8 números).';
+    carritos.value = [];
+    return;
+  }
   try {
-    const res = await cartService.getAllCarts();
+    const res = await userServiceInstance.getCartsByCedula(cedula.value);
     console.log(res.data)
-    carritos.value = res.data || [];
+    carritos.value = res.data?.carts || [];
+    username.value = res.data?.username || '';
     paginaActual.value = 1;
+    if (carritos.value.length === 0) {
+      error.value = 'No hay carritos para esta cédula.';
+    }
   } catch (e) {
     carritos.value = [];
+    error.value = 'Error al buscar carritos.';
     console.error('Error al cargar carritos:', e);
   }
 }
-
+/* Future Feature
 function abrirModal(cartId) {
   carritoSeleccionadoId.value = cartId;
   modalVisible.value = true;
 }
+*/
 
 function formatFecha(fechaIso) {
   if (!fechaIso) return '';
@@ -92,10 +128,6 @@ function formatFecha(fechaIso) {
   const minutos = String(fecha.getMinutes()).padStart(2, '0');
   return `${dia}/${mes}/${anio} ${horas}:${minutos}`;
 }
-
-onMounted(() => {
-  cargarCarritos();
-});
 </script>
 
 <style scoped>
@@ -110,6 +142,49 @@ onMounted(() => {
   margin-bottom: 32px;
   font-size: 2rem;
   font-weight: bold;
+}
+.busqueda-cedula {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 24px;
+  justify-content: center;
+}
+.input-cedula {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1.5px solid #10b68d55;
+  background: #fff;
+  font-size: 1.08rem;
+  color: #222;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(16,182,141,0.04);
+  width: 220px;
+}
+.input-cedula:focus {
+  border-color: #10b68d;
+  box-shadow: 0 0 0 2px #10b68d22;
+}
+.btn-buscar {
+  background: #10b68d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 1.08rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-buscar:hover {
+  background: #018175;
+}
+.error {
+  color: #e74c3c;
+  margin-bottom: 12px;
+  text-align: center;
+  font-weight: 500;
 }
 .tabla-container {
   background: white;
