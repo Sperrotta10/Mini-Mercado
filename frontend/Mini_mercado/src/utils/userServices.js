@@ -103,4 +103,16 @@ export class UserService {
         }
     }
 
+    async getCartsByCedula(cedula){
+        try{
+            const res = await this.api.get(`/register/cedula/${cedula}`)
+            if (res.status === 200) {
+                return { status: true, data: res.data.data }
+            }
+        } catch(error){
+            console.error('Error al obtener carritos del usuario', error)
+            return false
+        }
+    }
+
 }
