@@ -1,0 +1,64 @@
+/*Plantilla de colores: para guiar bien las cosas*/
+.plantilla_COLORES {
+    color: #004C45;
+    color: #018175;
+    color: #10b68d;
+    color: #94dd8b;
+    color: #fee3b2;
+}
+
+/*Areas de producto ------------------------------------------------------------------*/
+.contenedor_producto {
+    max-width: 1400px;
+    margin: 40px auto;
+}
+
+.contenedor_caja_producto {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 25px;
+}
+
+.contenedor_lista_producto{
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.contenedor_lista_producto h2{
+    margin-bottom: 10px;
+    color: #018175;
+    font-size: 1.5rem;
+}
+
+.contenedor_titulo{
+    margin-bottom: 20px;
+}
+
+/*Area de responsive ------------------------------------------------------------------*/
+@media (max-width: 1200px) {
+    .contenedor_caja_producto {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+}
+
+@media (max-width: 768px) {
+    .barra_principal {
+        flex-direction: column;
+    }
+
+    .contenedor_caja_producto {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .contenedor_caja_producto {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.contenedor_producto {
+    max-width: 90%;
+    margin: 10px auto;
+}

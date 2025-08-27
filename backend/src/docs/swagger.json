@@ -1,0 +1,2911 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "MiniMercado",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Register"
+    },
+    {
+      "name": "roles"
+    },
+    {
+      "name": "category"
+    },
+    {
+      "name": "auth"
+    },
+    {
+      "name": "product"
+    }
+  ],
+  "paths": {
+    "/api/v1/register/": {
+      "post": {
+        "summary": "crear usuario",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Register"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "email",
+                  "password",
+                  "role"
+                ]
+              },
+              "example": {
+                "username": "SperrottaE2",
+                "email": "santiagoE2@gmail.com",
+                "password": "Santiago10%",
+                "role": "empleado"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "get": {
+        "summary": "obtener usuarios",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Register"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Users obtenidos",
+                  "data": [
+                    {
+                      "user_id": 2,
+                      "rol_id": 3,
+                      "googleId": null,
+                      "nombre_completo": null,
+                      "cedula": null,
+                      "telefono": null,
+                      "username": "Sperrotta10",
+                      "email": "santiago@gmail.com",
+                      "suscripcion": false,
+                      "image_perfil": null,
+                      "createdAt": "2025-06-26T19:21:12.000Z",
+                      "updatedAt": "2025-06-26T19:21:12.000Z"
+                    },
+                    {
+                      "user_id": 3,
+                      "rol_id": 1,
+                      "googleId": null,
+                      "nombre_completo": null,
+                      "cedula": null,
+                      "telefono": null,
+                      "username": "Sperrotta2",
+                      "email": "santiago2@gmail.com",
+                      "suscripcion": false,
+                      "image_perfil": null,
+                      "createdAt": "2025-07-02T20:57:05.000Z",
+                      "updatedAt": "2025-07-02T20:57:05.000Z"
+                    },
+                    {
+                      "user_id": 4,
+                      "rol_id": 1,
+                      "googleId": null,
+                      "nombre_completo": null,
+                      "cedula": null,
+                      "telefono": null,
+                      "username": "Sperrotta3",
+                      "email": "santiago3@gmail.com",
+                      "suscripcion": false,
+                      "image_perfil": null,
+                      "createdAt": "2025-07-02T21:08:20.000Z",
+                      "updatedAt": "2025-07-02T21:08:20.000Z"
+                    },
+                    {
+                      "user_id": 5,
+                      "rol_id": 1,
+                      "googleId": null,
+                      "nombre_completo": null,
+                      "cedula": null,
+                      "telefono": null,
+                      "username": "Sperrotta4",
+                      "email": "santiago4@gmail.com",
+                      "suscripcion": false,
+                      "image_perfil": null,
+                      "createdAt": "2025-07-02T21:10:27.000Z",
+                      "updatedAt": "2025-07-02T21:10:27.000Z"
+                    },
+                    {
+                      "user_id": 7,
+                      "rol_id": 1,
+                      "googleId": null,
+                      "nombre_completo": null,
+                      "cedula": null,
+                      "telefono": null,
+                      "username": "Sperrotta5",
+                      "email": "santiago5@gmail.com",
+                      "suscripcion": false,
+                      "image_perfil": null,
+                      "createdAt": "2025-07-02T21:20:57.000Z",
+                      "updatedAt": "2025-07-02T21:20:57.000Z"
+                    },
+                    {
+                      "user_id": 8,
+                      "rol_id": 2,
+                      "googleId": null,
+                      "nombre_completo": null,
+                      "cedula": null,
+                      "telefono": null,
+                      "username": "SperrottaE1",
+                      "email": "santiagoE1@gmail.com",
+                      "suscripcion": false,
+                      "image_perfil": null,
+                      "createdAt": "2025-07-02T21:24:28.000Z",
+                      "updatedAt": "2025-07-02T21:24:28.000Z"
+                    },
+                    {
+                      "user_id": 9,
+                      "rol_id": 2,
+                      "googleId": null,
+                      "nombre_completo": null,
+                      "cedula": null,
+                      "telefono": null,
+                      "username": "SperrottaE2",
+                      "email": "santiagoE2@gmail.com",
+                      "suscripcion": false,
+                      "image_perfil": null,
+                      "createdAt": "2025-07-04T16:21:43.000Z",
+                      "updatedAt": "2025-07-04T16:21:43.000Z"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/register/4": {
+      "get": {
+        "summary": "obtener usuario",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Register"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "User obtenido",
+                  "data": {
+                    "user_id": 4,
+                    "rol_id": 1,
+                    "googleId": null,
+                    "nombre_completo": null,
+                    "cedula": null,
+                    "telefono": null,
+                    "username": "Sperrotta3",
+                    "email": "santiago3@gmail.com",
+                    "suscripcion": false,
+                    "image_perfil": null,
+                    "createdAt": "2025-07-02T21:08:20.000Z",
+                    "updatedAt": "2025-07-02T21:08:20.000Z"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "patch": {
+        "summary": "actualizar usuario",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Register"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "suscripcion": {
+                    "type": "boolean"
+                  },
+                  "nombre_completo": {
+                    "type": "string"
+                  },
+                  "cedula": {
+                    "type": "string"
+                  },
+                  "telefono": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "suscripcion": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/register/cedula/31014123": {
+      "get": {
+        "summary": "obtener usuario por cedula",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Register"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/register/1": {
+      "delete": {
+        "summary": "eliminar usuario",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Register"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/register/empleado/pagination": {
+      "get": {
+        "summary": "obtener empleados",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Register"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "10",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "example": "empleado",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Users obtenidos",
+                  "data": {
+                    "currentPage": 1,
+                    "totalPages": 1,
+                    "totalItems": 2,
+                    "users": [
+                      {
+                        "user_id": 8,
+                        "rol_id": 2,
+                        "googleId": null,
+                        "nombre_completo": null,
+                        "cedula": null,
+                        "telefono": null,
+                        "username": "SperrottaE1",
+                        "email": "santiagoE1@gmail.com",
+                        "suscripcion": false,
+                        "image_perfil": null,
+                        "createdAt": "2025-07-02T21:24:28.000Z",
+                        "updatedAt": "2025-07-02T21:24:28.000Z",
+                        "role": {
+                          "rol_id": 2,
+                          "name": "empleado",
+                          "createdAt": "2025-06-26T18:45:45.000Z",
+                          "updatedAt": "2025-06-26T18:45:45.000Z"
+                        }
+                      },
+                      {
+                        "user_id": 9,
+                        "rol_id": 2,
+                        "googleId": null,
+                        "nombre_completo": null,
+                        "cedula": null,
+                        "telefono": null,
+                        "username": "SperrottaE2",
+                        "email": "santiagoE2@gmail.com",
+                        "suscripcion": false,
+                        "image_perfil": null,
+                        "createdAt": "2025-07-04T16:21:43.000Z",
+                        "updatedAt": "2025-07-04T16:21:43.000Z",
+                        "role": {
+                          "rol_id": 2,
+                          "name": "empleado",
+                          "createdAt": "2025-06-26T18:45:45.000Z",
+                          "updatedAt": "2025-06-26T18:45:45.000Z"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/test": {
+      "get": {
+        "summary": "test",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Register"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/register/3": {
+      "delete": {
+        "summary": "eliminar usuario",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Register"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/role/": {
+      "post": {
+        "summary": "crear rol",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "roles"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "example": {
+                "name": "admin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "get": {
+        "summary": "obtener roles",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "roles"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Roles obtenidos",
+                  "data": [
+                    {
+                      "rol_id": 1,
+                      "name": "cliente",
+                      "createdAt": "2025-06-26T18:45:41.000Z",
+                      "updatedAt": "2025-06-26T18:45:41.000Z"
+                    },
+                    {
+                      "rol_id": 2,
+                      "name": "empleado",
+                      "createdAt": "2025-06-26T18:45:45.000Z",
+                      "updatedAt": "2025-06-26T18:45:45.000Z"
+                    },
+                    {
+                      "rol_id": 3,
+                      "name": "admin",
+                      "createdAt": "2025-06-26T18:45:50.000Z",
+                      "updatedAt": "2025-06-26T18:45:50.000Z"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/role/5": {
+      "delete": {
+        "summary": "eliminar rol",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "roles"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "put": {
+        "summary": "actualizar rol",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "roles"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "example": {
+                "name": "cliente"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/role/4": {
+      "delete": {
+        "summary": "eliminar rol",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "roles"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/category/": {
+      "get": {
+        "summary": "obtener categorias",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "category"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Categorias obtenidos",
+                  "data": [
+                    {
+                      "categoria_id": 1,
+                      "name": "Lácteos",
+                      "image": "",
+                      "createdAt": "2025-06-26T18:46:25.000Z",
+                      "updatedAt": "2025-06-26T18:46:25.000Z"
+                    },
+                    {
+                      "categoria_id": 2,
+                      "name": "Frutas y Verduras",
+                      "image": "",
+                      "createdAt": "2025-06-26T18:46:39.000Z",
+                      "updatedAt": "2025-06-26T18:46:39.000Z"
+                    },
+                    {
+                      "categoria_id": 3,
+                      "name": "Carnicería",
+                      "image": "",
+                      "createdAt": "2025-06-26T18:46:47.000Z",
+                      "updatedAt": "2025-06-26T18:46:47.000Z"
+                    },
+                    {
+                      "categoria_id": 4,
+                      "name": "Abarrotes",
+                      "image": "",
+                      "createdAt": "2025-06-26T18:46:56.000Z",
+                      "updatedAt": "2025-06-26T18:46:56.000Z"
+                    },
+                    {
+                      "categoria_id": 5,
+                      "name": "Bebidas",
+                      "image": "",
+                      "createdAt": "2025-06-26T18:47:02.000Z",
+                      "updatedAt": "2025-06-26T18:47:02.000Z"
+                    },
+                    {
+                      "categoria_id": 6,
+                      "name": "Snacks y Dulces",
+                      "image": "",
+                      "createdAt": "2025-06-26T18:47:12.000Z",
+                      "updatedAt": "2025-06-26T18:47:12.000Z"
+                    },
+                    {
+                      "categoria_id": 7,
+                      "name": "Limpieza",
+                      "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/category-images/category/1751751941640_messi.png",
+                      "createdAt": "2025-06-26T18:47:20.000Z",
+                      "updatedAt": "2025-07-05T21:45:43.000Z"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "post": {
+        "summary": "crear categoria",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "category"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Electrodomesticos"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "example": ""
+                  }
+                },
+                "required": [
+                  "name",
+                  "image"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/category/13": {
+      "delete": {
+        "summary": "eliminar categoria",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "category"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/category/7": {
+      "patch": {
+        "summary": "actualizar categoria",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "category"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "example": ""
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": ""
+                  }
+                }
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/category/8": {
+      "delete": {
+        "summary": "eliminar categoria",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "category"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              },
+              "example": {
+                "name": "Productos Congelados"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/category/9": {
+      "put": {
+        "summary": "actualizar categoria",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "category"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "example": {
+                "name": "update test"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "summary": "cerrar seccion",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "auth"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              },
+              "example": {
+                "email": "santiago@gmail.com",
+                "password": "Santiago10%"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/auth/google": {
+      "get": {
+        "summary": "loguearse con google",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "auth"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              },
+              "example": {
+                "email": "santiago@gmail.com",
+                "password": "Santiago10%"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/auth/google/logout": {
+      "post": {
+        "summary": "cerrar seccion con google",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "auth"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              },
+              "example": {
+                "email": "santiago@gmail.com",
+                "password": "Santiago10%"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "summary": "realizar login",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "auth"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              },
+              "example": {
+                "email": "santiago@gmail.com",
+                "password": "Santiago10%"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/product/": {
+      "post": {
+        "summary": "crear producto",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Camisa goku"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "example": ""
+                  },
+                  "price": {
+                    "type": "string",
+                    "example": "20.99"
+                  },
+                  "stock": {
+                    "type": "string",
+                    "example": "20"
+                  },
+                  "stock_min": {
+                    "type": "string",
+                    "example": "5"
+                  },
+                  "oferta": {
+                    "type": "string",
+                    "example": "10"
+                  },
+                  "categoria_id": {
+                    "type": "string",
+                    "example": "3"
+                  }
+                },
+                "required": [
+                  "name",
+                  "image",
+                  "price",
+                  "stock",
+                  "stock_min",
+                  "oferta",
+                  "categoria_id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "get": {
+        "summary": "obtener productos",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Productos obtenidos",
+                  "data": [
+                    {
+                      "product_id": 121,
+                      "name": "Manzanas (kg)",
+                      "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/manzana.png",
+                      "price": 1.8,
+                      "stock": 30,
+                      "stock_min": 8,
+                      "oferta": 5,
+                      "status": true,
+                      "categoria_id": 2,
+                      "createdAt": "2025-07-14T20:33:58.000Z",
+                      "updatedAt": "2025-07-14T20:33:58.000Z"
+                    },
+                    {
+                      "product_id": 122,
+                      "name": "Plátanos (kg)",
+                      "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/platano.png",
+                      "price": 1.2,
+                      "stock": 40,
+                      "stock_min": 10,
+                      "oferta": 0,
+                      "status": true,
+                      "categoria_id": 2,
+                      "createdAt": "2025-07-14T20:33:58.000Z",
+                      "updatedAt": "2025-07-14T20:33:58.000Z"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/product/120": {
+      "delete": {
+        "summary": "eliminar producto",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/product/119": {
+      "get": {
+        "summary": "obtener producto por id",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Producto obtenido",
+                  "data": {
+                    "product_id": 200,
+                    "name": "Chocolate en Polvo 1kg",
+                    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/chocolate-en-polvo.png",
+                    "price": 2.8,
+                    "stock": 14,
+                    "stock_min": 5,
+                    "oferta": 0,
+                    "status": true,
+                    "categoria_id": 4,
+                    "createdAt": "2025-07-14T20:33:59.000Z",
+                    "updatedAt": "2025-07-14T20:33:59.000Z"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/product/search/manza": {
+      "get": {
+        "summary": "obtener productos por el nombre",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Productos encontrados",
+                  "data": [
+                    {
+                      "product_id": 121,
+                      "name": "Manzanas (kg)",
+                      "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/manzana.png",
+                      "price": 1.8,
+                      "stock": 30,
+                      "stock_min": 8,
+                      "oferta": 5,
+                      "status": true,
+                      "categoria_id": 2,
+                      "createdAt": "2025-07-14T20:33:58.000Z",
+                      "updatedAt": "2025-07-14T20:33:58.000Z"
+                    },
+                    {
+                      "product_id": 180,
+                      "name": "Jugo de Manzana 1L",
+                      "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/jugo-de-manzana.png",
+                      "price": 2.3,
+                      "stock": 22,
+                      "stock_min": 7,
+                      "oferta": 0,
+                      "status": true,
+                      "categoria_id": 5,
+                      "createdAt": "2025-07-14T20:33:58.000Z",
+                      "updatedAt": "2025-07-14T20:33:58.000Z"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/product/all": {
+      "post": {
+        "summary": "crear varios productos",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "number"
+                    },
+                    "stock": {
+                      "type": "integer"
+                    },
+                    "stock_min": {
+                      "type": "integer"
+                    },
+                    "oferta": {
+                      "type": "integer"
+                    },
+                    "categoria_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "image",
+                    "price",
+                    "stock",
+                    "stock_min",
+                    "oferta",
+                    "categoria_id"
+                  ]
+                }
+              },
+              "example": [
+                {
+                  "name": "Manzanas (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/manzana.png",
+                  "price": 1.8,
+                  "stock": 30,
+                  "stock_min": 8,
+                  "oferta": 5,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Plátanos (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/platano.png",
+                  "price": 1.2,
+                  "stock": 40,
+                  "stock_min": 10,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Naranjas (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/naranja.png",
+                  "price": 1.5,
+                  "stock": 25,
+                  "stock_min": 7,
+                  "oferta": 10,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Zanahorias (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/zanahoria.png",
+                  "price": 0.9,
+                  "stock": 35,
+                  "stock_min": 12,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Tomates (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/tomate.png",
+                  "price": 1.6,
+                  "stock": 20,
+                  "stock_min": 6,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Lechuga",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/lechuga.png",
+                  "price": 0.8,
+                  "stock": 50,
+                  "stock_min": 15,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Papas (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/papas.png",
+                  "price": 1,
+                  "stock": 45,
+                  "stock_min": 20,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Cebollas (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cebollas.png",
+                  "price": 0.7,
+                  "stock": 30,
+                  "stock_min": 10,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Aguacates (unidad)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/aguacate.png",
+                  "price": 1.5,
+                  "stock": 15,
+                  "stock_min": 5,
+                  "oferta": 15,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Fresas (250g)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/fresas.png",
+                  "price": 2.5,
+                  "stock": 12,
+                  "stock_min": 4,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Uvas (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/uva.png",
+                  "price": 3,
+                  "stock": 18,
+                  "stock_min": 6,
+                  "oferta": 10,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Piña (unidad)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/pina.png",
+                  "price": 2.2,
+                  "stock": 10,
+                  "stock_min": 3,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Melón (unidad)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/melon.png",
+                  "price": 3.5,
+                  "stock": 8,
+                  "stock_min": 3,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Sandía (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/sandia.png",
+                  "price": 1.8,
+                  "stock": 6,
+                  "stock_min": 2,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Brócoli (unidad)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/brocoli.png",
+                  "price": 1.4,
+                  "stock": 15,
+                  "stock_min": 5,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Mora (kg",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/moras.png",
+                  "price": 1.2,
+                  "stock": 20,
+                  "stock_min": 7,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Pimenton (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/pimenton.png",
+                  "price": 2,
+                  "stock": 12,
+                  "stock_min": 4,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Limones (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/limones.png",
+                  "price": 1.3,
+                  "stock": 25,
+                  "stock_min": 8,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "kiwi",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/kiwi.png",
+                  "price": 0.6,
+                  "stock": 30,
+                  "stock_min": 10,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Pepino (unidad)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/pepino.png",
+                  "price": 0.9,
+                  "stock": 22,
+                  "stock_min": 7,
+                  "oferta": 0,
+                  "categoria_id": 2
+                },
+                {
+                  "name": "Pechuga de Pollo (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/pechuga-de-pollo.png",
+                  "price": 5.9,
+                  "stock": 20,
+                  "stock_min": 8,
+                  "oferta": 0,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Muslos de Pollo (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/muslos-de-pollo.png",
+                  "price": 4.5,
+                  "stock": 15,
+                  "stock_min": 6,
+                  "oferta": 10,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Carne Molida de Res (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/carne-molida-res.png",
+                  "price": 7.8,
+                  "stock": 12,
+                  "stock_min": 5,
+                  "oferta": 0,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Filete de Res (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/filete-de-res.png",
+                  "price": 9.5,
+                  "stock": 10,
+                  "stock_min": 4,
+                  "oferta": 0,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Chuleta de Cerdo (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/chuleta-de-cerdo.png",
+                  "price": 6.2,
+                  "stock": 14,
+                  "stock_min": 6,
+                  "oferta": 5,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Costillas de Cerdo (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/costillas-de-cerdo.png",
+                  "price": 5.8,
+                  "stock": 8,
+                  "stock_min": 3,
+                  "oferta": 0,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Hígado de Res (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/higado-de-res.png",
+                  "price": 4.2,
+                  "stock": 6,
+                  "stock_min": 2,
+                  "oferta": 0,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Salchichas (paquete 500g)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/salchichas.png",
+                  "price": 3.5,
+                  "stock": 25,
+                  "stock_min": 10,
+                  "oferta": 15,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Tocino (250g)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/tocino.png",
+                  "price": 4.8,
+                  "stock": 12,
+                  "stock_min": 5,
+                  "oferta": 0,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Jamón de Pavo (200g)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/jamon-de-pavo.png",
+                  "price": 3.2,
+                  "stock": 18,
+                  "stock_min": 7,
+                  "oferta": 0,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Salchichón (unidad)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/salchichon.png",
+                  "price": 2.9,
+                  "stock": 15,
+                  "stock_min": 6,
+                  "oferta": 0,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Pollo Entero (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/pollo-entero.png",
+                  "price": 4.9,
+                  "stock": 8,
+                  "stock_min": 3,
+                  "oferta": 0,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Alas de Pollo (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/alas-de-pollo.png",
+                  "price": 3.8,
+                  "stock": 15,
+                  "stock_min": 6,
+                  "oferta": 10,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Carne para Guisar (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/carne-de-guisar.png",
+                  "price": 6.8,
+                  "stock": 12,
+                  "stock_min": 5,
+                  "oferta": 0,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Mortadela (200g)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/mortadela.png",
+                  "price": 2.5,
+                  "stock": 20,
+                  "stock_min": 8,
+                  "oferta": 0,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Carne para Milanesa (kg)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/carne-para-milanesa.png",
+                  "price": 7.2,
+                  "stock": 10,
+                  "stock_min": 4,
+                  "oferta": 0,
+                  "categoria_id": 3
+                },
+                {
+                  "name": "Leche Entera 1L",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/leche-entera.png",
+                  "price": 2.5,
+                  "stock": 50,
+                  "stock_min": 10,
+                  "oferta": 0,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Leche Deslactosada 1L",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/leche-deslactosada.png",
+                  "price": 2.8,
+                  "stock": 40,
+                  "stock_min": 10,
+                  "oferta": 5,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Yogur Natural 500g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/yogurt-natural.png",
+                  "price": 1.9,
+                  "stock": 30,
+                  "stock_min": 8,
+                  "oferta": 0,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Yogur de Fresa 500g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/yogurt-fresa.png",
+                  "price": 2,
+                  "stock": 25,
+                  "stock_min": 8,
+                  "oferta": 10,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Queso Fresco 250g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/queso-fresco.png",
+                  "price": 3.2,
+                  "stock": 20,
+                  "stock_min": 5,
+                  "oferta": 0,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Queso Mozzarella 200g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/queso-mozzarella.png",
+                  "price": 3.5,
+                  "stock": 18,
+                  "stock_min": 5,
+                  "oferta": 15,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Mantequilla sin Sal 250g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/mantequilla-sin-sal.png",
+                  "price": 2.8,
+                  "stock": 15,
+                  "stock_min": 5,
+                  "oferta": 0,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Crema de Leche 200ml",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/crema-de-leche.png",
+                  "price": 1.6,
+                  "stock": 20,
+                  "stock_min": 6,
+                  "oferta": 0,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Leche Condensada 390g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/leche-condensada.png",
+                  "price": 2.2,
+                  "stock": 25,
+                  "stock_min": 8,
+                  "oferta": 5,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Leche en Polvo 400g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/leche-en-polvo.png",
+                  "price": 4,
+                  "stock": 12,
+                  "stock_min": 4,
+                  "oferta": 0,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Yogur Griego Natural 250g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/yogurt-griego.png",
+                  "price": 1.8,
+                  "stock": 22,
+                  "stock_min": 7,
+                  "oferta": 10,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Queso Cheddar 200g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/queso-cheddar.png",
+                  "price": 3.8,
+                  "stock": 15,
+                  "stock_min": 5,
+                  "oferta": 0,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Queso Parmesano 100g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/queso-parmesano.png",
+                  "price": 4.5,
+                  "stock": 10,
+                  "stock_min": 3,
+                  "oferta": 0,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Leche de Almendras 1L",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/leche-almendras.png",
+                  "price": 3.2,
+                  "stock": 18,
+                  "stock_min": 6,
+                  "oferta": 0,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Yogur de Durazno 500g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/yogurt-durazno.png",
+                  "price": 2.1,
+                  "stock": 20,
+                  "stock_min": 7,
+                  "oferta": 5,
+                  "categoria_id": 1
+                },
+                {
+                  "name": "Agua Mineral 500ml",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/agua-mineral.png",
+                  "price": 0.8,
+                  "stock": 100,
+                  "stock_min": 30,
+                  "oferta": 0,
+                  "categoria_id": 5
+                },
+                {
+                  "name": "Refresco de coca-Cola 1L",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/refresco-cola.png",
+                  "price": 1.2,
+                  "stock": 80,
+                  "stock_min": 25,
+                  "oferta": 10,
+                  "categoria_id": 5
+                },
+                {
+                  "name": "Jugo de Naranja 1L",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/jugo-de-naranja.png",
+                  "price": 2.5,
+                  "stock": 30,
+                  "stock_min": 10,
+                  "oferta": 0,
+                  "categoria_id": 5
+                },
+                {
+                  "name": "Cerveza Nacional (Lata)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cerveza-nacional.png",
+                  "price": 1.8,
+                  "stock": 60,
+                  "stock_min": 20,
+                  "oferta": 15,
+                  "categoria_id": 5
+                },
+                {
+                  "name": "Agua con Gas 750ml",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/agua-con-gas.png",
+                  "price": 1.5,
+                  "stock": 25,
+                  "stock_min": 8,
+                  "oferta": 0,
+                  "categoria_id": 5
+                },
+                {
+                  "name": "Té Helado 500ml",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/te-helado.png",
+                  "price": 1.4,
+                  "stock": 40,
+                  "stock_min": 15,
+                  "oferta": 5,
+                  "categoria_id": 5
+                },
+                {
+                  "name": "Refresco de Limón 2L",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/refresco-de-limon.png",
+                  "price": 2,
+                  "stock": 25,
+                  "stock_min": 8,
+                  "oferta": 0,
+                  "categoria_id": 5
+                },
+                {
+                  "name": "Vino Tinto 750ml",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/vino-tinto.png",
+                  "price": 8.5,
+                  "stock": 12,
+                  "stock_min": 4,
+                  "oferta": 0,
+                  "categoria_id": 5
+                },
+                {
+                  "name": "Jugo de Manzana 1L",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/jugo-de-manzana.png",
+                  "price": 2.3,
+                  "stock": 22,
+                  "stock_min": 7,
+                  "oferta": 0,
+                  "categoria_id": 5
+                },
+                {
+                  "name": "Refresco de Naranja 1L",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/refresco-de-naranja.png",
+                  "price": 1.2,
+                  "stock": 50,
+                  "stock_min": 15,
+                  "oferta": 0,
+                  "categoria_id": 5
+                },
+                {
+                  "name": "Agua Mineral 5L",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/agua-mineral-5l.png",
+                  "price": 1,
+                  "stock": 70,
+                  "stock_min": 20,
+                  "oferta": 0,
+                  "categoria_id": 5
+                },
+                {
+                  "name": "Whisky 750ml",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/whisky.png",
+                  "price": 25,
+                  "stock": 8,
+                  "stock_min": 3,
+                  "oferta": 0,
+                  "categoria_id": 5
+                },
+                {
+                  "name": "Malta 330ml",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/malta.png",
+                  "price": 1.3,
+                  "stock": 40,
+                  "stock_min": 12,
+                  "oferta": 0,
+                  "categoria_id": 5
+                },
+                {
+                  "name": "Arroz Blanco 1kg",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/arroz-blanco.png",
+                  "price": 1.2,
+                  "stock": 40,
+                  "stock_min": 15,
+                  "oferta": 10,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Frijoles Negros 500g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/frijoles-negros.png",
+                  "price": 1.5,
+                  "stock": 30,
+                  "stock_min": 10,
+                  "oferta": 0,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Aceite Vegetal 1L",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/aceite-vegetal.png",
+                  "price": 2.8,
+                  "stock": 25,
+                  "stock_min": 8,
+                  "oferta": 5,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Harina de Trigo 1kg",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/harina-de-trigo.png",
+                  "price": 1.4,
+                  "stock": 35,
+                  "stock_min": 12,
+                  "oferta": 0,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Azúcar Blanca 1kg",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/azucar-blanca.png",
+                  "price": 1.1,
+                  "stock": 50,
+                  "stock_min": 20,
+                  "oferta": 0,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Sal Refinada 500g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/sal-refinada.png",
+                  "price": 0.6,
+                  "stock": 45,
+                  "stock_min": 15,
+                  "oferta": 0,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Pasta Spaghetti 500g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/pasta-spaghetti.png",
+                  "price": 1.3,
+                  "stock": 30,
+                  "stock_min": 10,
+                  "oferta": 0,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Atún en Lata 120g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/atun-en-lata.png",
+                  "price": 1.8,
+                  "stock": 20,
+                  "stock_min": 8,
+                  "oferta": 15,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Sardinas en Lata 100g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/sardina-en-lata.png",
+                  "price": 1.2,
+                  "stock": 25,
+                  "stock_min": 10,
+                  "oferta": 0,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Café Instantáneo 100g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cafe-instantaneo.png",
+                  "price": 3.5,
+                  "stock": 18,
+                  "stock_min": 6,
+                  "oferta": 10,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Galletas de Soda (paquete)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/galleta-de-soda.png",
+                  "price": 1.6,
+                  "stock": 22,
+                  "stock_min": 8,
+                  "oferta": 0,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Mermelada de Fresa 250g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/mermelada-de-fresa.png",
+                  "price": 2.2,
+                  "stock": 12,
+                  "stock_min": 4,
+                  "oferta": 0,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Cereal de Maíz 500g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cereal-de-maiz.png",
+                  "price": 2.5,
+                  "stock": 15,
+                  "stock_min": 6,
+                  "oferta": 0,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Vinagre Blanco 500ml",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/vinagre-blanco.png",
+                  "price": 1,
+                  "stock": 20,
+                  "stock_min": 7,
+                  "oferta": 0,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Sopa Instantánea (sobre)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/sopa-instantanea.png",
+                  "price": 0.8,
+                  "stock": 50,
+                  "stock_min": 20,
+                  "oferta": 0,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Chocolate en Polvo 1kg",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/chocolate-en-polvo.png",
+                  "price": 2.8,
+                  "stock": 14,
+                  "stock_min": 5,
+                  "oferta": 0,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Maíz en Lata 300g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/maiz-en-lata.png",
+                  "price": 1.4,
+                  "stock": 18,
+                  "stock_min": 6,
+                  "oferta": 0,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Avena Instantánea 350g",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/avena-instantanea.png",
+                  "price": 2,
+                  "stock": 16,
+                  "stock_min": 6,
+                  "oferta": 5,
+                  "categoria_id": 4
+                },
+                {
+                  "name": "Papas Fritas Clásicas",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/papas-fritas.png",
+                  "price": 1.8,
+                  "stock": 35,
+                  "stock_min": 15,
+                  "oferta": 10,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "Barra de Chocolate con Leche",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/barra-chocolate-leche.png",
+                  "price": 2.2,
+                  "stock": 50,
+                  "stock_min": 20,
+                  "oferta": 0,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "Gomitas de Frutas",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/gomitas-de-fruta.png",
+                  "price": 1.5,
+                  "stock": 40,
+                  "stock_min": 12,
+                  "oferta": 0,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "Galletas Oreo",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/galletas-oreo.png",
+                  "price": 2.5,
+                  "stock": 30,
+                  "stock_min": 12,
+                  "oferta": 0,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "M&Ms",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/m&m.png",
+                  "price": 1.9,
+                  "stock": 45,
+                  "stock_min": 18,
+                  "oferta": 0,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "Cheetos",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cheetos.png",
+                  "price": 1.6,
+                  "stock": 28,
+                  "stock_min": 10,
+                  "oferta": 0,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "Chicles de Menta",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/chicles-de-menta.png",
+                  "price": 0.9,
+                  "stock": 60,
+                  "stock_min": 25,
+                  "oferta": 0,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "Barra Energética",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/barra-energetica.png",
+                  "price": 2.8,
+                  "stock": 20,
+                  "stock_min": 8,
+                  "oferta": 0,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "Chocolate Amargo",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/chocolate-amargo.png",
+                  "price": 2.4,
+                  "stock": 18,
+                  "stock_min": 7,
+                  "oferta": 0,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "Chupeta",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/chupeta.png",
+                  "price": 0.5,
+                  "stock": 100,
+                  "stock_min": 40,
+                  "oferta": 0,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "Papas Sabritas",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/papas-sabritas.png",
+                  "price": 1.9,
+                  "stock": 25,
+                  "stock_min": 10,
+                  "oferta": 0,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "Cacahuates Japoneses",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cacahuete-japoneses.png",
+                  "price": 1.4,
+                  "stock": 30,
+                  "stock_min": 12,
+                  "oferta": 0,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "Paletas Heladas",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/paleta-helado.png",
+                  "price": 1.2,
+                  "stock": 20,
+                  "stock_min": 8,
+                  "oferta": 0,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "Chocolate Blanco",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/chocolate-blanco.png",
+                  "price": 2.3,
+                  "stock": 15,
+                  "stock_min": 6,
+                  "oferta": 0,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "Galletas de Avena",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/galleta-de-avena.png",
+                  "price": 2,
+                  "stock": 18,
+                  "stock_min": 7,
+                  "oferta": 0,
+                  "categoria_id": 6
+                },
+                {
+                  "name": "Detergente Líquido 1L",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/detergente-liquido.png",
+                  "price": 3.5,
+                  "stock": 25,
+                  "stock_min": 8,
+                  "oferta": 10,
+                  "categoria_id": 7
+                },
+                {
+                  "name": "Jabón en Barra",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/jabon-en-barra.png",
+                  "price": 2.2,
+                  "stock": 40,
+                  "stock_min": 15,
+                  "oferta": 0,
+                  "categoria_id": 7
+                },
+                {
+                  "name": "Cloro 1L",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cloro.png",
+                  "price": 1.8,
+                  "stock": 30,
+                  "stock_min": 10,
+                  "oferta": 0,
+                  "categoria_id": 7
+                },
+                {
+                  "name": "Desinfectante Multiusos 750ml",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/desinfectante.png",
+                  "price": 2.9,
+                  "stock": 20,
+                  "stock_min": 7,
+                  "oferta": 5,
+                  "categoria_id": 7
+                },
+                {
+                  "name": "Papel Higiénico (4 rollos)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/papel-higienico.png",
+                  "price": 2.5,
+                  "stock": 50,
+                  "stock_min": 20,
+                  "oferta": 15,
+                  "categoria_id": 7
+                },
+                {
+                  "name": "Suavizante de Ropa 1L",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/suavizante.png",
+                  "price": 3.2,
+                  "stock": 18,
+                  "stock_min": 6,
+                  "oferta": 0,
+                  "categoria_id": 7
+                },
+                {
+                  "name": "Escoba",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/escoba.png",
+                  "price": 4.5,
+                  "stock": 10,
+                  "stock_min": 4,
+                  "oferta": 0,
+                  "categoria_id": 7
+                },
+                {
+                  "name": "Esponja Multiusos",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/esponja.png",
+                  "price": 0.8,
+                  "stock": 60,
+                  "stock_min": 25,
+                  "oferta": 0,
+                  "categoria_id": 7
+                },
+                {
+                  "name": "Bolsa de Basura (10 unidades)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/bolsa-de-basura.png",
+                  "price": 2,
+                  "stock": 35,
+                  "stock_min": 12,
+                  "oferta": 0,
+                  "categoria_id": 7
+                },
+                {
+                  "name": "Limpiador de Vidrios 500ml",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/limpiador-de-vidrios.png",
+                  "price": 2.4,
+                  "stock": 15,
+                  "stock_min": 5,
+                  "oferta": 0,
+                  "categoria_id": 7
+                },
+                {
+                  "name": "Cepillo para Baño",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cepillo-bath.png",
+                  "price": 1.9,
+                  "stock": 12,
+                  "stock_min": 4,
+                  "oferta": 0,
+                  "categoria_id": 7
+                },
+                {
+                  "name": "Guantes de Limpieza (par)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/guante-de-limpieza.png",
+                  "price": 1.2,
+                  "stock": 30,
+                  "stock_min": 10,
+                  "oferta": 0,
+                  "categoria_id": 7
+                },
+                {
+                  "name": "Toallas de Papel (2 rollos)",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/toallas-de-papel.png",
+                  "price": 1.6,
+                  "stock": 25,
+                  "stock_min": 8,
+                  "oferta": 0,
+                  "categoria_id": 7
+                },
+                {
+                  "name": "Jabón Líquido para Manos 500ml",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/jabon-liquido-manos.png",
+                  "price": 2.3,
+                  "stock": 22,
+                  "stock_min": 7,
+                  "oferta": 0,
+                  "categoria_id": 7
+                },
+                {
+                  "name": "Desodorante",
+                  "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/desodorante.png",
+                  "price": 1.8,
+                  "stock": 20,
+                  "stock_min": 7,
+                  "oferta": 0,
+                  "categoria_id": 7
+                }
+              ]
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/product/2": {
+      "patch": {
+        "summary": "actualizar producto",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "example": ""
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "true"
+                  },
+                  "name": {
+                    "description": "Ingrese un String con el nombre del producto",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "price": {
+                    "description": "Ingrese un  Float con el precio del producto",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "stock": {
+                    "description": "Ingrese un Integer con el stock del producto",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "stock_min": {
+                    "description": "Ingrese un Integer con el stock min del producto",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "oferta": {
+                    "description": "Ingrese un Integer con la oferta del producto",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "categoria_id": {
+                    "description": "Ingrese un Integer con el id de la categoria del producto",
+                    "type": "string",
+                    "example": ""
+                  }
+                }
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/product/pagination": {
+      "get": {
+        "summary": "obtener productos por varios filtros",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "10",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minPrice",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "20",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "300",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minOferta",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "10",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoria",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "3",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Productos filtrados",
+                  "data": {
+                    "currentPage": 1,
+                    "totalPages": 1,
+                    "totalItems": 6,
+                    "products": [
+                      {
+                        "product_id": 158,
+                        "name": "Leche Deslactosada 1L",
+                        "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/leche-deslactosada.png",
+                        "price": 2.8,
+                        "stock": 40,
+                        "stock_min": 10,
+                        "oferta": 5,
+                        "status": true,
+                        "categoria_id": 1
+                      },
+                      {
+                        "product_id": 160,
+                        "name": "Yogur de Fresa 500g",
+                        "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/yogurt-fresa.png",
+                        "price": 2,
+                        "stock": 25,
+                        "stock_min": 8,
+                        "oferta": 10,
+                        "status": true,
+                        "categoria_id": 1
+                      },
+                      {
+                        "product_id": 162,
+                        "name": "Queso Mozzarella 200g",
+                        "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/queso-mozzarella.png",
+                        "price": 3.5,
+                        "stock": 18,
+                        "stock_min": 5,
+                        "oferta": 15,
+                        "status": true,
+                        "categoria_id": 1
+                      },
+                      {
+                        "product_id": 165,
+                        "name": "Leche Condensada 390g",
+                        "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/leche-condensada.png",
+                        "price": 2.2,
+                        "stock": 25,
+                        "stock_min": 8,
+                        "oferta": 5,
+                        "status": true,
+                        "categoria_id": 1
+                      },
+                      {
+                        "product_id": 167,
+                        "name": "Yogur Griego Natural 250g",
+                        "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/yogurt-griego.png",
+                        "price": 1.8,
+                        "stock": 22,
+                        "stock_min": 7,
+                        "oferta": 10,
+                        "status": true,
+                        "categoria_id": 1
+                      },
+                      {
+                        "product_id": 171,
+                        "name": "Yogur de Durazno 500g",
+                        "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/yogurt-durazno.png",
+                        "price": 2.1,
+                        "stock": 20,
+                        "stock_min": 7,
+                        "oferta": 5,
+                        "status": true,
+                        "categoria_id": 1
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/product/10": {
+      "delete": {
+        "summary": "eliminar producto",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              },
+              "example": {
+                "name": "Camisa deportiva",
+                "image": "https://example.com/images/camisa.jpg",
+                "price": 29.99,
+                "stock": 100,
+                "stock_min": 10,
+                "oferta": 20,
+                "categoria_id": 3
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "obtener producto por id",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/product/search/h": {
+      "get": {
+        "summary": "obtener productos por el nombre",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              },
+              "example": {
+                "name": "Camisa deportiva",
+                "image": "https://example.com/images/camisa.jpg",
+                "price": 29.99,
+                "stock": 100,
+                "stock_min": 10,
+                "oferta": 20,
+                "categoria_id": 3
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}
