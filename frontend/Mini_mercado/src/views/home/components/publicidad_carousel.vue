@@ -5,11 +5,6 @@
         <TransitionGroup name="grupo_slide">
           <div v-for="(slide, index) in slides" :key="index" class="slide" v-show="Imagen_referencia_Index=== index">
             <img :src="slide.imagen" :alt="slide.titulo_nombre" class="imagen_publicidad">
-            <div class="slide_interaccion">
-              <h3>{{ slide.titulo_nombre }}</h3>
-              <p>{{ slide.descripcion }}</p>
-              <button @click="goToProducto_link(slide.link)">¡Compra!</button>
-            </div>
           </div>
         </TransitionGroup>
 
@@ -43,8 +38,6 @@ import Imagen_dorito from '@/assets/Imagenes/publicidad_carousel/doritos.jpg'
 import Imagen_pina from '@/assets/Imagenes/publicidad_carousel/fanta_pina.jpg'
 
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { useRouter } from 'vue-router'
-const router = useRouter()
 const Imagen_referencia_Index = ref(0)
 const interval = ref(null)
 
@@ -85,10 +78,6 @@ const anterior = () => {
 
 const goTo = (index) => {
   Imagen_referencia_Index.value = index
-}
-
-const goToProducto_link = (link) => {
-  router.push(link)
 }
 
 onMounted(() => {

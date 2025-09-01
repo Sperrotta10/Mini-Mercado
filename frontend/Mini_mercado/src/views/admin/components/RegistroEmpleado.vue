@@ -18,12 +18,12 @@
             <!-- Contraseña -->
             <div class="form-group">
                 <label for="contrasena">Contraseña para Loguear</label>
-                <input id="contrasena" v-model="form.contrasena" type="text" required placeholder="Ingresa contraseña" class="form-input" />
+                <input id="contrasena" v-model="form.contrasena" type="password" required placeholder="Ingresa contraseña" class="form-input" />
             </div>
 
             <div class="form-group">
-                <label for="contrasena">Confirmar la contraseña</label>
-                <input id="contrasena" v-model="form.contrasena" type="text" required placeholder="Confirma de nuevo la contraseña" class="form-input" />
+                <label for="confirmarContrasena">Confirmar la contraseña</label>
+                <input id="confirmarContrasena" v-model="form.confirmarContrasena" type="password" required placeholder="Confirma de nuevo la contraseña" class="form-input" />
             </div>
 
             <!-- Enviar -->
