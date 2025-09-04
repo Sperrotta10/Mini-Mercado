@@ -47,7 +47,7 @@ export class ProductService {
             return res.data
         } catch (error) {
             console.error('Error al hacer patch al producto:', error)
-            return false
+            return error.response
         }
     }
 

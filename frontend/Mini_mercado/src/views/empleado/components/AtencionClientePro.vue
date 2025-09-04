@@ -21,7 +21,7 @@
             <th>Nombre</th>
             <th>Usuario</th>
             <th>Fecha de actualización</th>
-            <!--<th>Operación</th>-->
+            <th>Operación</th>
           </tr>
         </thead>
         <tbody>
@@ -30,18 +30,24 @@
             <td>{{ carrito.name }}</td>
             <td>{{ username || carrito.user_id }}</td>
             <td>{{ formatFecha(carrito.updatedAt) }}</td>
-            <!-- Future Feature -->
-            <!--<td>
-              <button class="btn_ver" @click="abrirModal(carrito.cart_id)">
+            <td>
+              <button class="btn_ver" @click="verCarrito(carrito, cedula.value)">
                 <i class="fas fa-eye"></i> Ver
               </button>
-            </td>-->
+            </td>
           </tr>
           <tr v-if="carritos.length === 0">
             <td colspan="5" style="text-align:center;">No hay carritos para mostrar.</td>
           </tr>
         </tbody>
       </table>
+      <ProcesarCarrito
+        v-if="mostrarProcesar"
+        :carrito="carritoSeleccionado"
+        :cedulaCliente="cedulaSeleccionada"
+        @procesar="procesarCompra"
+        @close="cerrarModal"
+      />
     </div>
     <!-- Paginación -->
     <div class="paginacion" v-if="totalPaginas > 1">
@@ -49,29 +55,26 @@
       <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
       <button :disabled="paginaActual === totalPaginas" @click="paginaActual++">Siguiente</button>
     </div>
-    <!-- Modal para ver items del carrito -->
-    <ModalCartItems
-      v-if="modalVisible"
-      :carritoId="carritoSeleccionadoId"
-      :visible="modalVisible"
-      @close="modalVisible = false"
-    />
+    
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
-import ModalCartItems from '@/views/usuarios/components/ModalCartItems.vue';
 import { UserService } from '@/utils/userServices';
+import ProcesarCarrito from './ProcesarCarrito.vue';
+import { ProductService } from '@/utils/productServices';
+import Swal from 'sweetalert2'; 
 
+const productServiceInstance = new ProductService();
 const username = ref('');
 const carritos = ref([]);
 const paginaActual = ref(1);
 const carritosPorPagina = 8;
-const modalVisible = ref(false);
-// const carritoSeleccionadoId = ref(null); #Future Feature
 const userServiceInstance = new UserService();
-
+const carritoSeleccionado = ref([]);
+const cedulaSeleccionada = ref('');
+const mostrarProcesar = ref(false);
 const cedula = ref('');
 const error = ref('');
 
@@ -89,6 +92,49 @@ function soloNumeros(e) {
   cedula.value = valor;
 }
 
+function verCarrito(carrito) {
+  carritoSeleccionado.value = carrito; 
+  mostrarProcesar.value = true;
+}
+
+async function procesarCompra({ cartItems }) {
+  let exito = true;
+  for (const item of cartItems) {
+    try {
+      const newproductStock = String(item.product.stock - item.quantity);
+      const response = await productServiceInstance.patchProduct(item.product_id, { stock: newproductStock });
+
+      if (response?.status === 400) {
+        exito = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'Stock insuficiente',
+          text: `No hay suficiente stock para el producto ${item.product.name}.`,
+        });
+      }
+    } catch (e) {
+      exito = false;
+      console.error(`Error al actualizar el stock del producto ${item.product_id}:`, e);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: `No se pudo procesar el producto ${item.product.name}.`,
+      });
+    }
+  }
+  if (exito) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Compra procesada',
+      text: 'El carrito fue procesado correctamente.',
+      timer: 2000,
+      showConfirmButton: false
+    });
+    cerrarModal();
+    await buscarCarritos();
+  }
+}
+
 async function buscarCarritos() {
   error.value = '';
   if (!cedula.value || cedula.value.length < 1 || cedula.value.length > 8) {
@@ -98,7 +144,7 @@ async function buscarCarritos() {
   }
   try {
     const res = await userServiceInstance.getCartsByCedula(cedula.value);
-    console.log(res.data)
+    cedulaSeleccionada.value = cedula.value;
     carritos.value = res.data?.carts || [];
     username.value = res.data?.username || '';
     paginaActual.value = 1;
@@ -111,12 +157,7 @@ async function buscarCarritos() {
     console.error('Error al cargar carritos:', e);
   }
 }
-/* Future Feature
-function abrirModal(cartId) {
-  carritoSeleccionadoId.value = cartId;
-  modalVisible.value = true;
-}
-*/
+
 
 function formatFecha(fechaIso) {
   if (!fechaIso) return '';
@@ -127,6 +168,10 @@ function formatFecha(fechaIso) {
   const horas = String(fecha.getHours()).padStart(2, '0');
   const minutos = String(fecha.getMinutes()).padStart(2, '0');
   return `${dia}/${mes}/${anio} ${horas}:${minutos}`;
+}
+
+function cerrarModal() {
+  mostrarProcesar.value = false;
 }
 </script>
 
@@ -251,4 +296,5 @@ tr:hover {
   background: #ccc;
   cursor: not-allowed;
 }
+
 </style>
