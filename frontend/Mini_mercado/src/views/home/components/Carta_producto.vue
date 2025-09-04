@@ -12,6 +12,7 @@
         :imagen="props.imagen"
         :nombre="props.nombre"
         :precio="props.precio"
+        :stock="props.stock"
       />
     </div>
   </div>
@@ -25,6 +26,7 @@ const props = defineProps({
   id: { type: Number, required: true },
   imagen: { type: String, required: true },
   nombre: { type: String, required: true },
+  stock: { type: Number, required: true },
   precio: { type: [Number, String], required: true }
 });
 </script>

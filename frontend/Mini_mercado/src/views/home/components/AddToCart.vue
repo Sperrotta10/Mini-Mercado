@@ -18,16 +18,27 @@
               <img :src="imagen" :alt="nombre" class="producto_modal_imagen">
               <div>
                 <h4>{{ nombre }}</h4>
-                <div class="precio_producto_modal">{{ precio }}</div>
+                <div class="precio_producto_modal">$ {{ precio }}</div>
               </div>
+            </div>
+            <div class="disponibilidad_producto">
+              <span>Disponibilidad: {{ stock }}</span>
             </div>
             <div class="contador_para_producto">
               <label for="contador">Cantidad:</label>
-              <div class="control_contador">
+                <div class="control_contador">
                 <button class="btn_contador" @click="decrementar">-</button>
-                <input type="number" id="contador" min="1" :value="cantidad_producto" class="contador_input_numero" readonly />
-                <button class="btn_contador" @click="incrementar">+</button>
-              </div>
+                <input
+                  type="number"
+                  id="contador"
+                  min="1"
+                  :max="stock"
+                  :value="cantidad_producto"
+                  class="contador_input_numero"
+                  readonly
+                />
+                <button class="btn_contador" @click="incrementar" :disabled="cantidad_producto >= stock">+</button>
+                </div>
             </div>
             <button class="btn_agregar_para_carrito" @click="abrirModalCarritos">Agregar al carrito</button>
           </div>
@@ -86,6 +97,7 @@ const props = defineProps({
   id: { type: Number, required: true },
   imagen: { type: String, required: true },
   nombre: { type: String, required: true },
+  stock: { type: Number, required: true },
   precio: { type: [Number, String], required: true }
 });
 

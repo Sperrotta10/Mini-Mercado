@@ -8,18 +8,14 @@
             <div class="producto_informacion">
                 <h1 class="producto_titulo">{{ producto?.name || 'Cargando...' }}</h1>
                 <span class="producto_categoria">{{ categoria?.name || 'Cargando...' }}</span>
-                <div class="producto_precio">${{ producto?.price || '--' }}</div>
+                <div class="producto_precio">$ {{ producto?.price || '--' }}</div>
                 <div class="producto_disponible">Disponible: {{ producto?.stock ?? '--' }}</div>
-                <div class="control_cantidad">
-                    <button class="btn_cantidad menos" @click="decrementar">-</button>
-                    <input type="text" class="input_cantidad" :value="cantidad_producto">
-                    <button class="btn_cantidad mas" @click="incrementar">+</button>
-                </div>
                 <AddToCart
                     :id="producto?.product_id"
                     :imagen="producto?.image || placeholder"
                     :nombre="producto?.name || 'Cargando...'"
                     :precio="producto?.price || '--'"
+                    :stock="producto?.stock || 0"
                 />
             </div>
         </div>
@@ -66,27 +62,6 @@ import placeholder from '@/assets/Imagenes/placeholder.webp';
 import AddToCart from './AddToCart.vue';
 const route = useRoute();
 const productService = new ProductService();
-const cantidad_producto = ref(1);
-
-
-//Para incrementar la cantidad de producto
-const incrementar = () => {
-    if(cantidad_producto.value>=producto.value.stock){
-        return
-    }else{
-        cantidad_producto.value++;
-    }
-}
-
-
-
-//Para decrementar 
-const decrementar = () => {
-  if (cantidad_producto.value > 1){
-    cantidad_producto.value--;
-  }
-  
-}
 
 
 const producto = ref(null)
@@ -200,6 +175,11 @@ function prev() {
 .producto_informacion {
     flex: 1;
     padding: 20px;
+}
+
+.producto_disponible {
+    font-size: 16px;
+    margin-bottom: 3rem;
 }
 
 .producto_titulo {
