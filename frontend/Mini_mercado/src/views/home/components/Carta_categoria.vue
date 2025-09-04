@@ -5,7 +5,7 @@
         </div>
 
         <div class="tapa_overlay">
-            <RouterLink target="_blank" to="/ejemplo">
+            <RouterLink target="_blank" :to="`/categoria/${props.categoria.categoria_id}`">
                 <span class="hover_texto">{{ props.categoria.name }}</span>
             </RouterLink>
         </div>
