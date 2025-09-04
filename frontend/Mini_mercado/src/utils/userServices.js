@@ -115,4 +115,14 @@ export class UserService {
         }
     }
 
+    async forgotPassword(email){
+        try {
+            const res = await this.api.post('/auth/forgot-password', { email })
+            return { status: true, data: res.data.data }
+        } catch (error) {
+            console.error('Error al enviar correo de recuperación:', error)
+            return error.response
+        }
+    }
+
 }
