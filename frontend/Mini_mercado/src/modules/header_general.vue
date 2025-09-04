@@ -4,8 +4,13 @@
             <logo_con_link></logo_con_link>
 
             <div class="contenedor_buscador">
-                <input type="text" placeholder="Buscar producto">
-                <button>Buscar</button>
+                <input
+                  type="text"
+                  placeholder="Buscar producto"
+                  v-model="searchQuery"
+                  @keyup.enter="goToSearch"
+                >
+                <button @click="goToSearch">Buscar</button>
             </div>
             
             <div class="contendor_accion_usuarios">
@@ -52,9 +57,19 @@ import { useAuthStore } from '@/stores/Auth';
 import logo_con_link from './logo_con_link.vue';
 import { ref } from 'vue';
 import CartSidebar from './CartSidebar.vue';
+import { useRouter } from 'vue-router';
 
 const auth = useAuthStore();
 const showCart = ref(false);
+    
+const searchQuery = ref('');
+const router = useRouter();
+
+function goToSearch() {
+  if (searchQuery.value.trim()) {
+    router.push(`/search/${encodeURIComponent(searchQuery.value.trim())}`);
+  }
+}
 
 </script>
 

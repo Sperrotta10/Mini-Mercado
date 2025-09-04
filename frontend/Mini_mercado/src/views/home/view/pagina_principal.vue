@@ -14,7 +14,7 @@
         <div class="contenedor_producto">
           <div 
             class="cedula"
-            v-if="AuthStore.user?.role === 'cliente' && !AuthStore.userData?.cedula"
+            v-if="AuthStore.user?.role === 'cliente' && !AuthStore.userData?.cedula && AuthStore.isAuthenticated"
             >
             <CedulaCliente 
               :show="mostrarModal" 
@@ -39,6 +39,7 @@
                 :id="producto.product_id"
                 :imagen="producto.image"
                 :nombre="producto.name"
+                :stock="producto.stock"
                 :precio="producto.price"
               />
             </div>
@@ -73,6 +74,7 @@ const AuthStore = useAuthStore();
 AuthStore.GetThisUserData();
 const categoriasConProductos = ref([])
 const productService = new ProductService()
+
 
 onMounted(async () => {
   // Obtener categorías y productos de la base de datos
