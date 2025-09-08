@@ -27,7 +27,7 @@ export class UserService {
             return {status:true, data: res.data}
         } catch (error) {
             console.error('Error al iniciar sesión:', error)
-            return false
+            return {status:false, data: error.status}
         }
     }
 

@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', {
             this.loading = true
             try {
                 const res = await userService.login(data)
-                if (res && res.status) {
+                if (res && res.status==true) {
                 this.user = {
                     ...res.data.data,
                     role: res.data.data.role?.name || res.data.data.role,
@@ -23,6 +23,7 @@ export const useAuthStore = defineStore('auth', {
                 await this.GetThisUserData();
                 return true
                 }
+                return {status:false, data: res.data}
             } catch (e) {
                 console.error('Login error:', e)
             } finally {

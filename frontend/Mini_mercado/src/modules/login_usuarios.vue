@@ -141,18 +141,32 @@ const onLogin = async () => {
     password: loginData.value.password,
   }
   const response = await AuthStore.login({email: dataToSend.email, password: dataToSend.password})
-  if (response) {
+  if (response && response.data === 401) {
     await Swal.fire({
-        icon: 'success',
-        title: 'Inicio de sesión exitoso',
-        text: `Bienvenido de nuevo ${AuthStore.user.user_name ?? 'usuario'}.`,
-        confirmButtonColor: '#3085d6',
-      })
+      icon: 'error',
+      title: 'Usuario inactivo',
+      text: 'Tu cuenta está inactiva. Por favor contacta al administrador.',
+      confirmButtonColor: '#d33',
+    })
+  } else if (response && response.data === 429) {
+    await Swal.fire({
+      icon: 'error',
+      title: 'Demasiados intentos',
+      text: 'Has realizado demasiados intentos. Por favor, inténtalo dentro de 10 minutos.',
+      confirmButtonColor: '#d33',
+    })
+  } else if (response) {
+    await Swal.fire({
+      icon: 'success',
+      title: 'Inicio de sesión exitoso',
+      text: `Bienvenido de nuevo ${AuthStore.user.user_name ?? 'usuario'}.`,
+      confirmButtonColor: '#3085d6',
+    })
 
-    if (AuthStore.user?.role=="empleado"){
-      router.push('/empleado') 
-    }else{
-        router.push('/') // Redirige a la página principal
+    if (AuthStore.user?.role == "empleado") {
+      router.push('/empleado')
+    } else {
+      router.push('/') // Redirige a la página principal
     }
   } else {
     await Swal.fire({
