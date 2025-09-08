@@ -83,7 +83,10 @@ const addNewImage = async () => {
         const result = await publicityService.createPublicity(formsito);
         console.log(result);
         if (result) {
-            carouselImages.value.push(result.imageUrl);
+            carouselImages.value.push({
+                image: result.data.image,
+                publicity_id: result.data.publicity_id
+            });
             await Swal.fire({
                 icon: 'success',
                 title: '¡Imagen subida!',
