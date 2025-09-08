@@ -32,6 +32,7 @@ import { useAuthStore } from '@/stores/Auth.js'
 import { createRouter, createWebHistory } from 'vue-router'
 import Pagina_buscador from '@/views/home/view/pagina_buscador.vue'
 import Pagina_categoria from '@/views/home/view/pagina_categoria.vue'
+import TerminosYCondiciones from '@/modules/TerminosYCondiciones.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -116,6 +117,11 @@ const router = createRouter({
       component: Pagina_categoria,
       props: true
     },
+    {
+      path: '/terminos_y_condiciones',
+      name: 'terminos_y_condiciones',
+      component: TerminosYCondiciones,
+    }
   ],
 })
 
