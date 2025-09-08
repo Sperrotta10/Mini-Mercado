@@ -11,7 +11,18 @@
             <img v-if="item.imagen" :src="item.imagen" alt="Imagen" class="modal-item-img" />
             <div class="modal-item-info">
               <div class="modal-item-nombre">{{ item.nombre }}</div>
-              <div class="modal-item-precio">Precio: ${{ item.precio }}</div>
+              <div class="modal-item-precio">
+                Precio:
+                <template v-if="isPremium && item.oferta > 0">
+                  <span style="text-decoration: line-through; color: #b0b0b0;">${{ item.precio }}</span>
+                  <span style="color: #e67e22; margin-left: 8px;">
+                    ${{ (item.precio - (item.precio * item.oferta / 100)).toFixed(2) }}
+                  </span>
+                </template>
+                <template v-else>
+                  ${{ item.precio }}
+                </template>
+              </div>
               <div class="modal-item-cantidad">Cantidad: {{ item.cantidad }}</div>
             </div>
           </div>
@@ -25,7 +36,9 @@
 import { ref } from 'vue';
 import { CartItemService } from '@/utils/cartItemService';
 import { onMounted } from 'vue';
-
+import { useAuthStore } from '@/stores/Auth';
+const authStore = useAuthStore();
+const isPremium = authStore.userData?.suscripcion || false;
 onMounted(() => {
   if (props.visible && props.carritoId) {
     fetchItems();
@@ -56,7 +69,8 @@ async function fetchItems() {
         nombre: item.product.name,
         precio: item.product.price,
         cantidad: item.quantity,
-        imagen: item.product.image
+        imagen: item.product.image,
+        oferta: item.product.oferta
       }));
     }
   } catch (e) {
