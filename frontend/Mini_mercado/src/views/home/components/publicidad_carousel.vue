@@ -3,12 +3,17 @@
         <div class="contenedor_carousel">
 
         <TransitionGroup name="grupo_slide">
-          <div v-for="(slide, index) in slides" :key="index" class="slide" v-show="Imagen_referencia_Index=== index">
-            <img :src="slide.imagen" :alt="slide.titulo_nombre" class="imagen_publicidad">
+          <div
+            v-for="(slide, index) in slides"
+            :key="slide.slides"
+            class="slide"
+            v-show="Imagen_referencia_Index === index"
+          >
+            <img :src="slide.image" alt="Publicidad" class="imagen_publicidad">
           </div>
         </TransitionGroup>
 
-        <div class="controls">
+        <div class="controls" v-if="slides.length > 1">
           <button class="control-btn prev" @click="anterior">
             <i class="fa-solid fa-arrow-left"></i>
           </button>
@@ -17,10 +22,10 @@
           </button>
         </div>
 
-        <div class="indicador">
+        <div class="indicador" v-if="slides.length > 1">
           <span 
             v-for="(slide, index) in slides" 
-            :key="index"
+            :key="slide.slides"
             @click="goTo(index)"
             :class="{ active: Imagen_referencia_Index === index }"
           ></span>
@@ -28,39 +33,53 @@
 
     </div>
     </div>
-    
 </template>
 
 <script setup>
-//Imagenes
+import { publicityService } from '@/utils/publicityService';
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import Imagen_cocacola from '@/assets/Imagenes/publicidad_carousel/cocacola.png'
 import Imagen_dorito from '@/assets/Imagenes/publicidad_carousel/doritos.jpg'
 import Imagen_pina from '@/assets/Imagenes/publicidad_carousel/fanta_pina.jpg'
 
-import { ref, onMounted, onBeforeUnmount } from 'vue'
 const Imagen_referencia_Index = ref(0)
 const interval = ref(null)
+const slides = ref([])
 
-const slides = [
-  {
-    imagen: Imagen_cocacola,
-    titulo_nombre: 'Coco cola',
-    descripcion: 'Oferta!',
-    link: '/producto_1'
-  },
-  {
-    imagen: Imagen_dorito,
-    titulo_nombre: 'Nuevo dorito',
-    descripcion: 'sabroso',
-    link: '/producto_1'
-  },
-  {
-    imagen: Imagen_pina,
-    titulo_nombre: 'Fanta! Piña!',
-    descripcion: 'Nuevo sabor',
-    link: '/producto_1'
+async function ObtenerPublicidad() {
+  try {
+    const images = await publicityService.getPublicities();
+    if (images && Array.isArray(images.data) && images.data.length > 0) {
+      // Usa los datos tal como llegan, ya tienen image y slides
+      slides.value = images.data.map(img => ({
+        image: img.image,
+        slides: img.publicity_id // Usar publicity_id como key
+      }));
+    } else {
+      slides.value = [{
+        image: Imagen_cocacola,
+        titulo_nombre: 'Coco cola',
+        descripcion: 'Oferta!',
+        link: '/producto_1'
+      },
+      {
+        image: Imagen_dorito,
+        titulo_nombre: 'Nuevo dorito',
+        descripcion: 'sabroso',
+        link: '/producto_1'
+      },
+      {
+        image: Imagen_pina,
+        titulo_nombre: 'Fanta! Piña!',
+        descripcion: 'Nuevo sabor',
+        link: '/producto_1'
+      }];
+    }
+  } catch (error) {
+    console.error('Error al cargar las imágenes de publicidad:', error);
+    slides.value = [];
   }
-]
+}
 
 const AutoPoner = () => {
   interval.value = setInterval(() => {
@@ -69,25 +88,27 @@ const AutoPoner = () => {
 }
 
 const siguiente = () => {
-  Imagen_referencia_Index.value = (Imagen_referencia_Index.value + 1) % slides.length
+  if (slides.value.length === 0) return;
+  Imagen_referencia_Index.value = (Imagen_referencia_Index.value + 1) % slides.value.length
 }
 
 const anterior = () => {
-  Imagen_referencia_Index.value = (Imagen_referencia_Index.value - 1 + slides.length) % slides.length
+  if (slides.value.length === 0) return;
+  Imagen_referencia_Index.value = (Imagen_referencia_Index.value - 1 + slides.value.length) % slides.value.length
 }
 
 const goTo = (index) => {
   Imagen_referencia_Index.value = index
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await ObtenerPublicidad()
   AutoPoner()
 })
 
 onBeforeUnmount(() => {
   clearInterval(interval.value)
 })
-
 </script>
 
 <style scoped>

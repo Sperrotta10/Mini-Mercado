@@ -6,8 +6,8 @@
             <h3 class="section-title">Publicidad Actual</h3>
             <div class="carousel-container">
                 <div v-for="(image, index) in carouselImages" :key="index" class="carousel-item">
-                    <img :src="image" :alt="'Imagen' + (index + 1)" class="carousel-image">
-                    <button @click="removeImage(index)" class="remove-btn">Borrar</button>
+                    <img :src="image.image" :alt="'Imagen' + (index + 1)" class="carousel-image">
+                    <button @click="removeImage(image.publicity_id)" class="remove-btn">Borrar</button>
                 </div>
                 <div v-if="carouselImages.length === 0" class="empty-message">
                     No tiene ningún imagen de publicidad
@@ -32,23 +32,37 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import public1 from '@/assets/Imagenes/publicidad_carousel/cocacola.png'
-import public2 from '@/assets/Imagenes/publicidad_carousel/doritos.jpg'
-import public3 from '@/assets/Imagenes/publicidad_carousel/fanta_pina.jpg'
+import { onMounted, ref } from 'vue';
+import Swal from 'sweetalert2';
 
-// Simular Imagenes: En variable
-const carouselImages = ref([public1, public2, public3]);
+import { publicityService } from '@/utils/publicityService';
 
+const carouselImages = ref([]);
 const fileInput = ref(null);
 const newImageFile = ref(null);
 const newImagePreview = ref('');
 
-// Seleccion de imagen
+// Selección de imagen
 const triggerFileInput = () => {
     fileInput.value.click();
 };
 
+onMounted(async () => {
+    try {
+        const images = await publicityService.getPublicities();
+        if (images && Array.isArray(images.data) && images.data.length > 0) {
+            carouselImages.value = images.data.map(img => ({
+                image: img.image,
+                publicity_id: img.publicity_id
+            }));
+        } else {
+            carouselImages.value = [];
+        }
+    } catch (error) {
+        console.error('Error al cargar las imágenes de publicidad:', error);
+        carouselImages.value = [];
+    }
+});
 // Procesar subir Imagen
 const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -58,21 +72,65 @@ const handleFileUpload = (e) => {
     }
 };
 
-// Agregar Imagen para al Carousel
-const addNewImage = () => {
-    if (newImageFile.value) {
+// Agregar Imagen al Carousel con feedback de SweetAlert
+const addNewImage = async () => {
+    if (!newImageFile.value) return;
 
-        carouselImages.value.push(newImagePreview.value);
+    const formsito = new FormData();
+    formsito.append('image', newImageFile.value);
 
-
-        newImageFile.value = null;
-        newImagePreview.value = '';
-        fileInput.value.value = '';
+    try {
+        const result = await publicityService.createPublicity(formsito);
+        console.log(result);
+        if (result) {
+            carouselImages.value.push(result.imageUrl);
+            await Swal.fire({
+                icon: 'success',
+                title: '¡Imagen subida!',
+                text: 'La publicidad fue agregada correctamente.',
+                timer: 1800,
+                showConfirmButton: false
+            });
+        } else {
+            throw new Error('No se recibió la URL de la imagen');
+        }
+    } catch (error) {
+        console.error('Error al subir la imagen:', error);
+        await Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo subir la imagen de publicidad.'
+        });
     }
+
+    newImageFile.value = null;
+    newImagePreview.value = '';
+    fileInput.value.value = '';
 };
 
-const removeImage = (index) => {
-    carouselImages.value.splice(index, 1);
+// Eliminar imagen con confirmación
+const removeImage = async (publicity_id) => {
+    const confirm = await Swal.fire({
+        title: '¿Eliminar esta publicidad?',
+        text: 'Esta acción no se puede deshacer.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#e74c3c',
+        cancelButtonColor: '#10b68d',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    });
+    if (confirm.isConfirmed) {
+        await publicityService.deletePublicity(publicity_id);
+        carouselImages.value = carouselImages.value.filter(image => image.publicity_id !== publicity_id);
+        await Swal.fire({
+            icon: 'success',
+            title: 'Eliminado',
+            text: 'La publicidad fue eliminada.',
+            timer: 1200,
+            showConfirmButton: false
+        });
+    }
 };
 </script>
 
