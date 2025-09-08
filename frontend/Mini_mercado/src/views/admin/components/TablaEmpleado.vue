@@ -70,7 +70,7 @@ async function toggleEmpleadoStatus(empleado) {
     try {
         const newStatus = empleado.status == 1 ? 0 : 1;
         const data = {
-            status:newStatus
+            status: String(newStatus)
         }
         console.log(empleado.user_id)
         await userService.updateUser(empleado.user_id, data);

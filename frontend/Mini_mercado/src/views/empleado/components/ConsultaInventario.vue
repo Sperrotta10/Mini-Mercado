@@ -42,6 +42,50 @@
         </v-data-table>
         
       </div>
+      <div class="card" style="margin-top: 32px;">
+        <div class="card-body">
+          <h3 style="color:#e74c3c; margin-bottom: 18px;">Productos con bajo stock</h3>
+          <table class="table-responsive">
+            <thead>
+              <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Stock</th>
+                <th>Mínimo</th>
+                <th>Nivel</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prod in productos.filter(p => Number(p.stock) <= Number(p.stock_min))" :key="prod.product_id">
+                <td>
+                  <div class="mini-image-box">
+                    <img :src="prod.image" alt="img" v-if="prod.image" />
+                  </div>
+                </td>
+                <td>{{ prod.name }}</td>
+                <td>{{ prod.stock }}</td>
+                <td>{{ prod.stock_min }}</td>
+                <td style="min-width:120px;">
+                  <div class="progress-container">
+                    <div
+                      class="progress-bar"
+                      :class="{
+                        'bg-danger': prod.stock <= prod.stock_min,
+                        'bg-warning': prod.stock > prod.stock_min && prod.stock <= prod.stock_min * 1.5,
+                        'bg-success': prod.stock > prod.stock_min * 1.5
+                      }"
+                      :style="{ width: Math.max(5, Math.min(100, (prod.stock / (prod.stock_min || 1)) * 100)) + '%' }"
+                    ></div>
+                  </div>
+                </td>
+              </tr>
+              <tr v-if="productos.filter(p => Number(p.stock) <= Number(p.stock_min)).length === 0">
+                <td colspan="5" style="text-align:center; color:#10b68d;">No hay productos con bajo stock.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -65,7 +109,6 @@ const headers = [
   { title: 'Precio', key: 'price', align: 'start', value: 'price' },
   { title: 'Stock', key: 'stock', align: 'start', value: 'stock' },
   { title: 'Stock Mínimo', key: 'stock_min', align: 'start', value: 'stock_min' },
-  { title: 'Acciones', key: 'acciones', align: 'start', value: 'acciones', sortable: false },
 ];
 
 async function cargarProductos() {

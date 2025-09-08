@@ -52,6 +52,50 @@
         </v-data-table>
         <label class="categorias-label">Categorias: 1. Lacteos | 2. Frutas y Verduras | 3. Carniceria | 4. Abarrotes | 5. Bebidas | 6. Snacks y Dulces | 7. Limpieza</label>
       </div>
+      <div class="card" style="margin-top: 32px;">
+        <div class="card-body">
+          <h3 style="color:#e74c3c; margin-bottom: 18px;">Productos con bajo stock</h3>
+          <table class="table-responsive">
+            <thead>
+              <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Stock</th>
+                <th>Mínimo</th>
+                <th>Nivel</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="prod in productos.filter(p => Number(p.stock) <= Number(p.stock_min))" :key="prod.product_id">
+                <td>
+                  <div class="mini-image-box">
+                    <img :src="prod.image" alt="img" v-if="prod.image" />
+                  </div>
+                </td>
+                <td>{{ prod.name }}</td>
+                <td>{{ prod.stock }}</td>
+                <td>{{ prod.stock_min }}</td>
+                <td style="min-width:120px;">
+                  <div class="progress-container">
+                    <div
+                      class="progress-bar"
+                      :class="{
+                        'bg-danger': prod.stock <= prod.stock_min,
+                        'bg-warning': prod.stock > prod.stock_min && prod.stock <= prod.stock_min * 1.5,
+                        'bg-success': prod.stock > prod.stock_min * 1.5
+                      }"
+                      :style="{ width: Math.max(5, Math.min(100, (prod.stock / (prod.stock_min || 1)) * 100)) + '%' }"
+                    ></div>
+                  </div>
+                </td>
+              </tr>
+              <tr v-if="productos.filter(p => Number(p.stock) <= Number(p.stock_min)).length === 0">
+                <td colspan="5" style="text-align:center; color:#10b68d;">No hay productos con bajo stock.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
     <!-- Modal de edición -->
     <Teleport to="body">
