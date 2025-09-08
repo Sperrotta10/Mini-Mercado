@@ -31,7 +31,7 @@
             <td>{{ username || carrito.user_id }}</td>
             <td>{{ formatFecha(carrito.updatedAt) }}</td>
             <td>
-              <button class="btn_ver" @click="verCarrito(carrito, cedula.value)">
+              <button class="btn_ver" @click="verCarrito(carrito, cedula.value,ClienteIsPremium.value)">
                 <i class="fas fa-eye"></i> Ver
               </button>
             </td>
@@ -45,6 +45,7 @@
         v-if="mostrarProcesar"
         :carrito="carritoSeleccionado"
         :cedulaCliente="cedulaSeleccionada"
+        :ClienteIsPremium="ClienteIsPremium"
         @procesar="procesarCompra"
         @close="cerrarModal"
       />
@@ -77,7 +78,7 @@ const cedulaSeleccionada = ref('');
 const mostrarProcesar = ref(false);
 const cedula = ref('');
 const error = ref('');
-
+const ClienteIsPremium = ref(false);
 const totalPaginas = computed(() => Math.ceil(carritos.value.length / carritosPorPagina));
 const carritosPaginados = computed(() => {
   const inicio = (paginaActual.value - 1) * carritosPorPagina;
@@ -147,6 +148,7 @@ async function buscarCarritos() {
     cedulaSeleccionada.value = cedula.value;
     carritos.value = res.data?.carts || [];
     username.value = res.data?.username || '';
+    ClienteIsPremium.value = res.data?.suscripcion || false;
     paginaActual.value = 1;
     if (carritos.value.length === 0) {
       error.value = 'No hay carritos para esta cédula.';

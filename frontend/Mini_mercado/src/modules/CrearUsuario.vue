@@ -57,7 +57,7 @@
             <div class="contenedor_terminos">
               <input type="checkbox" id="terminos" v-model="terminosAceptados" required />
               <label for="terminos">
-                <RouterLink to="/terminos"> Términos y condiciones</RouterLink>
+                <RouterLink to="/terminos_y_condiciones"> Términos y condiciones</RouterLink>
               </label>
             </div>
             

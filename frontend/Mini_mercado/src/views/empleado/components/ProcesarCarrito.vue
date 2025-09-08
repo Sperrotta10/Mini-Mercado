@@ -36,8 +36,26 @@
                     class="cantidad-input"
                   />
                 </td>
-                <td>${{ item.product.price.toFixed(2) }}</td>
-                <td>${{ (item.product.price * item.quantity).toFixed(2) }}</td>
+                <td>
+                  <span v-if="ClienteIsPremium && item.product.oferta > 0">
+                    <span style="text-decoration: line-through; color: #b0b0b0;">${{ item.product.price.toFixed(2) }}</span>
+                    <span style="color: #10b68d; margin-left: 8px;">
+                      ${{ (item.product.price * (1 - item.product.oferta / 100)).toFixed(2) }}
+                    </span>
+                    <span class="oferta-badge">-{{ item.product.oferta }}%</span>
+                  </span>
+                  <span v-else>
+                    ${{ item.product.price.toFixed(2) }}
+                  </span>
+                </td>
+                <td>
+                  <span v-if="ClienteIsPremium && item.product.oferta > 0">
+                    ${{ (item.product.price * (1 - item.product.oferta / 100) * item.quantity).toFixed(2) }}
+                  </span>
+                  <span v-else>
+                    ${{ (item.product.price * item.quantity).toFixed(2) }}
+                  </span>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -58,6 +76,7 @@
 import { computed, ref, watch } from 'vue'
 import { defineProps, defineEmits } from 'vue'
 
+
 const props = defineProps({
   carrito: {
     type: Object,
@@ -65,6 +84,10 @@ const props = defineProps({
   },
   cedulaCliente: {
     type: [String, Number],
+    required: true
+  },
+  ClienteIsPremium: {
+    type: Boolean,
     required: true
   }
 })
@@ -85,7 +108,13 @@ watch(
 )
 
 const totalCarrito = computed(() =>
-  editableItems.value.reduce((acc, item) => acc + (item.product.price * item.quantity), 0)
+  editableItems.value.reduce((acc, item) => {
+    if (props.ClienteIsPremium && item.product.oferta > 0) {
+      return acc + (item.product.price * (1 - item.product.oferta / 100) * item.quantity)
+    } else {
+      return acc + (item.product.price * item.quantity)
+    }
+  }, 0)
 )
 
 function procesarCarrito() {
@@ -253,5 +282,15 @@ h2 {
     .total {
         font-size: 1rem;
     }
+}
+
+.oferta-badge {
+  background: #e74c3c;
+  color: #fff;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.95rem;
+  margin-left: 6px;
+  font-weight: 600;
 }
 </style>

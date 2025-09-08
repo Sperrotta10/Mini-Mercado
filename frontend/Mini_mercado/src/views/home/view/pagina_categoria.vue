@@ -6,7 +6,7 @@
         <div class="categoria-header">
             <h1>Categoría: {{ nombreCategoría }}</h1>
         </div>
-        <div class="productos-grid">
+        <div v-if="!cargando" class="productos-grid">
             <Carta_producto
                 v-for="producto in productos"
                 :key="producto.product_id"
@@ -15,6 +15,8 @@
                 :nombre="producto.name"
                 :stock="producto.stock"
                 :precio="producto.price"
+                :oferta="producto.oferta"
+                :isPremium="isPremium.toString()"
             />
         </div>
     </main>
@@ -34,12 +36,14 @@ import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import {categoryService} from '@/utils/categoryServices'
 import { ProductService } from '@/utils/productServices';
-
+import { useAuthStore } from '@/stores/Auth';
 const ProductServiceInstance = new ProductService();
 const route = useRoute()
 const productos = ref([])
 const nombreCategoría = ref('')
-
+const AuthStore = useAuthStore();
+const isPremium = ref(false)
+const cargando = ref(true); // bandera de carga
 async function buscarCategorias(id) {
     if (id) {
         const res = await categoryService.getCategoryById(id)
@@ -54,10 +58,13 @@ async function buscarCategorias(id) {
     } else {
         productos.value = []
     }
+    cargando.value=false;
+
 }
 
 onMounted(() => {
     buscarCategorias(route.params.id || '')
+    isPremium.value = AuthStore.userData?.suscripcion || false;
 })
 
 // Observa cambios en el parámetro de la ruta y busca productos nuevos

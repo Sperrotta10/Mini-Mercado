@@ -11,7 +11,7 @@
       <categorias_producto></categorias_producto>
 
       <!--Area de Productos-->
-        <div class="contenedor_producto">
+        <div v-if="!cargando" class="contenedor_producto">
           <div 
             class="cedula"
             v-if="AuthStore.user?.role === 'cliente' && !AuthStore.userData?.cedula && AuthStore.isAuthenticated"
@@ -41,11 +41,16 @@
                 :nombre="producto.name"
                 :stock="producto.stock"
                 :precio="producto.price"
+                :oferta="producto.oferta"
+                :isPremium='isPremium.toString()'
               />
             </div>
           </div>
           
           
+        </div>
+        <div v-else class="cargando-productos">
+          Cargando productos...
         </div>
     </main>
 
@@ -71,13 +76,16 @@ import { categoryService } from '@/utils/categoryServices'
 import CedulaCliente from '../components/CedulaCliente.vue'
 
 const AuthStore = useAuthStore();
-AuthStore.GetThisUserData();
+const cargando = ref(true); // bandera de carga
+
 const categoriasConProductos = ref([])
 const productService = new ProductService()
-
+const isPremium = ref(false);
 
 onMounted(async () => {
   // Obtener categorías y productos de la base de datos
+  await AuthStore.GetThisUserData();
+  isPremium.value = AuthStore.userData?.suscripcion;
   const categorias = await categoryService.getCategories()
   const productos = await productService.getProducts()
   if (!categorias || !productos) return
@@ -86,6 +94,7 @@ onMounted(async () => {
     ...cat,
     productos: productos.data.filter(p => p.categoria_id === cat.categoria_id).slice(0, 5)
   }))
+  cargando.value = false;
 })
 
 const mostrarModal = ref(true);

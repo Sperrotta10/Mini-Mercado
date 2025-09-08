@@ -3,7 +3,7 @@
     <!--Area de header-->
     <header_general></header_general>
 
-    <main>
+    <main v-if="!cargando">
         <Carta_producto
             v-for="producto in productos"
             :key="producto.product_id"
@@ -12,9 +12,13 @@
             :nombre="producto.name"
             :stock="producto.stock"
             :precio="producto.price"
+            :oferta="producto.oferta"
+            :isPremium='isPremium.toString()'
         />
     </main>
-    
+    <div v-else class="cargando-productos">
+          Cargando productos...
+    </div>
     <!--Area de presentacion de MSJ Market-->
     <PresentacionMarket></PresentacionMarket>
     
@@ -29,11 +33,14 @@ import Carta_producto from '../components/Carta_producto.vue';
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { ProductService } from '@/utils/productServices'
+import { useAuthStore } from '@/stores/Auth';
+
+const cargando = ref(true); // bandera de carga
 
 const route = useRoute()
 const productos = ref([])
 const ProductServiceInstance = new ProductService()
-
+const isPremium = ref(false);
 async function buscarProductos(nombre) {
     if (nombre) {
         const res = await ProductServiceInstance.getProductsByName(nombre)
@@ -48,7 +55,10 @@ async function buscarProductos(nombre) {
 }
 
 onMounted(() => {
-    buscarProductos(route.params.nombre || '')
+  const AuthStore = useAuthStore();
+  isPremium.value = AuthStore.userData?.suscripcion || false;
+  buscarProductos(route.params.nombre || '')
+  cargando.value=false;
 })
 
 // Observa cambios en el parámetro de la ruta y busca productos nuevos
