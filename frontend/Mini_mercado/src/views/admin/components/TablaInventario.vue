@@ -1,62 +1,58 @@
+<!-- eslint-disable vue/valid-v-slot -->
 <template>
   <div id="inventory" class="page">
     <div class="card">
-      <div class="card-header">
-        <h3>Inventario</h3>
-      </div>
       <div class="card-body">
-        <div class="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th>Nombre de producto</th>
-                <th>Categoría</th>
-                <th>Stock</th>
-                <th>Mínimo stock</th>
-                <th>Estado de cantidad</th>
-                <th>Operación</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="producto in productosPaginados" :key="producto.product_id">
-                <td>{{ producto.name }}</td>
-                <td>{{ producto.categoria_id }}</td>
-                <td>{{ producto.stock }}</td>
-                <td>{{ producto.stock_min }}</td>
-                <td>
-                  <div class="progress-container">
-                    <div
-                      class="progress-bar"
-                      :class="getBarClass(producto)"
-                      :style="{ width: getBarWidth(producto) }"
-                    ></div>
-                  </div>
-                  <small>{{ getEstadoStock(producto) }}</small>
-                </td>
-                <td class="contendor_separador">
-                  <button class="btn_general" @click="abrirModal(producto.product_id)">
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button class="btn_general" @click="eliminarProducto(producto)">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </td>
-              </tr>
-              <tr v-if="productos.length === 0">
-                <td colspan="6" style="text-align:center;">No hay productos para mostrar.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!-- Paginación -->
-        <div class="paginacion" v-if="totalPaginas > 1">
-          <button :disabled="paginaActual === 1" @click="paginaActual--">Anterior</button>
-          <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
-          <button :disabled="paginaActual === totalPaginas" @click="paginaActual++">Siguiente</button>
-        </div>
+      <v-card-title class="d-flex align-center pe-2">
+        <v-icon icon="mdi-warehouse"></v-icon>
+        &nbsp; Inventario
+        <v-spacer></v-spacer>
+        <v-btn color="error" variant="outlined" class="mr-2" @click="generarPDFCompleto">
+            <v-icon left>mdi-file-pdf-box</v-icon>
+            Exportar PDF
+        </v-btn>
+        <v-text-field
+          v-model="search"
+          density="compact"
+          label="Buscar producto"
+          prepend-inner-icon="mdi-magnify"
+          variant="solo-filled"
+          flat
+          hide-details
+          single-line
+          class="search-inventario"
+        />
+      </v-card-title>
+    <v-divider></v-divider>
+        <v-data-table
+          :headers="headers"
+          :items="productos"
+          :items-per-page="5"
+          class="elevation-1"
+          :loading="loading"
+          :search="search"
+          loading-text="Cargando productos..."
+          
+        >
+          <template #item.image="{ item }">
+            <div class="mini-image-box">
+              <img :src="item.image" alt="img" v-if="item.image" />
+            </div>
+          </template>
+          <template #item.acciones="{ item }">
+            <div class="acciones-btns">
+              <v-btn icon color="primary"  @click="abrirModal(item.product_id)">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-btn icon color="error" @click="eliminarProducto(item)">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </div>
+          </template>
+        </v-data-table>
+        <label class="categorias-label">Categorias: 1. Lacteos | 2. Frutas y Verduras | 3. Carniceria | 4. Abarrotes | 5. Bebidas | 6. Snacks y Dulces | 7. Limpieza</label>
       </div>
     </div>
-
     <!-- Modal de edición -->
     <Teleport to="body">
       <div v-if="showModal" class="modal-backdrop" @click.self="cerrarModal">
@@ -82,9 +78,18 @@
             <label>Mínimo stock:</label>
             <input v-model.number="productoEdit.stock_min" type="number" min="0" />
 
-            <label>Imagen (URL):</label>
-            <input v-model="productoEdit.image" type="text" />
-
+            <div class="form-group">
+                  <label for="image">Imagen:</label>
+                  <input id="image" type="file" accept="image/*" @change="handleImageUpload"/>
+                  <div v-if="imagePreview" class="image-preview-container">
+                      <div class="image-preview">
+                        <img :src="imagePreview" alt="Vista previa de la imagen" />
+                        <button type="button" @click="removeImage" class="remove-image-btn">
+                          X
+                        </button>
+                      </div>
+                  </div>
+              </div>
             <label>Estado:</label>
             <select v-model="productoEdit.status">
               <option :value="true">Activo</option>
@@ -104,36 +109,73 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import Swal from 'sweetalert2';
 import { ProductService } from '@/utils/productServices';
-
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+const search = ref('');
 const productos = ref([]);
 const showModal = ref(false);
 const productoEdit = ref({});
 const productService = new ProductService();
+const imagePreview = ref(null);
+const imageFile = ref(null);
+const loading = ref(false);
 
-// Paginación
-const paginaActual = ref(1);
-const productosPorPagina = 5;
-const totalPaginas = computed(() => Math.ceil(productos.value.length / productosPorPagina));
-const productosPaginados = computed(() => {
-  const inicio = (paginaActual.value - 1) * productosPorPagina;
-  return productos.value.slice(inicio, inicio + productosPorPagina);
-});
+const headers = [
+  { title: 'ID', key: 'id', align: 'start', value: 'product_id' },
+  { title: 'Imagen', key: 'image', align: 'start', value: 'image', sortable: false },
+  { title: 'Nombre', key: 'name', align: 'start', value: 'name' },
+  { title: 'Categoría', key: 'categoria_id', align: 'start', value: 'categoria_id' },
+  { title: 'Precio', key: 'price', align: 'start', value: 'price' },
+  { title: 'Stock', key: 'stock', align: 'start', value: 'stock' },
+  { title: 'Stock Mínimo', key: 'stock_min', align: 'start', value: 'stock_min' },
+  { title: 'Oferta (%)', key: 'oferta', align: 'start', value: 'oferta' },
+  { title: 'Acciones', key: 'acciones', align: 'start', value: 'acciones', sortable: false },
+];
 
 async function cargarProductos() {
+  loading.value = true;
   try {
     const res = await productService.getProducts();
     productos.value = (res.data || []).map(p => ({
-      ...p,
+      product_id: p.product_id ?? '',
+      image: p.image ?? '',
+      name: p.name ?? '',
+      categoria_id: p.categoria_id ?? '',
+      price: p.price ?? '',
+      stock: p.stock ?? '',
+      stock_min: p.stock_min ?? '',
+      oferta: p.oferta ?? '',
+      // No agregues 'acciones', es solo para el slot
     }));
-    paginaActual.value = 1;
   } catch (e) {
     productos.value = [];
     console.error('Error al cargar productos:', e);
+  } finally {
+    loading.value = false;
   }
 }
+const handleImageUpload = (event) => {
+  const file = event.target.files[0];
+  if (file && file.type.match('image.*')) {
+    imageFile.value = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      imagePreview.value = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+// Eliminar solo la imagen
+const removeImage = () => {
+  imagePreview.value = null;
+  imageFile.value = null;
+  // También limpiamos el input file
+  document.getElementById('image').value = '';
+};
 
 // Carga los datos del producto por ID antes de abrir el modal
 async function abrirModal(productoId) {
@@ -155,18 +197,22 @@ function cerrarModal() {
   showModal.value = false;
   productoEdit.value = {};
 }
+
 async function guardarEdicion() {
   try {
-    await productService.update(productoEdit.value.product_id, {
-      name: productoEdit.value.name,
-      categoria_id: productoEdit.value.categoria_id,
-      price: productoEdit.value.price,
-      oferta: productoEdit.value.oferta,
-      stock: productoEdit.value.stock,
-      stock_min: productoEdit.value.stock_min,
-      image: productoEdit.value.image,
-      status: productoEdit.value.status
-    });
+    const form = new FormData();
+    form.append('name', String(productoEdit.value.name));
+    form.append('price', String(productoEdit.value.price));
+    form.append('stock', String(productoEdit.value.stock));
+    form.append('stock_min', String(productoEdit.value.stock_min));
+    form.append('categoria_id', String(productoEdit.value.categoria_id));
+    form.append('oferta', String(productoEdit.value.oferta));
+    form.append('status', String(productoEdit.value.status));
+    if (imageFile.value) {
+      form.append('image', imageFile.value); // Aquí va el archivo real
+    }
+
+    await productService.patchProduct(productoEdit.value.product_id, form);
     Swal.fire('¡Listo!', 'Producto editado correctamente.', 'success');
     await cargarProductos();
     cerrarModal();
@@ -175,6 +221,7 @@ async function guardarEdicion() {
     Swal.fire('Error', 'No se pudo editar el producto.', 'error');
   }
 }
+
 async function eliminarProducto(producto) {
   const confirm = await Swal.fire({
     title: `¿Eliminar "${producto.name}"?`,
@@ -188,7 +235,7 @@ async function eliminarProducto(producto) {
   });
   if (confirm.isConfirmed) {
     try {
-      await productService.delete(producto.product_id);
+      await productService.deleteProduct(producto.product_id);
       Swal.fire('Eliminado', 'El producto fue eliminado.', 'success');
       await cargarProductos();
     } catch (e) {
@@ -198,24 +245,63 @@ async function eliminarProducto(producto) {
   }
 }
 
-function getBarWidth(producto) {
-  const percent = Math.min(100, Math.round((producto.stock / producto.stock_min) * 100));
-  return percent + '%';
-}
-function getBarClass(producto) {
-  if (producto.stock < producto.stock_min * 0.5) return 'bg-danger';
-  if (producto.stock < producto.stock_min) return 'bg-warning';
-  return 'bg-success';
-}
-function getEstadoStock(producto) {
-  if (producto.stock < producto.stock_min * 0.5) return 'Muy bajo';
-  if (producto.stock < producto.stock_min) return 'Bajo';
-  return 'Bien';
-}
 
 onMounted(() => {
   cargarProductos();
 });
+
+const generarPDFCompleto = async () => {
+  loading.value = true;
+  
+  try {
+    const doc = new jsPDF();
+    
+    // Título
+    doc.setFontSize(20);
+    doc.text('Reporte de Inventario Completo', 14, 22);
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text(`Generado el: ${new Date().toLocaleDateString()}`, 14, 30);
+    
+    let yPosition = 40;
+    
+    // Para cada producto, agregar información detallada
+    for (const producto of productos.value) {
+      // Verificar si hay espacio en la página actual
+      if (yPosition > 250) {
+        doc.addPage();
+        yPosition = 20;
+      }
+      
+      // Nombre del producto
+      doc.setFontSize(12);
+      doc.setTextColor(0);
+      doc.text(`Producto: ${producto.name}`, 12, yPosition);
+      yPosition += 10;
+      
+      // ID y Categoría
+      doc.setFontSize(10);
+      doc.text(`ID: ${producto.product_id} | Categoría: ${producto.categoria_id}`, 14, yPosition);
+      yPosition += 7;
+      
+      // Precio y Stock
+      doc.text(`Precio: $${producto.price.toFixed(2)} | Stock: ${producto.stock} | Mínimo: ${producto.stock_min}`, 14, yPosition);
+      yPosition += 7;
+      
+      // Línea separadora
+      doc.line(14, yPosition, 196, yPosition);
+      yPosition += 15;
+    }
+    
+    doc.save(`inventario_detallado_${new Date().toISOString().slice(0, 10)}.pdf`);
+    
+  } catch (error) {
+    console.error('Error al generar PDF:', error);
+    Swal.fire('Error', 'No se pudo generar el PDF', 'error');
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
 
 <style scoped>
@@ -322,7 +408,7 @@ tr:hover {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.35); /* Más oscuro para mejor contraste */
-  z-index: 2000;
+  z-index: 500;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -438,5 +524,89 @@ tr:hover {
 .paginacion button:disabled {
   background: #ccc;
   cursor: not-allowed;
+}
+.image-preview-container {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
+  width: 100%;
+  position: relative; /* Añadido para contener el botón absolutamente posicionado */
+  padding: 10px; /* Espacio extra para el botón */
+}
+
+.image-preview {
+  position: relative;
+  width: 80%;
+  height: 240px;
+  border: 1px dashed #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Mantiene la proporción de la imagen */
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: 0px; 
+  right: 0px; 
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  z-index: 10; /* Asegura que esté por encima de todo */
+  box-shadow: 0 0 5px rgba(0,0,0,0.3); /* Sombra para mejor visibilidad */
+}
+.acciones-btns {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.mini-image-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  margin: 0 auto;
+}
+.mini-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.v-data-table thead,
+.v-data-table-header,
+.v-data-table-header th {
+  display: table-header-group !important;
+  visibility: visible !important;
+  color: inherit !important;
+}
+
+.categorias-label {
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 8px;
+  display: block;
+  text-align: center;
 }
 </style>

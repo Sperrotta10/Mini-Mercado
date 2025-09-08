@@ -65,13 +65,12 @@
       <input id="image" type="file" accept="image/*" @change="handleImageUpload"/>
       <div v-if="imagePreview" class="image-preview-container">
         <div class="image-preview">
-        <img :src="imagePreview" alt="Vista previa de la imagen" />
-        <button type="button" @click="removeImage" class="remove-image-btn">
-          X
-        </button>
+          <img :src="imagePreview" alt="Vista previa de la imagen" />
+          <button type="button" @click="removeImage" class="remove-image-btn">
+            X
+          </button>
+        </div>
       </div>
-      </div>
-      
     </div>
 
     <div class="form-actions">
