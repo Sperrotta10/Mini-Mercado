@@ -101,7 +101,6 @@ onMounted(async () => {
 const mostrarModal = ref(true);
 function manejarCedula() {
   mostrarModal.value = false; // Esto también cierra la modal
-  console.log("modal cerrada")
 }
 </script>
 

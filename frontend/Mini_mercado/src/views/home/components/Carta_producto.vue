@@ -39,7 +39,6 @@ const props = defineProps({
   isPremium: { type: Boolean, required: true, default: false }
 });
 
-console.log(props.isPremium, typeof props.isPremium);
 
 </script>
 

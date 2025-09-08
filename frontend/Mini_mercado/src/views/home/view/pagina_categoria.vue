@@ -50,7 +50,6 @@ async function buscarCategorias(id) {
         const res = await categoryService.getCategoryById(id)
         nombreCategoría.value = res.data.name
         const categoryProducts = await ProductServiceInstance.getProductsPaginated(1, 100, 0, 1000, 0, res.data.categoria_id)
-        console.log(categoryProducts)
         if (categoryProducts) {
             productos.value = categoryProducts.data.products
         } else {
@@ -67,7 +66,6 @@ onMounted(async () => {
     await AuthStore.GetThisUserData(); // Si tienes este método
     isPremium.value = AuthStore.userData?.suscripcion == 1 || AuthStore.userData?.suscripcion === true;
     buscarCategorias(route.params.id || '');
-    console.log('En Pagina Categoria', isPremium.value, typeof isPremium.value);
 });
 
 // Observa cambios en el parámetro de la ruta y busca productos nuevos
