@@ -42,7 +42,7 @@
                 :stock="producto.stock"
                 :precio="producto.price"
                 :oferta="producto.oferta"
-                :isPremium='isPremium.toString()'
+                :isPremium=isPremium
               />
             </div>
           </div>
@@ -86,6 +86,7 @@ onMounted(async () => {
   // Obtener categorías y productos de la base de datos
   await AuthStore.GetThisUserData();
   isPremium.value = AuthStore.userData?.suscripcion;
+  
   const categorias = await categoryService.getCategories()
   const productos = await productService.getProducts()
   if (!categorias || !productos) return

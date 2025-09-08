@@ -16,7 +16,7 @@
                 :stock="producto.stock"
                 :precio="producto.price"
                 :oferta="producto.oferta"
-                :isPremium="isPremium.toString()"
+                :isPremium=isPremium
             />
         </div>
     </main>
@@ -39,9 +39,10 @@ import { ProductService } from '@/utils/productServices';
 import { useAuthStore } from '@/stores/Auth';
 const ProductServiceInstance = new ProductService();
 const route = useRoute()
+const AuthStore = useAuthStore();
+
 const productos = ref([])
 const nombreCategoría = ref('')
-const AuthStore = useAuthStore();
 const isPremium = ref(false)
 const cargando = ref(true); // bandera de carga
 async function buscarCategorias(id) {
@@ -62,10 +63,12 @@ async function buscarCategorias(id) {
 
 }
 
-onMounted(() => {
-    buscarCategorias(route.params.id || '')
-    isPremium.value = AuthStore.userData?.suscripcion || false;
-})
+onMounted(async () => {
+    await AuthStore.GetThisUserData(); // Si tienes este método
+    isPremium.value = AuthStore.userData?.suscripcion == 1 || AuthStore.userData?.suscripcion === true;
+    buscarCategorias(route.params.id || '');
+    console.log('En Pagina Categoria', isPremium.value, typeof isPremium.value);
+});
 
 // Observa cambios en el parámetro de la ruta y busca productos nuevos
 watch(

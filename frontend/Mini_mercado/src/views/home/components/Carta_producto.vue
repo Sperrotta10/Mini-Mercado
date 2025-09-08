@@ -4,7 +4,7 @@
     <div class="producto_informacion">
       <h3 class="producto_nombre">{{ props.nombre }}</h3>
       <div class="producto_precio"> Precio: ${{ props.precio }}</div>
-      <div class="producto_oferta" v-if="props.isPremium && props.oferta > 0">
+      <div class="producto_oferta" v-if="(props.isPremium || props.isPremium == 'true') && props.oferta > 0">
         ¡Oferta! Precio: ${{ (props.precio * (1 - props.oferta / 100)).toFixed(2) }}
       </div>     
       <RouterLink :to="`/producto_detalles/${props.nombre}`" class="link">
@@ -39,7 +39,7 @@ const props = defineProps({
   isPremium: { type: Boolean, required: true, default: false }
 });
 
-console.log(props.isPremium);
+console.log(props.isPremium, typeof props.isPremium);
 
 </script>
 

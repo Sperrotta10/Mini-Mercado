@@ -13,7 +13,7 @@
             :stock="producto.stock"
             :precio="producto.price"
             :oferta="producto.oferta"
-            :isPremium='isPremium.toString()'
+            :isPremium=isPremium
         />
     </main>
     <div v-else class="cargando-productos">
