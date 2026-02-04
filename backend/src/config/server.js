@@ -20,10 +20,11 @@ export function createServer() {
     const app = express();
 
     // middleware que permite el acceso a la API desde el frontend
+    const allowedOrigin = enviroment.FRONTEND_URL || 'http://localhost:5173';
     app.use(cors({
-        origin: 'http://localhost:5173',
+        origin: allowedOrigin,
         credentials: true,
-    }))
+    }));
 
     // middleware para parsear el cuerpo de las peticiones y las cookies
     app.use(express.json());
@@ -42,11 +43,19 @@ export function createServer() {
     }));
 
     // Configuración de sesión (¡antes que passport!)
+    const secureCookie = ['1', 'true', 'yes', 'on', 'prod', 'production'].includes(String(enviroment.SECURE_COOKIE || '').toLowerCase());
+    const sameSite = (enviroment.COOKIE_SAMESITE || 'lax').toLowerCase();
+    const cookieOptions = {
+        secure: secureCookie,
+        sameSite: sameSite === 'none' ? 'none' : (sameSite === 'strict' ? 'strict' : 'lax'),
+    };
+    if (enviroment.COOKIE_DOMAIN) cookieOptions.domain = enviroment.COOKIE_DOMAIN;
+
     app.use(session({
         secret: enviroment.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
-        cookie: { secure: enviroment.SECURE_COOKIE === "prod" } 
+        cookie: cookieOptions
     }));
 
     // Inicializa Passport y configura estrategias
