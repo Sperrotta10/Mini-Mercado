@@ -9,5 +9,5 @@ export const getListLimiter = createRateLimiter({
 // Las rutas que modifican (POST, PATCH, DELETE) requieren autenticación/autorización y un rate limit más bajo.
 export const modifyLimiter = createRateLimiter({ 
     windowMs: 10 * 60 * 1000, 
-    max: 20 
+    max: 50 
 });

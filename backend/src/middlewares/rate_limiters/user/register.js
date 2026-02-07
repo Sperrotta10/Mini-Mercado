@@ -3,14 +3,14 @@ import { createRateLimiter } from "../rateLimiterFactory.js";
 // Registro público
 export const publicRegisterLimiter = createRateLimiter({
   windowMs: 10 * 60 * 1000, // 10 minutos
-  max: 3,
+  max: 30,
   message: 'Demasiadas solicitudes de registro. Intenta más tarde.',
 });
 
 // GET general (admin)
 export const adminGetLimiter = createRateLimiter({
   windowMs: 5 * 60 * 1000,
-  max: 20,
+  max: 30,
   message: 'Demasiadas consultas. Espera un momento.',
 });
 
@@ -31,20 +31,20 @@ export const paginationLimiter = createRateLimiter({
 // GET por ID
 export const getIdLimiter = createRateLimiter({
   windowMs: 5 * 60 * 1000,
-  max: 10,
+  max: 30,
   message: 'Demasiadas solicitudes por ID.',
 });
 
 // PATCH - actualización
 export const updateLimiter = createRateLimiter({
   windowMs: 10 * 60 * 1000,
-  max: 5,
+  max: 30,
   message: 'Demasiadas actualizaciones en poco tiempo.',
 });
 
 // DELETE - eliminación
 export const deleteLimiter = createRateLimiter({
   windowMs: 10 * 60 * 1000,
-  max: 3,
+  max: 30,
   message: 'Demasiadas eliminaciones seguidas.',
 });

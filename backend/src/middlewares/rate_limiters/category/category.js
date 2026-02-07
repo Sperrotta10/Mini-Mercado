@@ -9,5 +9,5 @@ export const getLimiter = createRateLimiter({
 // Rate limiter for modifying a category
 export const modifyLimiter = createRateLimiter({
     windowMs: 10 * 60 * 1000,
-    max: 20
+    max: 50
 });

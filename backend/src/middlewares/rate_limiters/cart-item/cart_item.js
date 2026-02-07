@@ -9,5 +9,5 @@ export const readLimiter = createRateLimiter({
 // Rate limiter for modifying cart items
 export const writeLimiter = createRateLimiter({
     windowMs: 10 * 60 * 1000,
-    max: 20
+    max: 50
 });
