@@ -16,7 +16,14 @@
           />
           <div class="producto-info">
             <span class="producto-nombre">{{ producto.item_data.nombre }}</span>
-            <span class="producto-precio">{{ currency(producto.item_data.precio) }}</span>
+            <span v-if="isPremium && producto.item_data.oferta > 0" class="producto-precio-oferta">
+              <span class="precio-original">{{ currency(producto.item_data.precio) }}</span>
+              <span class="precio-oferta">
+                {{ currency(producto.item_data.precio * (1 - producto.item_data.oferta / 100)) }}
+              </span>
+              <span class="oferta-badge">-{{ producto.item_data.oferta }}%</span>
+            </span>
+            <span v-else class="producto-precio">{{ currency(producto.item_data.precio) }}</span>
           </div>
           <div class="producto-actions">
             <button class="btn_counter" @click="disminuirCantidad(producto)" :disabled="producto.cantidad <= 1">-</button>
@@ -40,7 +47,11 @@ import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { CartItemService } from '@/utils/cartItemService';
 import { onMounted } from 'vue';
+import { useAuthStore } from '@/stores/Auth';
 import Swal from 'sweetalert2';
+
+const authStore = useAuthStore();
+const isPremium = authStore.userData?.suscripcion || false;
 
 const route = useRoute();
 const router = useRouter();
@@ -67,7 +78,8 @@ async function fetchCartItems() {
             id: item.product.product_id,
             nombre: item.product.name,
             precio: item.product.price,
-            imagen: item.product.image 
+            imagen: item.product.image ,
+            oferta: item.product.oferta
           }
         }
       ));
@@ -308,5 +320,31 @@ async function guardarCambios() {
 }
 .btn_guardar:hover {
   background: #018175;
+}
+
+.producto-precio-oferta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+}
+.precio-original {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 1rem;
+}
+.precio-oferta {
+  color: #10b68d;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.oferta-badge {
+  background: #e74c3c;
+  color: #fff;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.95rem;
+  margin-left: 4px;
+  font-weight: 600;
 }
 </style>

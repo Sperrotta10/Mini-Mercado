@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { User, Role, Cart } from "../../../../models/index.js"
+import { User, Role, Cart, CartItem, Product, Category } from "../../../../models/index.js"
 import { enviroment } from "../../../../config/enviroment.js"
 import { updateCartSubscription } from "../../../../utils/updateCartSuscription.js"
 
@@ -96,14 +96,34 @@ export class ModelUserRegister {
     // Metodo para obtener un usuario por su id
     static async getCedula(cedula) {
 
-        try {
-            
-            const user = await User.findOne( { where : { cedula }, 
-                attributes: { exclude: ['password'] },
-                include: {
+        try {        
+            const user = await User.findOne({
+                where: { cedula },
+                attributes: { exclude: ["password"] },
+                include: [
+                    {
                     model: Cart,
-                    as: 'carts'
-                }
+                    as: "carts", // <- relación User.hasMany(Cart, as: "carts")
+                    include: [
+                        {
+                        model: CartItem,
+                        as: "cartItems", // <- relación Cart.hasMany(CartItem, as: "cartItems")
+                        include: [
+                            {
+                            model: Product,
+                            as: "product", // <- relación CartItem.belongsTo(Product, as: "product")
+                            include: [
+                                {
+                                model: Category,
+                                as: "category" // <- relación Product.belongsTo(Category, as: "category")
+                                }
+                            ]
+                            }
+                        ]
+                        }
+                    ]
+                    }
+                ]
             });
 
             if(!user) return {message : "User no encontrados", status : 404};

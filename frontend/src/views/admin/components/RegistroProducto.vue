@@ -7,25 +7,55 @@
 
     <div class="form-group">
       <label for="precio">Precio:</label>
-      <input id="precio" v-model="formData.precio" type="text" placeholder="Ingrese su precio"/>
+      <v-text-field
+        id="precio"
+        v-model="formData.precio"
+        type="number"
+        :rules="[precioPositivoRule]"
+        label="Ingrese su precio"
+        min="0"
+        step="0.01"
+        hide-details="auto"
+        required
+      />
     </div>
 
     <div class="form-group">
-      <label for="stock">Stock:</label>
-      <input id="stock" v-model="formData.stock" type="text" placeholder="Ingrese su cantidad disponible"/>
-    </div>
+    <label for="stock">Stock:</label>
+    <v-text-field
+      id="stock"
+      v-model="formData.stock"
+      type="number"
+      :rules="[enteroPositivoRule]"
+      label="Ingrese su cantidad disponible"
+      min="0"
+      step="1"
+      hide-details="auto"
+      required
+    />
+  </div>
 
-    <div class="form-group">
-      <label for="min_stock">Mínimo Stock:</label>
-      <input id="min_stock" type="text" placeholder="Ingrese su cantidad mínimo stock"/>
-    </div>
+  <div class="form-group">
+    <label for="min_stock">Mínimo Stock:</label>
+    <v-text-field
+      id="min_stock"
+      v-model="formData.min_stock"
+      type="number"
+      :rules="[enteroPositivoRule]"
+      label="Ingrese su cantidad mínimo stock"
+      min="0"
+      step="1"
+      hide-details="auto"
+      required
+    />
+  </div>
   
     <div class="form-group">
       <label for="category">Categoría:</label>
-      <select id="category" v-model="formData.category">
+      <select id="category" v-model="formData.category" required>
         <option disabled value="">Seleccione una categoría</option>
-        <option v-for="category in categories" :key="category" :value="category">
-          {{ category }}
+        <option v-for="category in categories" :key="category.id" :value="category.id">
+          {{ category.name }}
         </option>
       </select>
     </div>
@@ -35,13 +65,12 @@
       <input id="image" type="file" accept="image/*" @change="handleImageUpload"/>
       <div v-if="imagePreview" class="image-preview-container">
         <div class="image-preview">
-        <img :src="imagePreview" alt="Vista previa de la imagen" />
-        <button type="button" @click="removeImage" class="remove-image-btn">
-          X
-        </button>
+          <img :src="imagePreview" alt="Vista previa de la imagen" />
+          <button type="button" @click="removeImage" class="remove-image-btn">
+            X
+          </button>
+        </div>
       </div>
-      </div>
-      
     </div>
 
     <div class="form-actions">
@@ -54,19 +83,31 @@
 </template>
 
 <script setup>
+import { ProductService } from '@/utils/productServices';
 import { ref } from 'vue';
+import Swal from 'sweetalert2'; 
 
+const productServiceInstance = new ProductService();
 // Datos del formulario
 const formData = ref({
   name: '',
   precio:'',
   stock:'',
+  min_stock:'',
   category: '',
+  image: null,
 });
 
 // Opciones de categoría (puedes cambiarlas según tus necesidades)
-const categories = ref(['Frutas', 'Vegetales', 'Chucheria', 'Refresco', 'Helados','Carniceria']);
-
+const categories = ref([
+  { id: 1, name: 'Lácteos' },
+  { id: 2, name: 'Frutas y Verduras' },
+  { id: 3, name: 'Carnicería' },
+  { id: 4, name: 'Abarrotes' },
+  { id: 5, name: 'Bebidas' },
+  { id: 6, name: 'Snacks y Dulces' },
+  { id: 7, name: 'Limpieza' }
+]);
 // Vista previa de la imagen
 const imagePreview = ref(null);
 const imageFile = ref(null);
@@ -101,14 +142,58 @@ const resetForm = () => {
   removeImage();
 };
 
-// Manejar envío del formulario
-const handleSubmit = () => {
-  // Aquí puedes manejar el envío de los datos
-  console.log({
-    ...formData.value,
-    image: imageFile.value,
-  });
-  // resetForm(); // Opcional: resetear después de enviar
+const enteroPositivoRule = value => {
+  if (value === '' || value === null || value === undefined) return 'Este campo es requerido';
+  if (!/^\d+$/.test(value)) return 'Solo números enteros positivos';
+  if (parseInt(value) < 0) return 'No se permiten valores negativos';
+  return true;
+};
+
+const precioPositivoRule = value => {
+  if (value === '' || value === null || value === undefined) return 'Este campo es requerido';
+  if (isNaN(value)) return 'Debe ser un número';
+  if (parseFloat(value) < 0) return 'No se permiten valores negativos';
+  return true;
+};
+
+const handleSubmit = async () => {
+  try {
+    const form = new FormData();
+    form.append('name', String(formData.value.name));
+    form.append('price', String(formData.value.precio));
+    form.append('stock', String(formData.value.stock));
+    form.append('stock_min', String(formData.value.min_stock));
+    form.append('categoria_id', String(formData.value.category));
+    if (imageFile.value) {
+      form.append('image', imageFile.value); // Aquí va el archivo real
+    }
+
+    // Cambia tu método createProduct para aceptar FormData y no JSON
+    const response = await productServiceInstance.createProduct(form);
+    console.log(response)
+    if (response.message=="Producto creado") {
+      Swal.fire({
+        icon: 'success',
+        title: 'Producto registrado',
+        text: 'El producto se registró correctamente.',
+        timer: 2000,
+        showConfirmButton: false
+      });
+      resetForm();
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: response?.message || 'No se pudo registrar el producto.',
+      });
+    }
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: error?.message || 'Ocurrió un error al registrar el producto.',
+    });
+  }
 };
 </script>
 

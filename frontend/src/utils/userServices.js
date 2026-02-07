@@ -22,7 +22,7 @@ export class UserService {
             return {status:true, data: res.data}
         } catch (error) {
             console.error('Error al iniciar sesión:', error)
-            return false
+            return {status:false, data: error.status}
         }
     }
 
@@ -95,6 +95,28 @@ export class UserService {
         } catch (error) {
             console.error('Error al crear empleado:', error)
             return false
+        }
+    }
+
+    async getCartsByCedula(cedula){
+        try{
+            const res = await this.api.get(`/register/cedula/${cedula}`)
+            if (res.status === 200) {
+                return { status: true, data: res.data.data }
+            }
+        } catch(error){
+            console.error('Error al obtener carritos del usuario', error)
+            return false
+        }
+    }
+
+    async forgotPassword(email){
+        try {
+            const res = await this.api.post('/auth/forgot-password', { email })
+            return { status: true, data: res.data.data }
+        } catch (error) {
+            console.error('Error al enviar correo de recuperación:', error)
+            return error.response
         }
     }
 

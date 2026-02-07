@@ -1,49 +1,89 @@
+<!-- eslint-disable vue/valid-v-slot -->
 <template>
   <div id="inventory" class="page">
     <div class="card">
-      <div class="card-header">
-        <h3>Inventario</h3>
-      </div>
       <div class="card-body">
-        <div class="table-responsive">
-          <table>
+      <v-card-title class="d-flex align-center pe-2">
+        <v-icon icon="mdi-warehouse"></v-icon>
+        &nbsp; Inventario
+        <v-spacer></v-spacer>
+        <v-btn color="error" variant="outlined" class="mr-2" @click="generarPDFCompleto">
+            <v-icon left>mdi-file-pdf-box</v-icon>
+            Exportar PDF
+        </v-btn>
+        <v-text-field
+          v-model="search"
+          density="compact"
+          label="Buscar producto"
+          prepend-inner-icon="mdi-magnify"
+          variant="solo-filled"
+          flat
+          hide-details
+          single-line
+          class="search-inventario"
+        />
+      </v-card-title>
+    <v-divider></v-divider>
+        <v-data-table
+          :headers="headers"
+          :items="productos"
+          :items-per-page="5"
+          class="elevation-1"
+          :loading="loading"
+          :search="search"
+          loading-text="Cargando productos..."
+          
+        >
+          <template #item.image="{ item }">
+            <div class="mini-image-box">
+              <img :src="item.image" alt="img" v-if="item.image" />
+            </div>
+          </template>
+        </v-data-table>
+        
+      </div>
+      <div class="card" style="margin-top: 32px;">
+        <div class="card-body">
+          <h3 style="color:#e74c3c; margin-bottom: 18px;">Productos con bajo stock</h3>
+          <table class="table-responsive">
             <thead>
               <tr>
-                <th>Nombre de producto</th>
-                <th>Categoría</th>
+                <th>Imagen</th>
+                <th>Nombre</th>
                 <th>Stock</th>
-                <th>Mínimo stock</th>
-                <th>Estado de cantidad</th>
+                <th>Mínimo</th>
+                <th>Nivel</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="producto in productosPaginados" :key="producto.product_id">
-                <td>{{ producto.name }}</td>
-                <td>{{ producto.categoria_id }}</td>
-                <td>{{ producto.stock }}</td>
-                <td>{{ producto.stock_min }}</td>
+              <tr v-for="prod in productos.filter(p => Number(p.stock) <= Number(p.stock_min))" :key="prod.product_id">
                 <td>
+                  <div class="mini-image-box">
+                    <img :src="prod.image" alt="img" v-if="prod.image" />
+                  </div>
+                </td>
+                <td>{{ prod.name }}</td>
+                <td>{{ prod.stock }}</td>
+                <td>{{ prod.stock_min }}</td>
+                <td style="min-width:120px;">
                   <div class="progress-container">
                     <div
                       class="progress-bar"
-                      :class="getBarClass(producto)"
-                      :style="{ width: getBarWidth(producto) }"
+                      :class="{
+                        'bg-danger': prod.stock <= prod.stock_min,
+                        'bg-warning': prod.stock > prod.stock_min && prod.stock <= prod.stock_min * 1.5,
+                        'bg-success': prod.stock > prod.stock_min * 1.5
+                      }"
+                      :style="{ width: Math.max(5, Math.min(100, (prod.stock / (prod.stock_min || 1)) * 100)) + '%' }"
                     ></div>
                   </div>
-                  <small>{{ getEstadoStock(producto) }}</small>
                 </td>
               </tr>
-              <tr v-if="productos.length === 0">
-                <td colspan="6" style="text-align:center;">No hay productos para mostrar.</td>
+              <tr v-if="productos.filter(p => Number(p.stock) <= Number(p.stock_min)).length === 0">
+                <td colspan="5" style="text-align:center; color:#10b68d;">No hay productos con bajo stock.</td>
               </tr>
             </tbody>
           </table>
-        </div>
-        <!-- Paginación -->
-        <div class="paginacion" v-if="totalPaginas > 1">
-          <button :disabled="paginaActual === 1" @click="paginaActual--">Anterior</button>
-          <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
-          <button :disabled="paginaActual === totalPaginas" @click="paginaActual++">Siguiente</button>
         </div>
       </div>
     </div>
@@ -51,54 +91,108 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
+import Swal from 'sweetalert2';
 import { ProductService } from '@/utils/productServices';
-
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+const search = ref('');
 const productos = ref([]);
 const productService = new ProductService();
+const loading = ref(false);
 
-// Paginación
-const paginaActual = ref(1);
-const productosPorPagina = 7;
-const totalPaginas = computed(() => Math.ceil(productos.value.length / productosPorPagina));
-const productosPaginados = computed(() => {
-  const inicio = (paginaActual.value - 1) * productosPorPagina;
-  return productos.value.slice(inicio, inicio + productosPorPagina);
-});
+const headers = [
+  { title: 'ID', key: 'id', align: 'start', value: 'product_id' },
+  { title: 'Imagen', key: 'image', align: 'start', value: 'image', sortable: false },
+  { title: 'Nombre', key: 'name', align: 'start', value: 'name' },
+  { title: 'Categoría', key: 'categoria_id', align: 'start', value: 'categoria_id' },
+  { title: 'Precio', key: 'price', align: 'start', value: 'price' },
+  { title: 'Stock', key: 'stock', align: 'start', value: 'stock' },
+  { title: 'Stock Mínimo', key: 'stock_min', align: 'start', value: 'stock_min' },
+];
 
 async function cargarProductos() {
+  loading.value = true;
   try {
     const res = await productService.getProducts();
     productos.value = (res.data || []).map(p => ({
-      ...p,
+      product_id: p.product_id ?? '',
+      image: p.image ?? '',
+      name: p.name ?? '',
+      categoria_id: p.categoria_id ?? '',
+      price: p.price ?? '',
+      stock: p.stock ?? '',
+      stock_min: p.stock_min ?? '',
+      // No agregues 'acciones', es solo para el slot
     }));
-    paginaActual.value = 1;
   } catch (e) {
     productos.value = [];
     console.error('Error al cargar productos:', e);
+  } finally {
+    loading.value = false;
   }
-}
-
-
-
-function getBarWidth(producto) {
-  const percent = Math.min(100, Math.round((producto.stock / producto.stock_min) * 100));
-  return percent + '%';
-}
-function getBarClass(producto) {
-  if (producto.stock < producto.stock_min * 0.5) return 'bg-danger';
-  if (producto.stock < producto.stock_min) return 'bg-warning';
-  return 'bg-success';
-}
-function getEstadoStock(producto) {
-  if (producto.stock < producto.stock_min * 0.5) return 'Muy bajo';
-  if (producto.stock < producto.stock_min) return 'Bajo';
-  return 'Bien';
 }
 
 onMounted(() => {
   cargarProductos();
 });
+
+const generarPDFCompleto = async () => {
+  loading.value = true;
+  
+  try {
+    const doc = new jsPDF();
+    
+    // Título
+    doc.setFontSize(20);
+    doc.text('Reporte de Inventario Completo', 14, 22);
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text(`Generado el: ${new Date().toLocaleDateString()}`, 14, 30);
+    
+    let yPosition = 40;
+    
+    // Para cada producto, agregar información detallada
+    for (const producto of productos.value) {
+      // Verificar si hay espacio en la página actual
+      if (yPosition > 250) {
+        doc.addPage();
+        yPosition = 20;
+      }
+      
+      // Nombre del producto
+      doc.setFontSize(12);
+      doc.setTextColor(0);
+      doc.text(`Producto: ${producto.name}`, 12, yPosition);
+      yPosition += 10;
+      
+      // ID y Categoría
+      doc.setFontSize(10);
+      doc.text(`ID: ${producto.product_id} | Categoría: ${producto.categoria_id}`, 14, yPosition);
+      yPosition += 7;
+      
+      // Precio y Stock
+      doc.text(`Precio: $${producto.price.toFixed(2)} | Stock: ${producto.stock} | Mínimo: ${producto.stock_min}`, 14, yPosition);
+      yPosition += 7;
+      
+      // Estado
+      doc.text(`Estado: ${producto.status ? 'Activo' : 'Inactivo'}`, 14, yPosition);
+      yPosition += 10;
+      
+      // Línea separadora
+      doc.line(14, yPosition, 196, yPosition);
+      yPosition += 15;
+    }
+    
+    doc.save(`inventario_detallado_${new Date().toISOString().slice(0, 10)}.pdf`);
+    
+  } catch (error) {
+    console.error('Error al generar PDF:', error);
+    Swal.fire('Error', 'No se pudo generar el PDF', 'error');
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
 
 <style scoped>
@@ -205,7 +299,7 @@ tr:hover {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.35); /* Más oscuro para mejor contraste */
-  z-index: 2000;
+  z-index: 500;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -321,5 +415,81 @@ tr:hover {
 .paginacion button:disabled {
   background: #ccc;
   cursor: not-allowed;
+}
+.image-preview-container {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
+  width: 100%;
+  position: relative; /* Añadido para contener el botón absolutamente posicionado */
+  padding: 10px; /* Espacio extra para el botón */
+}
+
+.image-preview {
+  position: relative;
+  width: 80%;
+  height: 240px;
+  border: 1px dashed #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Mantiene la proporción de la imagen */
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: 0px; 
+  right: 0px; 
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  z-index: 10; /* Asegura que esté por encima de todo */
+  box-shadow: 0 0 5px rgba(0,0,0,0.3); /* Sombra para mejor visibilidad */
+}
+.acciones-btns {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.mini-image-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  margin: 0 auto;
+}
+.mini-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.v-data-table thead,
+.v-data-table-header,
+.v-data-table-header th {
+  display: table-header-group !important;
+  visibility: visible !important;
+  color: inherit !important;
 }
 </style>

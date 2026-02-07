@@ -33,9 +33,10 @@
 
             <div class="contenido_links">
               <RouterLink to="/crear_usuario">Regístrese ahora</RouterLink>
-              <a href="#">¿Olvidó su contraseña?</a>
+              <a href="#" @click.prevent="onForgotPassword">¿Olvidó su contraseña?</a>
             </div>
 
+            <!-- 
             <div class="contenido_mostra_otro_acceso">
               <div class="linea_separado"></div>
               <span>O desea entrar con</span>
@@ -47,7 +48,7 @@
                 <img :src="Icon_google" alt="icon">
               </div>
               <span>Google</span>
-            </v-btn>
+            </v-btn> -->
 
             <v-btn type="submit" class="btn">Entrar</v-btn>
           </v-form>
@@ -64,10 +65,14 @@
 <script setup>
 import { ref } from 'vue'
 import Logo_con_link from './logo_con_link.vue'
+// eslint-disable-next-line no-unused-vars
 import Icon_google from '@/assets/Imagenes/google.png'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/Auth.js'
 import Swal from 'sweetalert2'
+import { UserService } from '@/utils/userServices'
+
+const UserServiceInstance = new UserService()
 
 const router = useRouter()
 const loginData = ref({
@@ -86,6 +91,43 @@ const password_rules = [
   v => v.length >= 6 || 'Mínimo 6 caracteres'
 ]
 
+async function onForgotPassword() {
+  const email = loginData.value.email
+  if (!email) {
+    alert('Por favor ingresa tu correo electrónico')
+    return
+  }
+  const response = await UserServiceInstance.forgotPassword(email)
+  if (response.status == 404) {
+    await Swal.fire({
+      icon: 'error',
+      title: 'Correo no encontrado',
+      text: 'No existe una cuenta con ese correo electrónico',
+      confirmButtonColor: '#d33',
+    })
+  } else if (response.status == 429) {
+    await Swal.fire({
+      icon: 'error',
+      title: 'Demasiadas solicitudes',
+      text: 'Reintente más tarde',
+      confirmButtonColor: '#d33',
+    })
+  } else if (response.status) {
+    await Swal.fire({
+      icon: 'success',
+      title: 'Correo enviado',
+      text: 'Se ha enviado un correo de recuperación',
+      confirmButtonColor: '#3085d6',
+    })
+  } else {
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Error al enviar el correo de recuperación',
+      confirmButtonColor: '#d33',
+    })
+  }
+}
 
 const onLogin = async () => {
   const result = await LoginForm.value?.validate()
@@ -99,18 +141,32 @@ const onLogin = async () => {
     password: loginData.value.password,
   }
   const response = await AuthStore.login({email: dataToSend.email, password: dataToSend.password})
-  if (response) {
+  if (response && response.data === 401) {
     await Swal.fire({
-        icon: 'success',
-        title: 'Inicio de sesión exitoso',
-        text: `Bienvenido de nuevo ${AuthStore.user.user_name ?? 'usuario'}.`,
-        confirmButtonColor: '#3085d6',
-      })
+      icon: 'error',
+      title: 'Usuario inactivo',
+      text: 'Tu cuenta está inactiva. Por favor contacta al administrador.',
+      confirmButtonColor: '#d33',
+    })
+  } else if (response && response.data === 429) {
+    await Swal.fire({
+      icon: 'error',
+      title: 'Demasiados intentos',
+      text: 'Has realizado demasiados intentos. Por favor, inténtalo dentro de 10 minutos.',
+      confirmButtonColor: '#d33',
+    })
+  } else if (response) {
+    await Swal.fire({
+      icon: 'success',
+      title: 'Inicio de sesión exitoso',
+      text: `Bienvenido de nuevo ${AuthStore.user.user_name ?? 'usuario'}.`,
+      confirmButtonColor: '#3085d6',
+    })
 
-    if (AuthStore.user?.role=="empleado"){
-      router.push('/empleado') 
-    }else{
-        router.push('/') // Redirige a la página principal
+    if (AuthStore.user?.role == "empleado") {
+      router.push('/empleado')
+    } else {
+      router.push('/') // Redirige a la página principal
     }
   } else {
     await Swal.fire({
@@ -122,7 +178,7 @@ const onLogin = async () => {
   }
 }
 
-
+// eslint-disable-next-line no-unused-vars
 function loginWithGoogle() {
   // Lógica para login con Google
 }

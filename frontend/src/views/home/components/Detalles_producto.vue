@@ -8,18 +8,25 @@
             <div class="producto_informacion">
                 <h1 class="producto_titulo">{{ producto?.name || 'Cargando...' }}</h1>
                 <span class="producto_categoria">{{ categoria?.name || 'Cargando...' }}</span>
-                <div class="producto_precio">${{ producto?.price || '--' }}</div>
-                <div class="producto_disponible">Disponible: {{ producto?.stock ?? '--' }}</div>
-                <div class="control_cantidad">
-                    <button class="btn_cantidad menos" @click="decrementar">-</button>
-                    <input type="text" class="input_cantidad" :value="cantidad_producto">
-                    <button class="btn_cantidad mas" @click="incrementar">+</button>
+                <div v-if=" isPremium && producto?.oferta > 0" class="producto_precio_oferta">
+                    <span class="precio-original">$ {{ producto?.price }}</span>
+                    <span class="precio-oferta">
+                        ¡Oferta Premium! $ {{ (producto?.price * (1 - producto?.oferta / 100)).toFixed(2) }}
+                    </span>
+                    <span class="oferta-badge">-{{ producto?.oferta }}%</span>
                 </div>
+                <div v-else class="producto_precio">
+                        $ {{ producto?.price || '--' }}
+                </div>
+                    <div class="producto_disponible">Disponible: {{ producto?.stock ?? '--' }}</div>
                 <AddToCart
                     :id="producto?.product_id"
                     :imagen="producto?.image || placeholder"
                     :nombre="producto?.name || 'Cargando...'"
-                    :precio="producto?.price || '--'"
+                    :precio="isPremium && producto?.oferta > 0
+                        ? (producto?.price * (1 - producto?.oferta / 100)).toFixed(2)
+                        : producto?.price || '--'"
+                    :stock="producto?.stock || 0"
                 />
             </div>
         </div>
@@ -42,6 +49,7 @@
                         :imagen="producto.image || Ejemplo_png"
                         :nombre="producto.name"
                         :precio="producto.price"
+                        :oferta="producto.oferta"
                     />
                     </div>
                 </div>
@@ -64,30 +72,11 @@ import { ProductService } from '@/utils/productServices';
 import { categoryService } from '@/utils/categoryServices';
 import placeholder from '@/assets/Imagenes/placeholder.webp';
 import AddToCart from './AddToCart.vue';
+import { useAuthStore } from '@/stores/Auth';
 const route = useRoute();
 const productService = new ProductService();
-const cantidad_producto = ref(1);
-
-
-//Para incrementar la cantidad de producto
-const incrementar = () => {
-    if(cantidad_producto.value>=producto.value.stock){
-        return
-    }else{
-        cantidad_producto.value++;
-    }
-}
-
-
-
-//Para decrementar 
-const decrementar = () => {
-  if (cantidad_producto.value > 1){
-    cantidad_producto.value--;
-  }
-  
-}
-
+const authStore = useAuthStore();
+const isPremium = authStore.userData?.suscripcion || false;
 
 const producto = ref(null)
 const categoria = ref(null)
@@ -202,6 +191,11 @@ function prev() {
     padding: 20px;
 }
 
+.producto_disponible {
+    font-size: 16px;
+    margin-bottom: 3rem;
+}
+
 .producto_titulo {
     font-size: 24px;
     font-weight: bold;
@@ -218,7 +212,35 @@ function prev() {
     font-size: 14px;
     margin-bottom: 20px;
 }
-
+.producto_precio_oferta {
+    font-size: 18px;
+    margin: 20px 0;
+    font-weight: bold;
+    color: #e74c3c;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.precio-original {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 20px;
+    margin-right: 8px;
+}
+.precio-oferta {
+    color: #10b68d;
+    font-size: 28px;
+    font-weight: bold;
+}
+.oferta-badge {
+    background: #e74c3c;
+    color: #fff;
+    border-radius: 6px;
+    padding: 2px 10px;
+    font-size: 16px;
+    margin-left: 8px;
+    font-weight: 600;
+}
 .producto_precio {
     font-size: 28px;
     color: #10b68d;

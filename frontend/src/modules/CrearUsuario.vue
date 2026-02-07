@@ -18,18 +18,46 @@
               <v-text-field type="text" v-model="registerData.username" :autocomplete="'MSJuser123'" :rules="username_rules" placeholder='Nombre de usuario' required />
             </div>
             
-            <div class="contenedor_input">
-              <v-text-field type="password" v-model="registerData.password" :autocomplete="'New@Password@123'" :rules="password_rules" placeholder='Contraseña' required />
+            <div class="contenedor_input" style="display: flex; align-items: center;">
+              <v-text-field
+                type="password"
+                v-model="registerData.password"
+                :autocomplete="'New@Password@123'"
+                :rules="password_rules"
+                placeholder="Contraseña"
+                required
+                style="flex: 1;"
+              />
+              <v-tooltip location="bottom">
+                <template v-slot:activator="{ props }">
+                  <span
+                    v-bind="props"
+                    style="margin-left: 8px; cursor: pointer; font-size: 1.3rem; color: #10b68d;"
+                    aria-label="Requisitos de contraseña"
+                    tabindex="0"
+                  >
+                    ℹ️
+                  </span>
+                </template>
+                <span>
+                  La contraseña debe tener al menos:<br>
+                  • 6 caracteres<br>
+                  • Una letra mayúscula<br>
+                  • Un número<br>
+                  • Un carácter especial
+                </span>
+              </v-tooltip>
             </div>
             
             <div class="contenedor_input">
               <v-text-field type="password" :autocomplete="'New@Password@123'" v-model="registerData.confirmPassword" :rules="confirmPassword_rules" placeholder='Confirmar contraseña' required />
+            
             </div>
             
             <div class="contenedor_terminos">
               <input type="checkbox" id="terminos" v-model="terminosAceptados" required />
               <label for="terminos">
-                <RouterLink to="/terminos"> Términos y condiciones</RouterLink>
+                <RouterLink to="/terminos_y_condiciones"> Términos y condiciones</RouterLink>
               </label>
             </div>
             

@@ -1,6 +1,18 @@
 <template>
   <div class="carritos-usuarios">
     <h2 class="titulo">Carritos de Usuarios</h2>
+    <div class="busqueda-cedula">
+      <input
+        v-model="cedula"
+        type="text"
+        maxlength="8"
+        placeholder="Ingrese cédula (Ej: 12345678)"
+        @input="soloNumeros"
+        class="input-cedula"
+      />
+      <button class="btn-buscar" @click="buscarCarritos">Buscar</button>
+    </div>
+    <p v-if="error" class="error">{{ error }}</p>
     <div class="tabla-container">
       <table>
         <thead>
@@ -16,10 +28,10 @@
           <tr v-for="carrito in carritosPaginados" :key="carrito.cart_id">
             <td>{{ carrito.cart_id }}</td>
             <td>{{ carrito.name }}</td>
-            <td>{{ carrito.user?.username || carrito.user_id }}</td>
+            <td>{{ username || carrito.user_id }}</td>
             <td>{{ formatFecha(carrito.updatedAt) }}</td>
             <td>
-              <button class="btn_ver" @click="abrirModal(carrito.cart_id)">
+              <button class="btn_ver" @click="verCarrito(carrito, cedula.value,ClienteIsPremium.value)">
                 <i class="fas fa-eye"></i> Ver
               </button>
             </td>
@@ -29,6 +41,14 @@
           </tr>
         </tbody>
       </table>
+      <ProcesarCarrito
+        v-if="mostrarProcesar"
+        :carrito="carritoSeleccionado"
+        :cedulaCliente="cedulaSeleccionada"
+        :ClienteIsPremium="ClienteIsPremium"
+        @procesar="procesarCompra"
+        @close="cerrarModal"
+      />
     </div>
     <!-- Paginación -->
     <div class="paginacion" v-if="totalPaginas > 1">
@@ -36,51 +56,110 @@
       <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
       <button :disabled="paginaActual === totalPaginas" @click="paginaActual++">Siguiente</button>
     </div>
-    <!-- Modal para ver items del carrito -->
-    <ModalCartItems
-      v-if="modalVisible"
-      :carritoId="carritoSeleccionadoId"
-      :visible="modalVisible"
-      @close="modalVisible = false"
-    />
+    
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { CartService } from '@/utils/cartService';
-import ModalCartItems from '@/views/usuarios/components/ModalCartItems.vue';
+import { ref, computed } from 'vue';
+import { UserService } from '@/utils/userServices';
+import ProcesarCarrito from './ProcesarCarrito.vue';
+import { ProductService } from '@/utils/productServices';
+import Swal from 'sweetalert2'; 
 
+const productServiceInstance = new ProductService();
+const username = ref('');
 const carritos = ref([]);
 const paginaActual = ref(1);
 const carritosPorPagina = 8;
-const modalVisible = ref(false);
-const carritoSeleccionadoId = ref(null);
-
-const cartService = new CartService();
-
+const userServiceInstance = new UserService();
+const carritoSeleccionado = ref([]);
+const cedulaSeleccionada = ref('');
+const mostrarProcesar = ref(false);
+const cedula = ref('');
+const error = ref('');
+const ClienteIsPremium = ref(false);
 const totalPaginas = computed(() => Math.ceil(carritos.value.length / carritosPorPagina));
 const carritosPaginados = computed(() => {
   const inicio = (paginaActual.value - 1) * carritosPorPagina;
   return carritos.value.slice(inicio, inicio + carritosPorPagina);
 });
 
-async function cargarCarritos() {
+function soloNumeros(e) {
+  let valor = e.target.value.replace(/[^\d]/g, '');
+  if (valor.length > 8) {
+    valor = valor.slice(0, 8);
+  }
+  cedula.value = valor;
+}
+
+function verCarrito(carrito) {
+  carritoSeleccionado.value = carrito; 
+  mostrarProcesar.value = true;
+}
+
+async function procesarCompra({ cartItems }) {
+  let exito = true;
+  for (const item of cartItems) {
+    try {
+      const newproductStock = String(item.product.stock - item.quantity);
+      const response = await productServiceInstance.patchProduct(item.product_id, { stock: newproductStock });
+
+      if (response?.status === 400) {
+        exito = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'Stock insuficiente',
+          text: `No hay suficiente stock para el producto ${item.product.name}.`,
+        });
+      }
+    } catch (e) {
+      exito = false;
+      console.error(`Error al actualizar el stock del producto ${item.product_id}:`, e);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: `No se pudo procesar el producto ${item.product.name}.`,
+      });
+    }
+  }
+  if (exito) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Compra procesada',
+      text: 'El carrito fue procesado correctamente.',
+      timer: 2000,
+      showConfirmButton: false
+    });
+    cerrarModal();
+    await buscarCarritos();
+  }
+}
+
+async function buscarCarritos() {
+  error.value = '';
+  if (!cedula.value || cedula.value.length < 1 || cedula.value.length > 8) {
+    error.value = 'Ingrese una cédula válida (1 a 8 números).';
+    carritos.value = [];
+    return;
+  }
   try {
-    const res = await cartService.getAllCarts();
-    console.log(res.data)
-    carritos.value = res.data || [];
+    const res = await userServiceInstance.getCartsByCedula(cedula.value);
+    cedulaSeleccionada.value = cedula.value;
+    carritos.value = res.data?.carts || [];
+    username.value = res.data?.username || '';
+    ClienteIsPremium.value = res.data?.suscripcion || false;
     paginaActual.value = 1;
+    if (carritos.value.length === 0) {
+      error.value = 'No hay carritos para esta cédula.';
+    }
   } catch (e) {
     carritos.value = [];
+    error.value = 'Error al buscar carritos.';
     console.error('Error al cargar carritos:', e);
   }
 }
 
-function abrirModal(cartId) {
-  carritoSeleccionadoId.value = cartId;
-  modalVisible.value = true;
-}
 
 function formatFecha(fechaIso) {
   if (!fechaIso) return '';
@@ -93,9 +172,9 @@ function formatFecha(fechaIso) {
   return `${dia}/${mes}/${anio} ${horas}:${minutos}`;
 }
 
-onMounted(() => {
-  cargarCarritos();
-});
+function cerrarModal() {
+  mostrarProcesar.value = false;
+}
 </script>
 
 <style scoped>
@@ -110,6 +189,49 @@ onMounted(() => {
   margin-bottom: 32px;
   font-size: 2rem;
   font-weight: bold;
+}
+.busqueda-cedula {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 24px;
+  justify-content: center;
+}
+.input-cedula {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1.5px solid #10b68d55;
+  background: #fff;
+  font-size: 1.08rem;
+  color: #222;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(16,182,141,0.04);
+  width: 220px;
+}
+.input-cedula:focus {
+  border-color: #10b68d;
+  box-shadow: 0 0 0 2px #10b68d22;
+}
+.btn-buscar {
+  background: #10b68d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 1.08rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-buscar:hover {
+  background: #018175;
+}
+.error {
+  color: #e74c3c;
+  margin-bottom: 12px;
+  text-align: center;
+  font-weight: 500;
 }
 .tabla-container {
   background: white;

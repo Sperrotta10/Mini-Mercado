@@ -4,6 +4,9 @@
     <div class="producto_informacion">
       <h3 class="producto_nombre">{{ props.nombre }}</h3>
       <div class="producto_precio"> Precio: ${{ props.precio }}</div>
+      <div class="producto_oferta" v-if="(props.isPremium || props.isPremium == 'true') && props.oferta > 0">
+        ¡Oferta! Precio: ${{ (props.precio * (1 - props.oferta / 100)).toFixed(2) }}
+      </div>     
       <RouterLink :to="`/producto_detalles/${props.nombre}`" class="link">
         <button class="btn_agregar_carrito">Ver más detalles</button>
       </RouterLink>
@@ -11,7 +14,11 @@
         :id="props.id"
         :imagen="props.imagen"
         :nombre="props.nombre"
-        :precio="props.precio"
+        :precio="isPremium && props.oferta > 0
+                        ? (props.precio * (1 - props.oferta / 100)).toFixed(2)
+                        : props.precio || '--'"
+        :stock="props.stock"
+        :oferta="props.oferta"
       />
     </div>
   </div>
@@ -21,12 +28,18 @@
 const placeholder = '../../../assets/Imagenes/placeholder.webp';
 import AddToCart from './AddToCart.vue'
 
+
 const props = defineProps({
   id: { type: Number, required: true },
   imagen: { type: String, required: true },
   nombre: { type: String, required: true },
-  precio: { type: [Number, String], required: true }
+  stock: { type: Number, required: true },
+  precio: { type: [Number, String], required: true },
+  oferta: { type: Number, required: false, default: 0 },
+  isPremium: { type: Boolean, required: true, default: false }
 });
+
+
 </script>
 
 <style scoped>
@@ -75,6 +88,13 @@ const props = defineProps({
     font-weight: 700;
     font-size: 1.2rem;
     margin: 10px 0;
+}
+
+.producto_oferta {
+    color: #E74C3C;
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 5px 0;
 }
 
 .btn_agregar_carrito {

@@ -19,18 +19,26 @@
                     <span class="text">{{ userData.email || 'NO HAY CORREO' }}</span>
                 </div>
                 <div class="item_informacion">
-                    <span class="icon">ID 🆔: </span>
+                    <span class="icon">ID: </span>
                     <span class="text">{{ userData.user_id || 'Cargando...' }}</span>
                 </div>
                 <div class="item_informacion">
                     <span class="icon">Estado: </span>
-                    <span class="text">{{ userData.suscripcion || 'Usuario Suscriptor' }}</span>
+                    <span class="text">{{ userData.suscripcion ? 'Cliente Premium' : 'Cliente' }}</span>
                 </div>
                 <div class="accion_btn">
                     <button class="btn_editar" @click="entrar_editar">Editar</button>
                 </div>
             </template>
         </div>
+        
+    </div>
+    <div v-if="!userData.suscripcion" class="suscripcion-banner">
+        <span class="icon">🎁</span>
+        <span class="text">
+            <strong>¡Activa tu suscripción!.</strong> Obtén descuentos exclusivos. ¡No te lo pierdas! 🎉
+        </span>
+        <button class="btn-suscripcion" @click="activarSuscripcion">Activar Suscripción</button>
     </div>
 </template>
 
@@ -39,10 +47,11 @@ import Icon_User from '@/assets/Imagenes/user_example.png'
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/Auth';
 import { onMounted, ref } from 'vue';
-
+import Swal from 'sweetalert2'
+import { UserService } from '@/utils/userServices';
 const authStore = useAuthStore();
 const router = useRouter()
-
+const UserServiceInstance = new UserService();
 const userData = ref({});
 const loading = ref(true);
 
@@ -55,7 +64,7 @@ function mapUserData(raw) {
         email: raw.email ?? 'NO HAY CORREO',
         telefono: raw.telefono ?? 'NO HAY TLF',
         cedula: raw.cedula ?? 'No disponible',
-        suscripcion: raw.suscripcion ? 'Suscriptor Activo' : 'Usuario Suscriptor',
+        suscripcion: raw.suscripcion,
         rol_id: raw.rol_id ?? 'N/A',
     }
 }
@@ -76,6 +85,45 @@ onMounted(() => {
 const entrar_editar = () => {
     router.push('/usuario/editar_informacion')
 }
+
+
+const codigosValidos = ['SUSCRIPCION2025', 'PREMIUM2025', 'VIP2025', 'OFERTA2025'];
+
+const activarSuscripcion = async () => {
+    const { value: codigo } = await Swal.fire({
+        title: 'Activar Suscripción',
+        input: 'text',
+        inputLabel: 'Introduce tu código de suscripción',
+        inputPlaceholder: 'Código de activación',
+        showCancelButton: true,
+        confirmButtonText: 'Activar',
+        cancelButtonText: 'Cancelar',
+        inputValidator: (value) => {
+            if (!value) {
+                return '¡Debes ingresar un código!';
+            }
+        }
+    });
+
+    if (codigo) {
+        // Verifica si el código está en el array de códigos válidos
+        if (codigosValidos.includes(codigo.trim().toUpperCase())) {
+            UserServiceInstance.updateUser(userData.value.user_id, {suscripcion:'1'});
+            await Swal.fire({
+                icon: 'success',
+                title: '¡Suscripción activada!',
+                text: 'Ahora tienes acceso a todos los beneficios.'
+            });
+            userData.value.suscripcion = true;
+        } else {
+            await Swal.fire({
+                icon: 'error',
+                title: 'Código inválido',
+                text: 'El código ingresado no es válido. Intenta nuevamente.'
+            });
+        }
+    }
+};
 
 </script>
 
@@ -169,6 +217,59 @@ const entrar_editar = () => {
     background-color: #018175;
 }
 
+.suscripcion-banner {
+    margin: 30px auto 0 auto;
+    padding: 24px 20px;
+    background: linear-gradient(90deg, #10b68d 0%, #3ec6e0 100%);
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(16, 182, 141, 0.13);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    color: #fff;
+    font-size: 1.08rem;
+    font-weight: 500;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    animation: suscripcionFadeIn 0.7s;
+}
+
+@keyframes suscripcionFadeIn {
+    from { opacity: 0; transform: translateY(20px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+.suscripcion-banner .icon {
+    font-size: 2.1rem;
+    margin-right: 8px;
+}
+
+.suscripcion-banner .text {
+    flex: 1;
+    min-width: 200px;
+}
+
+.btn-suscripcion {
+    background: #fff;
+    color: #10b68d;
+    border: none;
+    border-radius: 22px;
+    padding: 10px 28px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(16, 182, 141, 0.09);
+    transition: background 0.2s, color 0.2s;
+    margin-left: 10px;
+}
+
+.btn-suscripcion:hover {
+    background: #10b68d;
+    color: #fff;
+    border: 1px solid #fff;
+}
+
 /* responsive */
 @media (max-width: 950px) {
     .carta_cliente {
@@ -192,6 +293,19 @@ const entrar_editar = () => {
 
     .btn_editar {
         width: 50%;
+    }
+}
+
+@media (max-width: 700px) {
+    .suscripcion-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+        padding: 18px 8px;
+    }
+    .btn-suscripcion {
+        width: 100%;
+        margin-left: 0;
     }
 }
 </style>

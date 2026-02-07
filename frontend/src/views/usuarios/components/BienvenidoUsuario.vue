@@ -23,6 +23,8 @@ const authStore = useAuthStore();
 const userName = authStore.user?.username || 'Usuario';
 
 
+
+
 </script>
 
 <style scoped>

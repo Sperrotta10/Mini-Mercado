@@ -11,8 +11,17 @@
       <categorias_producto></categorias_producto>
 
       <!--Area de Productos-->
-        <div class="contenedor_producto">
-
+        <div v-if="!cargando" class="contenedor_producto">
+          <div 
+            class="cedula"
+            v-if="AuthStore.user?.role === 'cliente' && !AuthStore.userData?.cedula && AuthStore.isAuthenticated"
+            >
+            <CedulaCliente 
+              :show="mostrarModal" 
+              @close="mostrarModal = false" 
+              @cedula-submitted="manejarCedula" 
+            />
+          </div>
 
           <div
             v-for="categoria in categoriasConProductos"
@@ -30,12 +39,18 @@
                 :id="producto.product_id"
                 :imagen="producto.image"
                 :nombre="producto.name"
+                :stock="producto.stock"
                 :precio="producto.price"
+                :oferta="producto.oferta"
+                :isPremium=isPremium
               />
             </div>
           </div>
           
           
+        </div>
+        <div v-else class="cargando-productos">
+          Cargando productos...
         </div>
     </main>
 
@@ -47,6 +62,7 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '@/stores/Auth'
 import header_general from '@/modules/header_general.vue'
 import FooterComponente from '../components/Footer_Detalles.vue'
 import PresentacionMarket from '../components/PresentacionMarket.vue'
@@ -57,12 +73,20 @@ import Carta_categoria from '../components/Carta_categoria.vue'
 import { ref, onMounted } from 'vue'
 import { ProductService } from '@/utils/productServices'
 import { categoryService } from '@/utils/categoryServices'
+import CedulaCliente from '../components/CedulaCliente.vue'
+
+const AuthStore = useAuthStore();
+const cargando = ref(true); // bandera de carga
 
 const categoriasConProductos = ref([])
 const productService = new ProductService()
+const isPremium = ref(false);
 
 onMounted(async () => {
   // Obtener categorías y productos de la base de datos
+  await AuthStore.GetThisUserData();
+  isPremium.value = AuthStore.userData?.suscripcion;
+  
   const categorias = await categoryService.getCategories()
   const productos = await productService.getProducts()
   if (!categorias || !productos) return
@@ -71,7 +95,13 @@ onMounted(async () => {
     ...cat,
     productos: productos.data.filter(p => p.categoria_id === cat.categoria_id).slice(0, 5)
   }))
+  cargando.value = false;
 })
+
+const mostrarModal = ref(true);
+function manejarCedula() {
+  mostrarModal.value = false; // Esto también cierra la modal
+}
 </script>
 
 <style scoped>

@@ -41,7 +41,7 @@ async function confirmarAgregarCarrito() {
   try {
     const response = await cartService.createCart(nuevoCarrito);
     if (response == false) {
-      Swal.fire('Límite alcanzado', 'Has alcanzado el límite de carritos permitidos.', 'warning');
+      Swal.fire('Límite alcanzado', 'Para tener más carritos, mejore su suscripción.', 'warning');
     } else if (response) {
       Swal.fire('Éxito', 'Carrito agregado correctamente', 'success');
       emit('carrito-agregado');

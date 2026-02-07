@@ -30,6 +30,9 @@ import AtencionClientePro from '@/views/empleado/components/AtencionClientePro.v
 import { useAuthStore } from '@/stores/Auth.js'
 
 import { createRouter, createWebHistory } from 'vue-router'
+import Pagina_buscador from '@/views/home/view/pagina_buscador.vue'
+import Pagina_categoria from '@/views/home/view/pagina_categoria.vue'
+import TerminosYCondiciones from '@/modules/TerminosYCondiciones.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -101,6 +104,23 @@ const router = createRouter({
       path: '/producto_detalles/:nombre',
       name: 'Pagina de producto detalle', 
       component: Detalles_producto
+    },
+    {
+      path: '/search/:nombre',
+      name: 'search',
+      component: Pagina_buscador,
+      props: true
+    },
+    {
+      path: '/categoria/:id',
+      name: 'categoria',
+      component: Pagina_categoria,
+      props: true
+    },
+    {
+      path: '/terminos_y_condiciones',
+      name: 'terminos_y_condiciones',
+      component: TerminosYCondiciones,
     }
   ],
 })
