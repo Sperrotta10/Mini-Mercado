@@ -9,8 +9,31 @@
                   placeholder="Buscar producto"
                   v-model="searchQuery"
                   @keyup.enter="goToSearch"
+                                    @keydown.esc.prevent="closeSuggestions"
+                                    @focus="onFocus"
+                                    @blur="onBlur"
+                                    @input="onInput"
                 >
-                <button @click="goToSearch">Buscar</button>
+                <button class="btn_buscar" @click="goToSearch">Buscar</button>
+
+                                <div
+                                    v-if="showSuggestions"
+                                    class="sugerencias"
+                                    role="listbox"
+                                >
+                                    <button
+                                        v-for="s in suggestions"
+                                        :key="s.key"
+                                        type="button"
+                                        class="sugerencia_item"
+                                        @mousedown.prevent="selectSuggestion(s)"
+                                    >
+                                        <span class="sugerencia_nombre">{{ s.name }}</span>
+                                    </button>
+                                    <div v-if="!suggestions.length && searchQuery.trim().length >= 2" class="sugerencia_vacia">
+                                        Sin sugerencias
+                                    </div>
+                                </div>
             </div>
             
             <div class="contendor_accion_usuarios">
@@ -58,18 +81,109 @@ import logo_con_link from './logo_con_link.vue';
 import { ref } from 'vue';
 import CartSidebar from './CartSidebar.vue';
 import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
+import { watch, onMounted } from 'vue';
+import { ProductService } from '@/utils/productServices';
 
 const auth = useAuthStore();
 const showCart = ref(false);
     
 const searchQuery = ref('');
 const router = useRouter();
+const route = useRoute();
+
+const productService = new ProductService();
+const suggestions = ref([]);
+const isFocused = ref(false);
+const showSuggestions = ref(false);
+
+let debounceTimer = null;
+let lastRequestId = 0;
+
+function safeDecodeURIComponent(value) {
+    try {
+        return decodeURIComponent(value);
+    } catch {
+        return value;
+    }
+}
+
+function syncQueryFromRoute() {
+    const raw = route.params?.nombre;
+    if (typeof raw === 'string') {
+        searchQuery.value = safeDecodeURIComponent(raw);
+    }
+}
 
 function goToSearch() {
   if (searchQuery.value.trim()) {
+        showSuggestions.value = false;
     router.push(`/search/${encodeURIComponent(searchQuery.value.trim())}`);
   }
 }
+
+function onFocus() {
+    isFocused.value = true;
+    if (searchQuery.value.trim().length >= 2) onInput();
+}
+
+function onBlur() {
+    isFocused.value = false;
+    // Pequeño delay para permitir click en sugerencia
+    setTimeout(() => {
+        if (!isFocused.value) showSuggestions.value = false;
+    }, 120);
+}
+
+function onInput() {
+    const q = searchQuery.value.trim();
+    if (q.length < 2) {
+        suggestions.value = [];
+        showSuggestions.value = false;
+        return;
+    }
+    showSuggestions.value = true;
+
+    if (debounceTimer) clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        fetchSuggestions(q);
+    }, 280);
+}
+
+async function fetchSuggestions(q) {
+    const requestId = ++lastRequestId;
+    try {
+        const res = await productService.getProductsByName(q);
+        if (requestId !== lastRequestId) return;
+        const list = Array.isArray(res?.data) ? res.data : (Array.isArray(res) ? res : []);
+        suggestions.value = list
+            .slice(0, 6)
+            .map(p => ({ key: p.product_id ?? p.name, name: p.name }));
+    } catch {
+        if (requestId !== lastRequestId) return;
+        suggestions.value = [];
+    }
+}
+
+function selectSuggestion(s) {
+    searchQuery.value = s.name;
+    goToSearch();
+}
+
+function closeSuggestions() {
+    showSuggestions.value = false;
+}
+
+onMounted(() => {
+    syncQueryFromRoute();
+});
+
+watch(
+    () => route.params?.nombre,
+    () => {
+        syncQueryFromRoute();
+    }
+);
 
 </script>
 
@@ -80,6 +194,8 @@ header{
     color: white;
     padding: 15px 5%;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 3000;
 }
 
 .barra_principal {
@@ -94,6 +210,7 @@ header{
     max-width: 600px;
     margin: 0 20px;
     position: relative;
+    z-index: 1;
 }
 
 .contenedor_buscador input {
@@ -105,7 +222,7 @@ header{
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.contenedor_buscador button {
+.contenedor_buscador .btn_buscar {
     position: absolute;
     right: 5px;
     top: 5px;
@@ -116,6 +233,47 @@ header{
     border-radius: 30px;
     cursor: pointer;
     font-weight: 600;
+}
+
+.sugerencias {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 8px);
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    z-index: 9999;
+    padding: 6px;
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.sugerencia_item {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.sugerencia_item:hover {
+    background: rgba(16, 182, 141, 0.10);
+}
+
+.sugerencia_nombre {
+    color: #004C45;
+    font-weight: 600;
+}
+
+.sugerencia_vacia {
+    padding: 10px 12px;
+    color: #004C45;
+    opacity: 0.7;
 }
 
 .contendor_accion_usuarios {

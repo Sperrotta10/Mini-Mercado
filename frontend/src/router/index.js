@@ -112,7 +112,7 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/categoria/:id',
+      path: '/categoria/:id/:slug?',
       name: 'categoria',
       component: Pagina_categoria,
       props: true

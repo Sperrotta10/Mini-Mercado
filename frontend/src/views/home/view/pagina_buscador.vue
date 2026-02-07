@@ -3,25 +3,40 @@
     <!--Area de header-->
     <header_general></header_general>
 
-    <main v-if="!cargando">
-        <Carta_producto
-            v-for="producto in productos"
-            :key="producto.product_id"
-            :id="producto.product_id"
-            :imagen="producto.image"
-            :nombre="producto.name"
-            :stock="producto.stock"
-            :precio="producto.price"
-            :oferta="producto.oferta"
-            :isPremium=isPremium
-        />
+    <main>
+      <div class="buscador_contenido">
+        <div class="buscador_header">
+          <h1>Resultados para: <span>{{ termino }}</span></h1>
+        </div>
+
+        <div class="productos_grid">
+          <template v-if="cargando">
+            <SkeletonProductCard v-for="i in 10" :key="i" />
+          </template>
+
+          <template v-else>
+            <template v-if="productos.length">
+              <Carta_producto
+                  v-for="producto in productos"
+                  :key="producto.product_id"
+                  :id="producto.product_id"
+                  :imagen="producto.image"
+                  :nombre="producto.name"
+                  :stock="producto.stock"
+                  :precio="producto.price"
+                  :oferta="producto.oferta"
+                :isPremium="isPremium"
+              />
+            </template>
+            <template v-else>
+              <div class="no_resultados">
+                No se encontraron productos para "{{ termino }}".
+              </div>
+            </template>
+          </template>
+        </div>
+      </div>
     </main>
-    <div v-else class="cargando-productos">
-          Cargando productos...
-    </div>
-    <!--Area de presentacion de MSJ Market-->
-    <PresentacionMarket></PresentacionMarket>
-    
     <!--Area de footer-->
     <FooterComponente></FooterComponente>
 </template>
@@ -30,10 +45,18 @@
 import header_general from '@/modules/header_general.vue'
 import FooterComponente from '../components/Footer_Detalles.vue'
 import Carta_producto from '../components/Carta_producto.vue';
-import { ref, onMounted, watch } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { ProductService } from '@/utils/productServices'
 import { useAuthStore } from '@/stores/Auth';
+import SkeletonProductCard from '@/components/skeleton/SkeletonProductCard.vue';
+
+defineProps({
+  nombre: {
+    type: String,
+    default: '',
+  },
+})
 
 const cargando = ref(true); // bandera de carga
 
@@ -41,44 +64,99 @@ const route = useRoute()
 const productos = ref([])
 const ProductServiceInstance = new ProductService()
 const isPremium = ref(false);
+
+function safeDecodeURIComponent(value) {
+  try {
+    return decodeURIComponent(value)
+  } catch {
+    return value
+  }
+}
+
+const termino = computed(() => {
+  const raw = route.params.nombre
+  return typeof raw === 'string' ? safeDecodeURIComponent(raw) : ''
+})
 async function buscarProductos(nombre) {
+  cargando.value = true;
     if (nombre) {
         const res = await ProductServiceInstance.getProductsByName(nombre)
-        if (res) {
-            productos.value = res.data
-        } else {
-            productos.value = []
-        }
+        productos.value = Array.isArray(res?.data) ? res.data : []
     } else {
         productos.value = []
     }
+  cargando.value = false;
 }
 
-onMounted(() => {
-  const AuthStore = useAuthStore();
+const AuthStore = useAuthStore();
+
+onMounted(async () => {
   isPremium.value = AuthStore.userData?.suscripcion || false;
-  buscarProductos(route.params.nombre || '')
-  cargando.value=false;
+  await buscarProductos(termino.value)
 })
 
 // Observa cambios en el parámetro de la ruta y busca productos nuevos
 watch(
     () => route.params.nombre,
     (nuevoNombre) => {
-        buscarProductos(nuevoNombre || '')
+    if (typeof nuevoNombre === 'string') {
+      buscarProductos(safeDecodeURIComponent(nuevoNombre))
+      return
+    }
+    buscarProductos('')
     }
 )
 </script>
 
 <style scoped>
 main {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: center;
-  padding: 2rem 0;
   background: #f7f7f7;
   min-height: 60vh;
+  padding: 2rem 0;
+}
+
+.buscador_contenido {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 18px;
+}
+
+.buscador_header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+
+.buscador_header h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #018175;
+  margin: 0;
+  text-align: center;
+}
+
+.buscador_header h1 span {
+  color: #004C45;
+}
+
+.productos_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 260px));
+  justify-content: start;
+  justify-items: stretch;
+  gap: 24px;
+  align-items: start;
+}
+
+.no_resultados {
+  grid-column: 1 / -1;
+  text-align: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 18px;
+  color: #004C45;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
 }
 
 /* Si necesitas personalizar la carta, puedes usar esta clase en Carta_producto.vue */
@@ -146,13 +224,8 @@ main {
 }
 
 @media (max-width: 700px) {
-  main {
-    gap: 1rem;
-    padding: 1rem 0;
-  }
-  .carta-producto {
-    width: 95vw;
-    max-width: 340px;
-  }
+  main { padding: 1rem 0; }
+  .buscador_header h1 { font-size: 1.2rem; }
+  .productos_grid { gap: 14px; }
 }
 </style>
