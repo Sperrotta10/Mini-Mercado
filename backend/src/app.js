@@ -24,24 +24,6 @@ function normalizeBaseUrl(url) {
   return raw ? raw.replace(/\/+$/, '') : '';
 }
 
-function logBanner(effectivePort) {
-  const nodeEnv = process.env.NODE_ENV || 'development';
-  const secureCookie = parseBoolean(enviroment.SECURE_COOKIE);
-  const sameSite = (enviroment.COOKIE_SAMESITE || 'lax').toLowerCase();
-  const sslDb = parseBoolean(enviroment.DB_SSL);
-
-  console.log('================================================');
-  console.log('🛒 MSJ Market API');
-  console.log(`⏱️  Boot: ${new Date().toISOString()}`);
-  console.log(`🧩 Node: ${process.version} | Env: ${nodeEnv}`);
-  console.log(`🌐 Port: ${effectivePort}`);
-  if (enviroment.BACKEND_URL) console.log(`🌍 Public URL: ${normalizeBaseUrl(enviroment.BACKEND_URL)}`);
-  console.log(`🔒 Cookies: secure=${secureCookie} sameSite=${sameSite} domain=${safe(enviroment.COOKIE_DOMAIN)}`);
-  console.log(`🧭 CORS origin: ${safe(enviroment.FRONTEND_URL, 'http://localhost:5173')}`);
-  console.log(`🗄️  DB: host=${safe(enviroment.DB_HOST)} port=${safe(enviroment.DB_PORT)} name=${safe(enviroment.DB_NAME)} ssl=${sslDb}`);
-  console.log('================================================');
-}
-
 process.on('unhandledRejection', (reason) => {
   console.error('❌ UnhandledRejection:', reason);
 });
@@ -56,7 +38,6 @@ async function startApp() {
 
   // Log the environment configuration
   const PORT = Number(enviroment.PORT) || 3000;
-  logBanner(PORT);
   const app = createServer();
   const bootStart = Date.now();
   let server;
