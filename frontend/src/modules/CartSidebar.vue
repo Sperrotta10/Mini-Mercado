@@ -6,10 +6,18 @@
     </div>
     <div class="cart-content">
       <template v-if="!auth.isAuthenticated">
-        <p class="cart-text">Debes iniciar sesión para ver tu carrito.</p>
-        <router-link to="/login">
-          <button class="btn_login">Iniciar sesión</button>
-        </router-link>
+        <div class="auth-gate">
+          <div class="auth-gate__icon" aria-hidden="true">
+            <i class="fas fa-lock"></i>
+          </div>
+          <h3 class="auth-gate__title">Inicia sesión para usar tu carrito</h3>
+          <p class="auth-gate__text">
+            Guarda productos, administra tus carritos y finaliza tu compra.
+          </p>
+          <router-link class="auth-gate__link" to="/login">
+            <button class="btn_login btn_login--full">Iniciar sesión</button>
+          </router-link>
+        </div>
       </template>
       <template v-else-if="auth.user?.role !== 'cliente'">
         <p class="cart-text">Solo los clientes pueden acceder al carrito.</p>
@@ -182,6 +190,9 @@ watch(
   font-size: 1rem;
   transition: background 0.2s;
 }
+.btn_login--full {
+  width: 100%;
+}
 .btn_login:hover {
   background: #018175;
 }
@@ -271,6 +282,51 @@ watch(
     color: #333;
     font-size: 1rem;
     margin-top: 20px;
+}
+
+.auth-gate {
+  margin-top: 16px;
+  padding: 18px 16px;
+  border-radius: 14px;
+  background: #f7f7f7;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.auth-gate__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 182, 141, 0.12);
+  color: #018175;
+  font-size: 1.25rem;
+}
+
+.auth-gate__title {
+  margin: 0;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #004C45;
+}
+
+.auth-gate__text {
+  margin: 0;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #333;
+  opacity: 0.9;
+}
+
+.auth-gate__link {
+  width: 100%;
+  text-decoration: none;
 }
 .cart-backdrop {
     position: fixed;
