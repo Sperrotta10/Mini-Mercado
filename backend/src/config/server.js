@@ -65,6 +65,15 @@ export function createServer() {
 
     app.use('/api/v1/', routerApiV1);
 
+    // Healthcheck simple (útil para Render)
+    app.get('/health', (req, res) => {
+        res.status(200).json({
+            status: 'ok',
+            uptime: Math.round(process.uptime()),
+            timestamp: new Date().toISOString(),
+        });
+    });
+
     app.get('/', (req, res) => {
         res.status(200).json({ message: 'Welcome to the backend server!' });
     });
