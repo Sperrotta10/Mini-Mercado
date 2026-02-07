@@ -1,0 +1,1010 @@
+[
+  {
+    "name": "Manzanas (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/manzana.png",
+    "price": 1.80,
+    "stock": 30,
+    "stock_min": 8,
+    "oferta": 5,
+    "categoria_id": 2
+  },
+  {
+    "name": "Plátanos (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/platano.png",
+    "price": 1.20,
+    "stock": 40,
+    "stock_min": 10,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Naranjas (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/naranja.png",
+    "price": 1.50,
+    "stock": 25,
+    "stock_min": 7,
+    "oferta": 10,
+    "categoria_id": 2
+  },
+  {
+    "name": "Zanahorias (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/zanahoria.png",
+    "price": 0.90,
+    "stock": 35,
+    "stock_min": 12,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Tomates (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/tomate.png",
+    "price": 1.60,
+    "stock": 20,
+    "stock_min": 6,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Lechuga",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/lechuga.png",
+    "price": 0.80,
+    "stock": 50,
+    "stock_min": 15,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Papas (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/papas.png",
+    "price": 1.00,
+    "stock": 45,
+    "stock_min": 20,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Cebollas (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cebollas.png",
+    "price": 0.70,
+    "stock": 30,
+    "stock_min": 10,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Aguacates (unidad)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/aguacate.png",
+    "price": 1.50,
+    "stock": 15,
+    "stock_min": 5,
+    "oferta": 15,
+    "categoria_id": 2
+  },
+  {
+    "name": "Fresas (250g)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/fresas.png",
+    "price": 2.50,
+    "stock": 12,
+    "stock_min": 4,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Uvas (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/uva.png",
+    "price": 3.00,
+    "stock": 18,
+    "stock_min": 6,
+    "oferta": 10,
+    "categoria_id": 2
+  },
+  {
+    "name": "Piña (unidad)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/pina.png",
+    "price": 2.20,
+    "stock": 10,
+    "stock_min": 3,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Melón (unidad)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/melon.png",
+    "price": 3.50,
+    "stock": 8,
+    "stock_min": 3,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Sandía (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/sandia.png",
+    "price": 1.80,
+    "stock": 6,
+    "stock_min": 2,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Brócoli (unidad)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/brocoli.png",
+    "price": 1.40,
+    "stock": 15,
+    "stock_min": 5,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Mora (kg",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/moras.png",
+    "price": 1.20,
+    "stock": 20,
+    "stock_min": 7,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Pimenton (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/pimenton.png",
+    "price": 2.00,
+    "stock": 12,
+    "stock_min": 4,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Limones (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/limones.png",
+    "price": 1.30,
+    "stock": 25,
+    "stock_min": 8,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "kiwi",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/kiwi.png",
+    "price": 0.60,
+    "stock": 30,
+    "stock_min": 10,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Pepino (unidad)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/pepino.png",
+    "price": 0.90,
+    "stock": 22,
+    "stock_min": 7,
+    "oferta": 0,
+    "categoria_id": 2
+  },
+  {
+    "name": "Pechuga de Pollo (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/pechuga-de-pollo.png",
+    "price": 5.90,
+    "stock": 20,
+    "stock_min": 8,
+    "oferta": 0,  
+    "categoria_id": 3
+  },
+  {
+    "name": "Muslos de Pollo (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/muslos-de-pollo.png",
+    "price": 4.50,
+    "stock": 15,
+    "stock_min": 6,
+    "oferta": 10,
+    "categoria_id": 3
+  },
+  {
+    "name": "Carne Molida de Res (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/carne-molida-res.png",
+    "price": 7.80,
+    "stock": 12,
+    "stock_min": 5,
+    "oferta": 0,
+    "categoria_id": 3
+  },
+  {
+    "name": "Filete de Res (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/filete-de-res.png",
+    "price": 9.50,
+    "stock": 10,
+    "stock_min": 4,
+    "oferta": 0,
+    "categoria_id": 3
+  },
+  {
+    "name": "Chuleta de Cerdo (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/chuleta-de-cerdo.png",
+    "price": 6.20,
+    "stock": 14,
+    "stock_min": 6,
+    "oferta": 5,
+    "categoria_id": 3
+  },
+  {
+    "name": "Costillas de Cerdo (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/costillas-de-cerdo.png",
+    "price": 5.80,
+    "stock": 8,
+    "stock_min": 3,
+    "oferta": 0,
+    "categoria_id": 3
+  },
+  {
+    "name": "Hígado de Res (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/higado-de-res.png",
+    "price": 4.20,
+    "stock": 6,
+    "stock_min": 2,
+    "oferta": 0,
+    "categoria_id": 3
+  },
+  {
+    "name": "Salchichas (paquete 500g)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/salchichas.png",
+    "price": 3.50,
+    "stock": 25,
+    "stock_min": 10,
+    "oferta": 15,
+    "categoria_id": 3
+  },
+  {
+    "name": "Tocino (250g)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/tocino.png",
+    "price": 4.80,
+    "stock": 12,
+    "stock_min": 5,
+    "oferta": 0,
+    "categoria_id": 3
+  },
+  {
+    "name": "Jamón de Pavo (200g)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/jamon-de-pavo.png",
+    "price": 3.20,
+    "stock": 18,
+    "stock_min": 7,
+    "oferta": 0,
+    "categoria_id": 3
+  },
+  {
+    "name": "Salchichón (unidad)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/salchichon.png",
+    "price": 2.90,
+    "stock": 15,
+    "stock_min": 6,
+    "oferta": 0,
+    "categoria_id": 3
+  },
+  {
+    "name": "Pollo Entero (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/pollo-entero.png",
+    "price": 4.90,
+    "stock": 8,
+    "stock_min": 3,
+    "oferta": 0,
+    "categoria_id": 3
+  },
+  {
+    "name": "Alas de Pollo (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/alas-de-pollo.png",
+    "price": 3.80,
+    "stock": 15,
+    "stock_min": 6,
+    "oferta": 10,
+    "categoria_id": 3
+  },
+  {
+    "name": "Carne para Guisar (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/carne-de-guisar.png",
+    "price": 6.80,
+    "stock": 12,
+    "stock_min": 5,
+    "oferta": 0,
+    "categoria_id": 3
+  },
+  {
+    "name": "Mortadela (200g)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/mortadela.png",
+    "price": 2.50,
+    "stock": 20,
+    "stock_min": 8,
+    "oferta": 0,
+    "categoria_id": 3
+  },
+  {
+    "name": "Carne para Milanesa (kg)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/carne-para-milanesa.png",
+    "price": 7.20,
+    "stock": 10,
+    "stock_min": 4,
+    "oferta": 0,
+    "categoria_id": 3
+  },
+  {
+    "name": "Leche Entera 1L",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/leche-entera.png",
+    "price": 2.50,
+    "stock": 50,
+    "stock_min": 10,
+    "oferta": 0,
+    "categoria_id": 1
+  },
+  {
+    "name": "Leche Deslactosada 1L",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/leche-deslactosada.png",
+    "price": 2.80,
+    "stock": 40,
+    "stock_min": 10,
+    "oferta": 5,
+    "categoria_id": 1
+  },
+  {
+    "name": "Yogur Natural 500g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/yogurt-natural.png",
+    "price": 1.90,
+    "stock": 30,
+    "stock_min": 8,
+    "oferta": 0,
+    "categoria_id": 1
+  },
+  {
+    "name": "Yogur de Fresa 500g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/yogurt-fresa.png",
+    "price": 2.00,
+    "stock": 25,
+    "stock_min": 8,
+    "oferta": 10,
+    "categoria_id": 1
+  },
+  {
+    "name": "Queso Fresco 250g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/queso-fresco.png",
+    "price": 3.20,
+    "stock": 20,
+    "stock_min": 5,
+    "oferta": 0,
+    "categoria_id": 1
+  },
+  {
+    "name": "Queso Mozzarella 200g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/queso-mozzarella.png",
+    "price": 3.50,
+    "stock": 18,
+    "stock_min": 5,
+    "oferta": 15,
+    "categoria_id": 1
+  },
+  {
+    "name": "Mantequilla sin Sal 250g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/mantequilla-sin-sal.png",
+    "price": 2.80,
+    "stock": 15,
+    "stock_min": 5,
+    "oferta": 0,
+    "categoria_id": 1
+  },
+  {
+    "name": "Crema de Leche 200ml",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/crema-de-leche.png",
+    "price": 1.60,
+    "stock": 20,
+    "stock_min": 6,
+    "oferta": 0,
+    "categoria_id": 1
+  },
+  {
+    "name": "Leche Condensada 390g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/leche-condensada.png",
+    "price": 2.20,
+    "stock": 25,
+    "stock_min": 8,
+    "oferta": 5,
+    "categoria_id": 1
+  },
+  {
+    "name": "Leche en Polvo 400g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/leche-en-polvo.png",
+    "price": 4.00,
+    "stock": 12,
+    "stock_min": 4,
+    "oferta": 0,
+    "categoria_id": 1
+  },
+  {
+    "name": "Yogur Griego Natural 250g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/yogurt-griego.png",
+    "price": 1.80,
+    "stock": 22,
+    "stock_min": 7,
+    "oferta": 10,
+    "categoria_id": 1
+  },
+  {
+    "name": "Queso Cheddar 200g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/queso-cheddar.png",
+    "price": 3.80,
+    "stock": 15,
+    "stock_min": 5,
+    "oferta": 0,
+    "categoria_id": 1
+  },
+  {
+    "name": "Queso Parmesano 100g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/queso-parmesano.png",
+    "price": 4.50,
+    "stock": 10,
+    "stock_min": 3,
+    "oferta": 0,
+    "categoria_id": 1
+  },
+  {
+    "name": "Leche de Almendras 1L",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/leche-almendras.png",
+    "price": 3.20,
+    "stock": 18,
+    "stock_min": 6,
+    "oferta": 0,
+    "categoria_id": 1
+  },
+  {
+    "name": "Yogur de Durazno 500g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/yogurt-durazno.png",
+    "price": 2.10,
+    "stock": 20,
+    "stock_min": 7,
+    "oferta": 5,
+    "categoria_id": 1
+  },
+  {
+    "name": "Agua Mineral 500ml",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/agua-mineral.png",
+    "price": 0.80,
+    "stock": 100,
+    "stock_min": 30,
+    "oferta": 0,
+    "categoria_id": 5
+  },
+  {
+    "name": "Refresco de coca-Cola 1L",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/refresco-cola.png",
+    "price": 1.20,
+    "stock": 80,
+    "stock_min": 25,
+    "oferta": 10,
+    "categoria_id": 5
+  },
+  {
+    "name": "Jugo de Naranja 1L",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/jugo-de-naranja.png",
+    "price": 2.50,
+    "stock": 30,
+    "stock_min": 10,
+    "oferta": 0,
+    "categoria_id": 5
+  },
+  {
+    "name": "Cerveza Nacional (Lata)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cerveza-nacional.png",
+    "price": 1.80,
+    "stock": 60,
+    "stock_min": 20,
+    "oferta": 15,
+    "categoria_id": 5
+  },
+  {
+    "name": "Agua con Gas 750ml",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/agua-con-gas.png",
+    "price": 1.50,
+    "stock": 25,
+    "stock_min": 8,
+    "oferta": 0,
+    "categoria_id": 5
+  },
+  {
+    "name": "Té Helado 500ml",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/te-helado.png",
+    "price": 1.40,
+    "stock": 40,
+    "stock_min": 15,
+    "oferta": 5,
+    "categoria_id": 5
+  },
+  {
+    "name": "Refresco de Limón 2L",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/refresco-de-limon.png",
+    "price": 2.00,
+    "stock": 25,
+    "stock_min": 8,
+    "oferta": 0,
+    "categoria_id": 5
+  },
+  {
+    "name": "Vino Tinto 750ml",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/vino-tinto.png",
+    "price": 8.50,
+    "stock": 12,
+    "stock_min": 4,
+    "oferta": 0,
+    "categoria_id": 5
+  },
+  {
+    "name": "Jugo de Manzana 1L",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/jugo-de-manzana.png",
+    "price": 2.30,
+    "stock": 22,
+    "stock_min": 7,
+    "oferta": 0,
+    "categoria_id": 5
+  },
+  {
+    "name": "Refresco de Naranja 1L",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/refresco-de-naranja.png",
+    "price": 1.20,
+    "stock": 50,
+    "stock_min": 15,
+    "oferta": 0,
+    "categoria_id": 5
+  },
+  {
+    "name": "Agua Mineral 5L",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/agua-mineral-5l.png",
+    "price": 1.00,
+    "stock": 70,
+    "stock_min": 20,
+    "oferta": 0,
+    "categoria_id": 5
+  },
+  {
+    "name": "Whisky 750ml",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/whisky.png",
+    "price": 25.00,
+    "stock": 8,
+    "stock_min": 3,
+    "oferta": 0,
+    "categoria_id": 5
+  },
+  {
+    "name": "Malta 330ml",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/malta.png",
+    "price": 1.30,
+    "stock": 40,
+    "stock_min": 12,
+    "oferta": 0,
+    "categoria_id": 5
+  },
+  {
+    "name": "Arroz Blanco 1kg",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/arroz-blanco.png",
+    "price": 1.20,
+    "stock": 40,
+    "stock_min": 15,
+    "oferta": 10,
+    "categoria_id": 4
+  },
+  {
+    "name": "Frijoles Negros 500g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/frijoles-negros.png",
+    "price": 1.50,
+    "stock": 30,
+    "stock_min": 10,
+    "oferta": 0,
+    "categoria_id": 4
+  },
+  {
+    "name": "Aceite Vegetal 1L",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/aceite-vegetal.png",
+    "price": 2.80,
+    "stock": 25,
+    "stock_min": 8,
+    "oferta": 5,
+    "categoria_id": 4
+  },
+  {
+    "name": "Harina de Trigo 1kg",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/harina-de-trigo.png",
+    "price": 1.40,
+    "stock": 35,
+    "stock_min": 12,
+    "oferta": 0,
+    "categoria_id": 4
+  },
+  {
+    "name": "Azúcar Blanca 1kg",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/azucar-blanca.png",
+    "price": 1.10,
+    "stock": 50,
+    "stock_min": 20,
+    "oferta": 0,
+    "categoria_id": 4
+  },
+  {
+    "name": "Sal Refinada 500g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/sal-refinada.png",
+    "price": 0.60,
+    "stock": 45,
+    "stock_min": 15,
+    "oferta": 0,
+    "categoria_id": 4
+  },
+  {
+    "name": "Pasta Spaghetti 500g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/pasta-spaghetti.png",
+    "price": 1.30,
+    "stock": 30,
+    "stock_min": 10,
+    "oferta": 0,
+    "categoria_id": 4
+  },
+  {
+    "name": "Atún en Lata 120g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/atun-en-lata.png",
+    "price": 1.80,
+    "stock": 20,
+    "stock_min": 8,
+    "oferta": 15,
+    "categoria_id": 4
+  },
+  {
+    "name": "Sardinas en Lata 100g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/sardina-en-lata.png",
+    "price": 1.20,
+    "stock": 25,
+    "stock_min": 10,
+    "oferta": 0,
+    "categoria_id": 4
+  },
+  {
+    "name": "Café Instantáneo 100g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cafe-instantaneo.png",
+    "price": 3.50,
+    "stock": 18,
+    "stock_min": 6,
+    "oferta": 10,
+    "categoria_id": 4
+  },
+  {
+    "name": "Galletas de Soda (paquete)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/galleta-de-soda.png",
+    "price": 1.60,
+    "stock": 22,
+    "stock_min": 8,
+    "oferta": 0,
+    "categoria_id": 4
+  },
+  {
+    "name": "Mermelada de Fresa 250g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/mermelada-de-fresa.png",
+    "price": 2.20,
+    "stock": 12,
+    "stock_min": 4,
+    "oferta": 0,
+    "categoria_id": 4
+  },
+  {
+    "name": "Cereal de Maíz 500g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cereal-de-maiz.png",
+    "price": 2.50,
+    "stock": 15,
+    "stock_min": 6,
+    "oferta": 0,
+    "categoria_id": 4
+  },
+  {
+    "name": "Vinagre Blanco 500ml",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/vinagre-blanco.png",
+    "price": 1.00,
+    "stock": 20,
+    "stock_min": 7,
+    "oferta": 0,
+    "categoria_id": 4
+  },
+  {
+    "name": "Sopa Instantánea (sobre)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/sopa-instantanea.png",
+    "price": 0.80,
+    "stock": 50,
+    "stock_min": 20,
+    "oferta": 0,
+    "categoria_id": 4
+  },
+  {
+    "name": "Chocolate en Polvo 1kg",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/chocolate-en-polvo.png",
+    "price": 2.80,
+    "stock": 14,
+    "stock_min": 5,
+    "oferta": 0,
+    "categoria_id": 4
+  },
+  {
+    "name": "Maíz en Lata 300g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/maiz-en-lata.png",
+    "price": 1.40,
+    "stock": 18,
+    "stock_min": 6,
+    "oferta": 0,
+    "categoria_id": 4
+  },
+  {
+    "name": "Avena Instantánea 350g",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/avena-instantanea.png",
+    "price": 2.00,
+    "stock": 16,
+    "stock_min": 6,
+    "oferta": 5,
+    "categoria_id": 4
+  },
+  {
+    "name": "Papas Fritas Clásicas",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/papas-fritas.png",
+    "price": 1.80,
+    "stock": 35,
+    "stock_min": 15,
+    "oferta": 10,
+    "categoria_id": 6
+  },
+  {
+    "name": "Barra de Chocolate con Leche",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/barra-chocolate-leche.png",
+    "price": 2.20,
+    "stock": 50,
+    "stock_min": 20,
+    "oferta": 0,
+    "categoria_id": 6
+  },
+  {
+    "name": "Gomitas de Frutas",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/gomitas-de-fruta.png",
+    "price": 1.50,
+    "stock": 40,
+    "stock_min": 12,
+    "oferta": 0,
+    "categoria_id": 6
+  },
+  {
+    "name": "Galletas Oreo",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/galletas-oreo.png",
+    "price": 2.50,
+    "stock": 30,
+    "stock_min": 12,
+    "oferta": 0,
+    "categoria_id": 6
+  },
+  {
+    "name": "M&Ms",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/m&m.png",
+    "price": 1.90,
+    "stock": 45,
+    "stock_min": 18,
+    "oferta": 0,
+    "categoria_id": 6
+  },
+  {
+    "name": "Cheetos",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cheetos.png",
+    "price": 1.60,
+    "stock": 28,
+    "stock_min": 10,
+    "oferta": 0,
+    "categoria_id": 6
+  },
+  {
+    "name": "Chicles de Menta",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/chicles-de-menta.png",
+    "price": 0.90,
+    "stock": 60,
+    "stock_min": 25,
+    "oferta": 0,
+    "categoria_id": 6
+  },
+  {
+    "name": "Barra Energética",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/barra-energetica.png",
+    "price": 2.80,
+    "stock": 20,
+    "stock_min": 8,
+    "oferta": 0,
+    "categoria_id": 6
+  },
+  {
+    "name": "Chocolate Amargo",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/chocolate-amargo.png",
+    "price": 2.40,
+    "stock": 18,
+    "stock_min": 7,
+    "oferta": 0,
+    "categoria_id": 6
+  },
+  {
+    "name": "Chupeta",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/chupeta.png",
+    "price": 0.50,
+    "stock": 100,
+    "stock_min": 40,
+    "oferta": 0,
+    "categoria_id": 6
+  },
+  {
+    "name": "Papas Sabritas",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/papas-sabritas.png",
+    "price": 1.90,
+    "stock": 25,
+    "stock_min": 10,
+    "oferta": 0,
+    "categoria_id": 6
+  },
+  {
+    "name": "Cacahuates Japoneses",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cacahuete-japoneses.png",
+    "price": 1.40,
+    "stock": 30,
+    "stock_min": 12,
+    "oferta": 0,
+    "categoria_id": 6
+  },
+  {
+    "name": "Paletas Heladas",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/paleta-helado.png",
+    "price": 1.20,
+    "stock": 20,
+    "stock_min": 8,
+    "oferta": 0,
+    "categoria_id": 6
+  },
+  {
+    "name": "Chocolate Blanco",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/chocolate-blanco.png",
+    "price": 2.30,
+    "stock": 15,
+    "stock_min": 6,
+    "oferta": 0,
+    "categoria_id": 6
+  },
+  {
+    "name": "Galletas de Avena",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/galleta-de-avena.png",
+    "price": 2.00,
+    "stock": 18,
+    "stock_min": 7,
+    "oferta": 0,
+    "categoria_id": 6
+  },
+  {
+    "name": "Detergente Líquido 1L",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/detergente-liquido.png",
+    "price": 3.50,
+    "stock": 25,
+    "stock_min": 8,
+    "oferta": 10,
+    "categoria_id": 7
+  },
+  {
+    "name": "Jabón en Barra",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/jabon-en-barra.png",
+    "price": 2.20,
+    "stock": 40,
+    "stock_min": 15,
+    "oferta": 0,
+    "categoria_id": 7
+  },
+  {
+    "name": "Cloro 1L",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cloro.png",
+    "price": 1.80,
+    "stock": 30,
+    "stock_min": 10,
+    "oferta": 0,
+    "categoria_id": 7
+  },
+  {
+    "name": "Desinfectante Multiusos 750ml",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/desinfectante.png",
+    "price": 2.90,
+    "stock": 20,
+    "stock_min": 7,
+    "oferta": 5,
+    "categoria_id": 7
+  },
+  {
+    "name": "Papel Higiénico (4 rollos)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/papel-higienico.png",
+    "price": 2.50,
+    "stock": 50,
+    "stock_min": 20,
+    "oferta": 15,
+    "categoria_id": 7
+  },
+  {
+    "name": "Suavizante de Ropa 1L",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/suavizante.png",
+    "price": 3.20,
+    "stock": 18,
+    "stock_min": 6,
+    "oferta": 0,
+    "categoria_id": 7
+  },
+  {
+    "name": "Escoba",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/escoba.png",
+    "price": 4.50,
+    "stock": 10,
+    "stock_min": 4,
+    "oferta": 0,
+    "categoria_id": 7
+  },
+  {
+    "name": "Esponja Multiusos",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/esponja.png",
+    "price": 0.80,
+    "stock": 60,
+    "stock_min": 25,
+    "oferta": 0,
+    "categoria_id": 7
+  },
+  {
+    "name": "Bolsa de Basura (10 unidades)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/bolsa-de-basura.png",
+    "price": 2.00,
+    "stock": 35,
+    "stock_min": 12,
+    "oferta": 0,
+    "categoria_id": 7
+  },
+  {
+    "name": "Limpiador de Vidrios 500ml",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/limpiador-de-vidrios.png",
+    "price": 2.40,
+    "stock": 15,
+    "stock_min": 5,
+    "oferta": 0,
+    "categoria_id": 7
+  },
+  {
+    "name": "Cepillo para Baño",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/cepillo-bath.png",
+    "price": 1.90,
+    "stock": 12,
+    "stock_min": 4,
+    "oferta": 0,
+    "categoria_id": 7
+  },
+  {
+    "name": "Guantes de Limpieza (par)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/guante-de-limpieza.png",
+    "price": 1.20,
+    "stock": 30,
+    "stock_min": 10,
+    "oferta": 0,
+    "categoria_id": 7
+  },
+  {
+    "name": "Toallas de Papel (2 rollos)",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/toallas-de-papel.png",
+    "price": 1.60,
+    "stock": 25,
+    "stock_min": 8,
+    "oferta": 0,
+    "categoria_id": 7
+  },
+  {
+    "name": "Jabón Líquido para Manos 500ml",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/jabon-liquido-manos.png",
+    "price": 2.30,
+    "stock": 22,
+    "stock_min": 7,
+    "oferta": 0,
+    "categoria_id": 7
+  },
+  {
+    "name": "Desodorante",
+    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/desodorante.png",
+    "price": 1.80,
+    "stock": 20,
+    "stock_min": 7,
+    "oferta": 0,
+    "categoria_id": 7
+  }
+]
