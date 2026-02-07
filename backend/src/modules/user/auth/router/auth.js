@@ -3,6 +3,7 @@ import { AuthController } from '../controller/auth.js';
 import passport from 'passport';
 import { authenticateHybrid } from '../../../../middlewares/auth/authentificate.js'
 import { loginLimiter, forgotPasswordLimiter, resetPasswordLimiter, googleCallbackLimiter, googleRedirectLimiter, logoutLimiter} from "../../../../middlewares/rate_limiters/user/auth.js"
+import { enviroment } from '../../../../config/enviroment.js';
 
 export const authRouter = Router();
 
@@ -15,8 +16,8 @@ authRouter.get('/google', googleRedirectLimiter,
 
 authRouter.get('/google/callback', googleCallbackLimiter,
   passport.authenticate('google', { 
-    failureRedirect: 'http://localhost:3000', // Redirige a la página de login
-    successRedirect: 'http://localhost:3000' // Redirige a la página principal
+    failureRedirect: enviroment.GOOGLE_FAILURE_REDIRECT || enviroment.FRONTEND_URL || 'http://localhost:5173',
+    successRedirect: enviroment.GOOGLE_SUCCESS_REDIRECT || enviroment.FRONTEND_URL || 'http://localhost:5173'
   })
 );
 

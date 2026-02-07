@@ -19,13 +19,23 @@ export class AuthController {
 
             if(login.status) return res.status(login.status).json({message : login.message});
 
-            res.cookie('access_token', login.access_token, {
-                httpOnly : true, // la cookie solo se puede acceder en el servidor
-                secure : enviroment.SECURE_COOKIE === 'production', // la cookie solo se puede acceder en https
-                maxAge : 1000 * 60 * 60, // duracion de una hora
-                sameSite: 'strict', // la cookie solo se envia al mismo sitio
-                signed: true // la cookie esta firmada
-            });
+            const secureCookie = ['1', 'true', 'yes', 'on', 'prod', 'production'].includes(String(enviroment.SECURE_COOKIE || '').toLowerCase());
+            const sameSiteEnv = (enviroment.COOKIE_SAMESITE || 'lax').toLowerCase();
+            const sameSite = sameSiteEnv === 'none' ? 'none' : (sameSiteEnv === 'strict' ? 'strict' : 'lax');
+
+            const cookieOptions = {
+                httpOnly : true,
+                secure : secureCookie,
+                maxAge : 1000 * 60 * 60,
+                sameSite,
+                signed: true
+            };
+            if (enviroment.COOKIE_DOMAIN) cookieOptions.domain = enviroment.COOKIE_DOMAIN;
+
+            // Nota: si sameSite='none' el navegador exige secure=true
+            if (cookieOptions.sameSite === 'none') cookieOptions.secure = true;
+
+            res.cookie('access_token', login.access_token, cookieOptions);
 
             return res.status(200).json({message : login.message, data : login.data});
             
@@ -79,11 +89,18 @@ export class AuthController {
 
         try {
 
-            res.clearCookie('access_token', { 
-                httpOnly: true, 
-                secure: enviroment.SECURE_COOKIE === 'production',
-                sameSite: 'strict' 
-            });
+            const secureCookie = ['1', 'true', 'yes', 'on', 'prod', 'production'].includes(String(enviroment.SECURE_COOKIE || '').toLowerCase());
+            const sameSiteEnv = (enviroment.COOKIE_SAMESITE || 'lax').toLowerCase();
+            const sameSite = sameSiteEnv === 'none' ? 'none' : (sameSiteEnv === 'strict' ? 'strict' : 'lax');
+
+            const clearOptions = {
+                httpOnly: true,
+                secure: sameSite === 'none' ? true : secureCookie,
+                sameSite
+            };
+            if (enviroment.COOKIE_DOMAIN) clearOptions.domain = enviroment.COOKIE_DOMAIN;
+
+            res.clearCookie('access_token', clearOptions);
 
             return res.status(200).json({message: "Logout exitoso"});
 

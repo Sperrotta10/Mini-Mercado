@@ -2,11 +2,17 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { enviroment } from '../../config/enviroment.js';
 import { User } from "../../models/index.js"
 
+function joinUrl(base, path) {
+    const baseClean = String(base || '').replace(/\/$/, '');
+    const pathClean = String(path || '').startsWith('/') ? path : `/${path}`;
+    return `${baseClean}${pathClean}`;
+}
+
 export const setupGoogleAuth = (passport) => {
     passport.use(new GoogleStrategy({
         clientID: enviroment.GOOGLE_CLIENT_ID,
         clientSecret: enviroment.GOOGLE_CLIENT_SECRET,
-        callbackURL: "http://localhost:3000/api/v1/auth/google/callback",
+        callbackURL: joinUrl(enviroment.BACKEND_URL || 'http://localhost:3000', '/api/v1/auth/google/callback'),
         scope: ['profile', 'email'] // Añade email para obtener el correo
         },
         async (accessToken, refreshToken, profile, done) => {

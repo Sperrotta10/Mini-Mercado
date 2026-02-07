@@ -298,5 +298,4 @@ tr:hover {
   background: #ccc;
   cursor: not-allowed;
 }
-
 </style>

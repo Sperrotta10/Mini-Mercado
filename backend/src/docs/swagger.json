@@ -20,6 +20,15 @@
     },
     {
       "name": "product"
+    },
+    {
+      "name": "cart"
+    },
+    {
+      "name": "cart-item"
+    },
+    {
+      "name": "publicity"
     }
   ],
   "paths": {
@@ -208,10 +217,14 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       }
     },
-    "/api/v1/register/4": {
+    "/api/v1/register/{id}": {
       "get": {
         "summary": "obtener usuario",
         "deprecated": false,
@@ -219,7 +232,16 @@
         "tags": [
           "Register"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -251,7 +273,11 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       },
       "patch": {
         "summary": "actualizar usuario",
@@ -260,7 +286,16 @@
         "tags": [
           "Register"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -307,45 +342,12 @@
             "headers": {}
           }
         },
-        "security": []
-      }
-    },
-    "/api/v1/register/cedula/31014123": {
-      "get": {
-        "summary": "obtener usuario por cedula",
-        "deprecated": false,
-        "description": "",
-        "tags": [
-          "Register"
-        ],
-        "parameters": [],
-        "requestBody": {
-          "content": {
-            "text/plain": {
-              "schema": {
-                "type": "string"
-              }
-            }
+        "security": [
+          {
+            "cookieAuth": []
           }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
-      }
-    },
-    "/api/v1/register/1": {
+        ]
+      },
       "delete": {
         "summary": "eliminar usuario",
         "deprecated": false,
@@ -353,7 +355,16 @@
         "tags": [
           "Register"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -368,7 +379,50 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/register/cedula/{cedula}": {
+      "get": {
+        "summary": "obtener usuario por cedula",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Register"
+        ],
+        "parameters": [
+          {
+            "name": "cedula",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       }
     },
     "/api/v1/register/empleado/pagination": {
@@ -486,7 +540,11 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       }
     },
     "/api/v1/test": {
@@ -507,32 +565,6 @@
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
-      }
-    },
-    "/api/v1/register/3": {
-      "delete": {
-        "summary": "eliminar usuario",
-        "deprecated": false,
-        "description": "",
-        "tags": [
-          "Register"
-        ],
-        "parameters": [],
         "responses": {
           "200": {
             "description": "",
@@ -593,7 +625,11 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       },
       "get": {
         "summary": "obtener roles",
@@ -640,34 +676,14 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       }
     },
-    "/api/v1/role/5": {
-      "delete": {
-        "summary": "eliminar rol",
-        "deprecated": false,
-        "description": "",
-        "tags": [
-          "roles"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
-      },
+    "/api/v1/role/{id}": {
       "put": {
         "summary": "actualizar rol",
         "deprecated": false,
@@ -675,7 +691,16 @@
         "tags": [
           "roles"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -710,10 +735,12 @@
             "headers": {}
           }
         },
-        "security": []
-      }
-    },
-    "/api/v1/role/4": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      },
       "delete": {
         "summary": "eliminar rol",
         "deprecated": false,
@@ -721,7 +748,16 @@
         "tags": [
           "roles"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -736,7 +772,11 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       }
     },
     "/api/v1/category/": {
@@ -874,18 +914,31 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       }
     },
-    "/api/v1/category/13": {
-      "delete": {
-        "summary": "eliminar categoria",
+    "/api/v1/category/{id}": {
+      "get": {
+        "summary": "obtener categoria por id",
         "deprecated": false,
         "description": "",
         "tags": [
           "category"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -901,9 +954,7 @@
           }
         },
         "security": []
-      }
-    },
-    "/api/v1/category/7": {
+      },
       "patch": {
         "summary": "actualizar categoria",
         "deprecated": false,
@@ -911,7 +962,16 @@
         "tags": [
           "category"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -947,10 +1007,12 @@
             "headers": {}
           }
         },
-        "security": []
-      }
-    },
-    "/api/v1/category/8": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      },
       "delete": {
         "summary": "eliminar categoria",
         "deprecated": false,
@@ -958,65 +1020,16 @@
         "tags": [
           "category"
         ],
-        "parameters": [],
-        "requestBody": {
-          "content": {
-            "text/plain": {
-              "schema": {
-                "type": "string"
-              },
-              "example": {
-                "name": "Productos Congelados"
-              }
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
-      }
-    },
-    "/api/v1/category/9": {
-      "put": {
-        "summary": "actualizar categoria",
-        "deprecated": false,
-        "description": "",
-        "tags": [
-          "category"
         ],
-        "parameters": [],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "name"
-                ]
-              },
-              "example": {
-                "name": "update test"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "",
@@ -1031,7 +1044,11 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       }
     },
     "/api/v1/auth/logout": {
@@ -1274,7 +1291,11 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       },
       "get": {
         "summary": "obtener productos",
@@ -1342,33 +1363,7 @@
         "security": []
       }
     },
-    "/api/v1/product/120": {
-      "delete": {
-        "summary": "eliminar producto",
-        "deprecated": false,
-        "description": "",
-        "tags": [
-          "product"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
-      }
-    },
-    "/api/v1/product/119": {
+    "/api/v1/product/{id}": {
       "get": {
         "summary": "obtener producto por id",
         "deprecated": false,
@@ -1376,7 +1371,16 @@
         "tags": [
           "product"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -1385,22 +1389,6 @@
                 "schema": {
                   "type": "object",
                   "properties": {}
-                },
-                "example": {
-                  "message": "Producto obtenido",
-                  "data": {
-                    "product_id": 200,
-                    "name": "Chocolate en Polvo 1kg",
-                    "image": "https://mkxlawuamztbmwbfxugr.supabase.co/storage/v1/object/public/product-images/productos/chocolate-en-polvo.png",
-                    "price": 2.8,
-                    "stock": 14,
-                    "stock_min": 5,
-                    "oferta": 0,
-                    "status": true,
-                    "categoria_id": 4,
-                    "createdAt": "2025-07-14T20:33:59.000Z",
-                    "updatedAt": "2025-07-14T20:33:59.000Z"
-                  }
                 }
               }
             },
@@ -1408,9 +1396,134 @@
           }
         },
         "security": []
+      },
+      "patch": {
+        "summary": "actualizar producto",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "example": ""
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "true"
+                  },
+                  "name": {
+                    "description": "Ingrese un String con el nombre del producto",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "price": {
+                    "description": "Ingrese un  Float con el precio del producto",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "stock": {
+                    "description": "Ingrese un Integer con el stock del producto",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "stock_min": {
+                    "description": "Ingrese un Integer con el stock min del producto",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "oferta": {
+                    "description": "Ingrese un Integer con la oferta del producto",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "categoria_id": {
+                    "description": "Ingrese un Integer con el id de la categoria del producto",
+                    "type": "string",
+                    "example": ""
+                  }
+                }
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "eliminar producto",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "product"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
       }
     },
-    "/api/v1/product/search/manza": {
+    "/api/v1/product/search/{name}": {
       "get": {
         "summary": "obtener productos por el nombre",
         "deprecated": false,
@@ -1418,7 +1531,16 @@
         "tags": [
           "product"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -2544,84 +2666,11 @@
             "headers": {}
           }
         },
-        "security": []
-      }
-    },
-    "/api/v1/product/2": {
-      "patch": {
-        "summary": "actualizar producto",
-        "deprecated": false,
-        "description": "",
-        "tags": [
-          "product"
-        ],
-        "parameters": [],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "image": {
-                    "type": "string",
-                    "format": "binary",
-                    "example": ""
-                  },
-                  "status": {
-                    "type": "string",
-                    "example": "true"
-                  },
-                  "name": {
-                    "description": "Ingrese un String con el nombre del producto",
-                    "type": "string",
-                    "example": ""
-                  },
-                  "price": {
-                    "description": "Ingrese un  Float con el precio del producto",
-                    "type": "string",
-                    "example": ""
-                  },
-                  "stock": {
-                    "description": "Ingrese un Integer con el stock del producto",
-                    "type": "string",
-                    "example": ""
-                  },
-                  "stock_min": {
-                    "description": "Ingrese un Integer con el stock min del producto",
-                    "type": "string",
-                    "example": ""
-                  },
-                  "oferta": {
-                    "description": "Ingrese un Integer con la oferta del producto",
-                    "type": "string",
-                    "example": ""
-                  },
-                  "categoria_id": {
-                    "description": "Ingrese un Integer con el id de la categoria del producto",
-                    "type": "string",
-                    "example": ""
-                  }
-                }
-              },
-              "examples": {}
-            }
+        "security": [
+          {
+            "cookieAuth": []
           }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": []
+        ]
       }
     },
     "/api/v1/product/pagination": {
@@ -2787,36 +2836,644 @@
         "security": []
       }
     },
-    "/api/v1/product/10": {
+    
+    "/api/v1/auth/forgot-password": {
+      "post": {
+        "summary": "solicitar restablecimiento de contraseña",
+        "deprecated": false,
+        "description": "Envía un correo con instrucciones (si aplica en el backend).",
+        "tags": [
+          "auth"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              },
+              "example": {
+                "email": "correo@ejemplo.com"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/auth/reset-password": {
+      "post": {
+        "summary": "restablecer contraseña",
+        "deprecated": false,
+        "description": "Restablece contraseña usando token/código según implementación.",
+        "tags": [
+          "auth"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "token",
+                  "password"
+                ]
+              },
+              "example": {
+                "token": "TOKEN_O_CODIGO",
+                "password": "NuevaPassword%123"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/auth/google/callback": {
+      "get": {
+        "summary": "callback de Google OAuth",
+        "deprecated": false,
+        "description": "Endpoint de callback para Google OAuth (redirige según configuración).",
+        "tags": [
+          "auth"
+        ],
+        "parameters": [],
+        "responses": {
+          "302": {
+            "description": "Redirect",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "summary": "obtener usuario autenticado",
+        "deprecated": false,
+        "description": "Devuelve info del usuario actual usando cookie/JWT.",
+        "tags": [
+          "auth"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/register/admin-create": {
+      "post": {
+        "summary": "crear usuario (admin)",
+        "deprecated": false,
+        "description": "Crea un usuario desde un admin.",
+        "tags": [
+          "Register"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "email",
+                  "password",
+                  "role"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/cart/": {
+      "post": {
+        "summary": "crear carrito",
+        "deprecated": false,
+        "description": "Crea un carrito para el usuario autenticado (cliente).",
+        "tags": [
+          "cart"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "obtener carritos",
+        "deprecated": false,
+        "description": "Lista carritos del usuario autenticado (cliente).",
+        "tags": [
+          "cart"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/cart/{id}": {
+      "get": {
+        "summary": "obtener carrito por id",
+        "deprecated": false,
+        "description": "Requiere que el carrito pertenezca al usuario.",
+        "tags": [
+          "cart"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "actualizar carrito",
+        "deprecated": false,
+        "description": "Requiere que el carrito pertenezca al usuario.",
+        "tags": [
+          "cart"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      },
       "delete": {
-        "summary": "eliminar producto",
+        "summary": "eliminar carrito",
         "deprecated": false,
-        "description": "",
+        "description": "Requiere que el carrito pertenezca al usuario.",
         "tags": [
-          "product"
+          "cart"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/cart-item/": {
+      "post": {
+        "summary": "crear item en carrito",
+        "deprecated": false,
+        "description": "Agrega un item al carrito del usuario autenticado.",
+        "tags": [
+          "cart-item"
         ],
         "parameters": [],
         "requestBody": {
           "content": {
-            "text/plain": {
+            "application/json": {
               "schema": {
-                "type": "string"
-              },
-              "example": {
-                "name": "Camisa deportiva",
-                "image": "https://example.com/images/camisa.jpg",
-                "price": 29.99,
-                "stock": 100,
-                "stock_min": 10,
-                "oferta": 20,
-                "categoria_id": 3
+                "type": "object",
+                "properties": {}
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "",
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/cart-item/all/{id}": {
+      "get": {
+        "summary": "obtener items de un carrito",
+        "deprecated": false,
+        "description": "Lista los items de un carrito por id.",
+        "tags": [
+          "cart-item"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/cart-item/{id}": {
+      "get": {
+        "summary": "obtener item de carrito por id",
+        "deprecated": false,
+        "description": "Obtiene un item por id.",
+        "tags": [
+          "cart-item"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "actualizar item de carrito",
+        "deprecated": false,
+        "description": "Actualiza un item por id.",
+        "tags": [
+          "cart-item"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "eliminar item de carrito",
+        "deprecated": false,
+        "description": "Elimina un item por id.",
+        "tags": [
+          "cart-item"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/publicity/": {
+      "post": {
+        "summary": "crear publicidad",
+        "deprecated": false,
+        "description": "Crea una publicidad (admin).",
+        "tags": [
+          "publicity"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "obtener publicidades",
+        "deprecated": false,
+        "description": "Lista publicidades.",
+        "tags": [
+          "publicity"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2831,18 +3488,27 @@
         "security": []
       }
     },
-    "/": {
+    "/api/v1/publicity/{id}": {
       "get": {
-        "summary": "obtener producto por id",
+        "summary": "obtener publicidad por id",
         "deprecated": false,
-        "description": "",
+        "description": "Obtiene una publicidad por id.",
         "tags": [
-          "product"
+          "publicity"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -2855,43 +3521,108 @@
           }
         },
         "security": []
-      }
-    },
-    "/api/v1/product/search/h": {
-      "get": {
-        "summary": "obtener productos por el nombre",
+      },
+      "put": {
+        "summary": "actualizar publicidad",
         "deprecated": false,
-        "description": "",
+        "description": "Actualiza una publicidad (admin).",
         "tags": [
-          "product"
+          "publicity"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
-            "text/plain": {
+            "application/json": {
               "schema": {
-                "type": "string"
-              },
-              "example": {
-                "name": "Camisa deportiva",
-                "image": "https://example.com/images/camisa.jpg",
-                "price": 29.99,
-                "stock": 100,
-                "stock_min": 10,
-                "oferta": 20,
-                "categoria_id": 3
+                "type": "object",
+                "properties": {}
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "eliminar publicidad",
+        "deprecated": false,
+        "description": "Elimina una publicidad (admin).",
+        "tags": [
+          "publicity"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/test-products": {
+      "get": {
+        "summary": "prueba de productos (HTML)",
+        "deprecated": false,
+        "description": "Endpoint de prueba que devuelve HTML con tarjetas de productos.",
+        "tags": [
+          "product"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
                 }
               }
             },
@@ -2904,7 +3635,13 @@
   },
   "components": {
     "schemas": {},
-    "securitySchemes": {}
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "access_token"
+      }
+    }
   },
   "servers": [],
   "security": []

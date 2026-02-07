@@ -1,7 +1,7 @@
 <template>
     <div class="contenedor">
         <div class="contenedor_titulo">
-            "Comprar más organizado — ¡<strong>Mini-Supermarket-Junction</strong>, tu mejor compañero de compras!" 
+            "Compra más organizado — ¡<strong>MSJ-Market</strong>, tu mejor compañero de compras!" 
         </div>
         
         <div class="contenedor_cartel">

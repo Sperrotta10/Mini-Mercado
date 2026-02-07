@@ -265,7 +265,6 @@ async function guardarEdicion() {
     Swal.fire('Error', 'No se pudo editar el producto.', 'error');
   }
 }
-
 async function eliminarProducto(producto) {
   const confirm = await Swal.fire({
     title: `¿Eliminar "${producto.name}"?`,
