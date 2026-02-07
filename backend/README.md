@@ -31,50 +31,54 @@ Swagger: `http://localhost:3000/api/v1/api-docs`.
 El backend usa las variables definidas en `src/config/enviroment.js`. Crea un archivo `.env` en `backend/` con:
 
 ```env
-# Servidor
+# Server / URLs
 PORT=3000
-COOKIE_SECRET=your-cookie-secret
-SESSION_SECRET=your-session-secret
+FRONTEND_URL=http://localhost:5173
+BACKEND_URL=http://localhost:3000
+
+# Cookies / sesión
 SECURE_COOKIE=dev # usa "prod"/"production"/"true" para cookies seguras en producción
-COOKIE_SAMESITE=lax # "none" si frontend/backend están en dominios distintos
-COOKIE_DOMAIN= # opcional
+COOKIE_SAMESITE=lax # "none" si frontend/backend están en dominios distintos y usas credentials
+COOKIE_DOMAIN= # opcional (ej: .midominio.com)
+COOKIE_SECRET=your_cookie_secret_here
+SESSION_SECRET=your_session_secret_here
 
-# Base de datos
-DB_NAME=mini_mercado
-DB_HOST=db # "localhost" si no usas Docker
-DB_USER=mini_user
+# Base de datos (MySQL)
+DB_HOST=localhost
 DB_PORT=3306
+DB_NAME=mini_mercado
+DB_USER=mini_user
 DB_PASSWORD=mini_password
-DB_ROOT_PASSWORD=mini_root_password
-SECURE_DB=development
 DB_SSL=false
-DB_SSL_CA= # PEM multilínea o base64 (útil para Aiven)
+DB_SSL_CA= # opcional. PEM multilinea con \n o base64 (útil para Aiven)
 
-# JWT
-JWT_SECRET=your-jwt-secret
+# Seguridad / app
+JWT_SECRET=your_jwt_secret_here
+ROLE_DEFAULT=3 # 1: cliente, 2: empleado, 3: admin
+SALT=10
 
 # Google OAuth
-GOOGLE_CLIENT_ID=xxxxxxxx.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=xxxxxxxx
-
-# Supabase (si almacenas imágenes allí)
-SUPABASE_URL=...
-SUPABASE_KEY=...
-
-# Frontend permitido por CORS
-FRONTEND_URL=http://localhost:5173
-
-# URL pública del backend (requerido para Google OAuth en deploy)
-BACKEND_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxx
 GOOGLE_SUCCESS_REDIRECT=
 GOOGLE_FAILURE_REDIRECT=
 
 # SMTP (recuperación de contraseña)
-SMTP_HOST=smtp.example.com
-SMTP_PORT=587
-SMTP_USER=user@example.com
-SMTP_PASS=pass
-SMTP_SECURE=false
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_app_password
+SMTP_SECURE=true
+
+# Supabase (Storage para imágenes)
+SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_KEY=your_supabase_anon_or_service_key
+```
+
+Variables opcionales (solo si usas Docker Compose local con MySQL):
+
+```env
+DB_ROOT_PASSWORD=mini_root_password
 ```
 
 Guía de deploy Render + Aiven (MySQL): `docs/deploy-render-aiven.md`.
