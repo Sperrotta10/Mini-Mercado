@@ -68,7 +68,8 @@ export class ProductService {
 
     async getProductsByName(name){
         try{
-            const res = await this.api.get(`/product/search/${name}`)
+            const safeName = encodeURIComponent(String(name ?? ''))
+            const res = await this.api.get(`/product/search/${safeName}`)
             return res.data
         }catch (error) {
             console.error('Error al obtener productos por nombre:', error)

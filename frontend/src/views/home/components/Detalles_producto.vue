@@ -1,34 +1,48 @@
 <template>
     <header_general></header_general>
     <div class="contenedor">
-        <div class="producto_detalle">
-            <div class="product_imagen">
-                <img :src="producto?.image || placeholder" alt="Producto_imagen">
-            </div>
-            <div class="producto_informacion">
-                <h1 class="producto_titulo">{{ producto?.name || 'Cargando...' }}</h1>
-                <span class="producto_categoria">{{ categoria?.name || 'Cargando...' }}</span>
-                <div v-if=" isPremium && producto?.oferta > 0" class="producto_precio_oferta">
-                    <span class="precio-original">$ {{ producto?.price }}</span>
-                    <span class="precio-oferta">
-                        ¡Oferta Premium! $ {{ (producto?.price * (1 - producto?.oferta / 100)).toFixed(2) }}
-                    </span>
-                    <span class="oferta-badge">-{{ producto?.oferta }}%</span>
-                </div>
-                <div v-else class="producto_precio">
-                        $ {{ producto?.price || '--' }}
-                </div>
-                    <div class="producto_disponible">Disponible: {{ producto?.stock ?? '--' }}</div>
-                <AddToCart
-                    :id="producto?.product_id"
-                    :imagen="producto?.image || placeholder"
-                    :nombre="producto?.name || 'Cargando...'"
-                    :precio="isPremium && producto?.oferta > 0
-                        ? (producto?.price * (1 - producto?.oferta / 100)).toFixed(2)
-                        : producto?.price || '--'"
-                    :stock="producto?.stock || 0"
-                />
-            </div>
+        <div v-if="loading" class="producto_detalle">
+          <div class="product_imagen">
+            <div class="sk sk_img" />
+          </div>
+          <div class="producto_informacion">
+            <div class="sk sk_line sk_title" />
+            <div class="sk sk_line sk_badge" />
+            <div class="sk sk_line sk_price" />
+            <div class="sk sk_line sk_stock" />
+            <div class="sk sk_btn" />
+          </div>
+        </div>
+
+        <div v-else class="producto_detalle">
+          <div class="product_imagen">
+              <img :src="producto?.image || placeholder" alt="Producto_imagen">
+          </div>
+          <div class="producto_informacion">
+              <h1 class="producto_titulo">{{ producto?.name || 'Cargando...' }}</h1>
+              <span class="producto_categoria">{{ categoria?.name || 'Cargando...' }}</span>
+              <div v-if=" isPremium && producto?.oferta > 0" class="producto_precio_oferta">
+                  <span class="precio-original">$ {{ producto?.price }}</span>
+                  <span class="precio-oferta">
+                      ¡Oferta Premium! $ {{ (producto?.price * (1 - producto?.oferta / 100)).toFixed(2) }}
+                  </span>
+                  <span class="oferta-badge">-{{ producto?.oferta }}%</span>
+              </div>
+              <div v-else class="producto_precio">
+                      $ {{ producto?.price || '--' }}
+              </div>
+                  <div class="producto_disponible">Disponible: {{ producto?.stock ?? '--' }}</div>
+              <AddToCart
+                  v-if="producto"
+                  :id="producto?.product_id"
+                  :imagen="producto?.image || placeholder"
+                  :nombre="producto?.name || 'Cargando...'"
+                  :precio="isPremium && producto?.oferta > 0
+                      ? (producto?.price * (1 - producto?.oferta / 100)).toFixed(2)
+                      : producto?.price || '--'"
+                  :stock="producto?.stock || 0"
+              />
+          </div>
         </div>
 
         <h2 class="section_titulo">Productos recomendados</h2>
@@ -39,19 +53,28 @@
                     class="carousel-track"
                     :style="trackStyle"
                 >
-                    <div
-                    v-for="producto in productos"
-                    :key="producto.product_id"
-                    class="carousel-item"
-                    >
-                    <carta_producto
-                        :id="producto.product_id"
-                        :imagen="producto.image || Ejemplo_png"
-                        :nombre="producto.name"
-                        :precio="producto.price"
-                        :oferta="producto.oferta"
-                    />
-                    </div>
+                                        <template v-if="loadingRecomendados">
+                                            <div v-for="i in 6" :key="i" class="carousel-item">
+                                                <SkeletonProductCard />
+                                            </div>
+                                        </template>
+                                        <template v-else>
+                                            <div
+                                            v-for="producto in productos"
+                                            :key="producto.product_id"
+                                            class="carousel-item"
+                                            >
+                                            <carta_producto
+                                                    :id="producto.product_id"
+                                                    :imagen="producto.image || Ejemplo_png"
+                                                    :nombre="producto.name"
+                                                    :precio="producto.price"
+                                                    :oferta="producto.oferta"
+                                                    :stock="producto.stock"
+                                                    :isPremium="isPremium"
+                                            />
+                                            </div>
+                                        </template>
                 </div>
                 </div>
 
@@ -73,16 +96,18 @@ import { categoryService } from '@/utils/categoryServices';
 import placeholder from '@/assets/Imagenes/placeholder.webp';
 import AddToCart from './AddToCart.vue';
 import { useAuthStore } from '@/stores/Auth';
+import SkeletonProductCard from '@/components/skeleton/SkeletonProductCard.vue';
 const route = useRoute();
 const productService = new ProductService();
 const authStore = useAuthStore();
-const isPremium = authStore.userData?.suscripcion || false;
+const isPremium = computed(() => authStore.userData?.suscripcion === true || authStore.userData?.suscripcion === 1);
 
 const producto = ref(null)
 const categoria = ref(null)
 const loading = ref(false)
+const loadingRecomendados = ref(false)
 const error = ref(null)
-const productos = ref([{}])
+const productos = ref([])
 
 async function cargarProducto(name) {
     loading.value = true
@@ -105,6 +130,11 @@ async function cargarProducto(name) {
 }
 
 async function CargarProductosRecomendados() {
+        if (!categoria.value?.categoria_id) {
+            productos.value = [];
+            return;
+        }
+        loadingRecomendados.value = true;
     try {
         const res = await productService.getProductsPaginated(
         1, 20, 0, 100, 0, categoria.value.categoria_id
@@ -115,10 +145,13 @@ async function CargarProductosRecomendados() {
     } catch (err) {
         console.error('Error al cargar productos recomendados:', err);
         productos.value = [];
+    } finally {
+        loadingRecomendados.value = false;
     }
 }
 
 onMounted(async () => {
+    // En vistas públicas no forzamos verificación de sesión (evita 401 en consola)
     await cargarProducto(route.params.nombre)
     await CargarProductosRecomendados()
 })
@@ -126,7 +159,7 @@ onMounted(async () => {
 watch(
     () => route.params.nombre,
     (nuevoNombre) =>{
-        cargarProducto(nuevoNombre)
+        cargarProducto(nuevoNombre).then(() => CargarProductosRecomendados())
     }
 )
 
@@ -211,6 +244,57 @@ function prev() {
     border-radius: 4px;
     font-size: 14px;
     margin-bottom: 20px;
+}
+
+/* Skeleton */
+.sk {
+    background: linear-gradient(90deg, #e6e6e6 25%, #f3f3f3 37%, #e6e6e6 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.2s ease-in-out infinite;
+    border-radius: 10px;
+}
+
+@keyframes shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: 0 0; }
+}
+
+.sk_img {
+    width: 100%;
+    height: 320px;
+}
+
+.sk_line {
+    height: 16px;
+}
+
+.sk_title {
+    height: 26px;
+    width: 75%;
+    margin-bottom: 12px;
+}
+
+.sk_badge {
+    height: 22px;
+    width: 35%;
+    margin-bottom: 18px;
+}
+
+.sk_price {
+    height: 30px;
+    width: 45%;
+    margin: 16px 0;
+}
+
+.sk_stock {
+    width: 40%;
+    margin-bottom: 3rem;
+}
+
+.sk_btn {
+    height: 46px;
+    width: 100%;
+    border-radius: 8px;
 }
 .producto_precio_oferta {
     font-size: 18px;

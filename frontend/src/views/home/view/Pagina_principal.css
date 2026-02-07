@@ -13,11 +13,7 @@
     margin: 40px auto;
 }
 
-.contenedor_caja_producto {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 25px;
-}
+/* (Antes era un grid; ahora es carrusel por categoría) */
 
 .contenedor_lista_producto{
     margin-top: 30px;
@@ -32,12 +28,71 @@
 
 .contenedor_titulo{
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.btn_ver_todas {
+    background: #10b68d;
+    color: white;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.btn_ver_todas:hover {
+    background: #018175;
+}
+
+.contenedor_carrusel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn_carrusel {
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    cursor: pointer;
+    background: rgba(16, 182, 141, 0.12);
+    color: #018175;
+    font-size: 24px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn_carrusel:hover {
+    background: rgba(16, 182, 141, 0.22);
+}
+
+.carrusel_pista {
+    flex: 1;
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    padding: 4px 2px 14px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+}
+
+.carrusel_item {
+    flex: 0 0 240px;
+    scroll-snap-align: start;
 }
 
 /*Area de responsive ------------------------------------------------------------------*/
 @media (max-width: 1200px) {
-    .contenedor_caja_producto {
-        grid-template-columns: repeat(4, 1fr);
+    .carrusel_item {
+        flex-basis: 220px;
     }
 
 }
@@ -47,14 +102,28 @@
         flex-direction: column;
     }
 
-    .contenedor_caja_producto {
-        grid-template-columns: repeat(3, 1fr);
+    .btn_carrusel {
+        display: none;
+    }
+
+    .carrusel_item {
+        flex-basis: 200px;
     }
 }
 
 @media (max-width: 576px) {
-    .contenedor_caja_producto {
-        grid-template-columns: repeat(2, 1fr);
+    .contenedor_lista_producto h2{
+        font-size: 1.15rem;
+    }
+
+    .btn_ver_todas {
+        padding: 7px 10px;
+        border-radius: 7px;
+        font-size: 0.95rem;
+    }
+
+    .carrusel_item {
+        flex-basis: 190px;
     }
 }
 

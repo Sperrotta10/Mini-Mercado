@@ -245,11 +245,11 @@ function handleAgregarCarrito() {
     background: #10b68d;
     color: white;
     border: none;
-    padding: 8px;
-    border-radius: 5px;
+  padding: 10px;
+  border-radius: 8px;
     cursor: pointer;
-    font-weight: 500;
-    margin-top: 5px;
+  font-weight: 600;
+  margin-top: 0;
     transition: all 0.3s ease;
 }
 
