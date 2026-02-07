@@ -137,29 +137,16 @@ const onLogin = async () => {
   }
   // Prepara los datos para enviar
   const dataToSend = {
-    email: loginData.value.email,
+    email: String(loginData.value.email || '').trim(),
     password: loginData.value.password,
   }
-  const response = await AuthStore.login({email: dataToSend.email, password: dataToSend.password})
-  if (response && response.data === 401) {
-    await Swal.fire({
-      icon: 'error',
-      title: 'Usuario inactivo',
-      text: 'Tu cuenta está inactiva. Por favor contacta al administrador.',
-      confirmButtonColor: '#d33',
-    })
-  } else if (response && response.data === 429) {
-    await Swal.fire({
-      icon: 'error',
-      title: 'Demasiados intentos',
-      text: 'Has realizado demasiados intentos. Por favor, inténtalo dentro de 10 minutos.',
-      confirmButtonColor: '#d33',
-    })
-  } else if (response) {
+  const response = await AuthStore.login({ email: dataToSend.email, password: dataToSend.password })
+
+  if (response === true) {
     await Swal.fire({
       icon: 'success',
       title: 'Inicio de sesión exitoso',
-      text: `Bienvenido de nuevo ${AuthStore.user.user_name ?? 'usuario'}.`,
+      text: `Bienvenido de nuevo ${AuthStore.user?.user_name ?? AuthStore.user?.username ?? 'usuario'}.`,
       confirmButtonColor: '#3085d6',
     })
 
@@ -168,7 +155,53 @@ const onLogin = async () => {
     } else {
       router.push('/') // Redirige a la página principal
     }
-  } else {
+    return
+  }
+
+  const code = response?.code
+  const message = response?.data?.message
+
+  if (code === 422) {
+    await Swal.fire({
+      icon: 'error',
+      title: 'Datos inválidos',
+      text: 'Revisa tu correo y contraseña e inténtalo de nuevo.',
+      confirmButtonColor: '#d33',
+    })
+    return
+  }
+
+  if (code === 429) {
+    await Swal.fire({
+      icon: 'error',
+      title: 'Demasiados intentos',
+      text: 'Has realizado demasiados intentos. Por favor, inténtalo dentro de 10 minutos.',
+      confirmButtonColor: '#d33',
+    })
+    return
+  }
+
+  if (code === 401) {
+    await Swal.fire({
+      icon: 'error',
+      title: 'No se pudo iniciar sesión',
+      text: message || 'Credenciales incorrectas o usuario inactivo.',
+      confirmButtonColor: '#d33',
+    })
+    return
+  }
+
+  if (code) {
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: message || `No se pudo iniciar sesión (código ${code}).`,
+      confirmButtonColor: '#d33',
+    })
+    return
+  }
+
+  {
     await Swal.fire({
       icon: 'error',
       title: 'Error',

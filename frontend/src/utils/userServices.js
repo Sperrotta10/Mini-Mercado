@@ -18,11 +18,15 @@ export class UserService {
 
     async login(data) {
         try {
-            const res = await this.api.post('/auth/login/', data)
-            return {status:true, data: res.data}
+            const res = await this.api.post('/auth/login', data)
+            return { ok: true, data: res.data }
         } catch (error) {
             console.error('Error al iniciar sesión:', error)
-            return {status:false, data: error.status}
+            return {
+                ok: false,
+                status: error?.response?.status ?? null,
+                data: error?.response?.data ?? null,
+            }
         }
     }
 

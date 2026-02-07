@@ -14,16 +14,28 @@ export const useAuthStore = defineStore('auth', {
             this.loading = true
             try {
                 const res = await userService.login(data)
-                if (res && res.status==true) {
-                this.user = {
-                    ...res.data.data,
-                    role: res.data.data.role?.name || res.data.data.role,
+                if (res && (res as any).ok === true) {
+                    const payload = (res as any).data?.data
+                    this.user = payload
+                        ? {
+                              ...payload,
+                              role: payload.role?.name || payload.role,
+                          }
+                        : null
+
+                    if (this.user) {
+                        localStorage.setItem('user', JSON.stringify(this.user))
+                        await this.GetThisUserData();
+                        return true
+                    }
+                    return { status: false, code: 500, data: { message: 'Respuesta inválida del servidor' } }
                 }
-                localStorage.setItem('user', JSON.stringify(this.user))
-                await this.GetThisUserData();
-                return true
+
+                return {
+                    status: false,
+                    code: (res as any)?.status ?? null,
+                    data: (res as any)?.data ?? null,
                 }
-                return {status:false, data: res.data}
             } catch (e) {
                 console.error('Login error:', e)
             } finally {
