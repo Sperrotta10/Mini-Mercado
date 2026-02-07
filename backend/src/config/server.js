@@ -19,6 +19,9 @@ export function createServer() {
 
     const app = express();
 
+    // Si el backend está detrás de un proxy (como Render), esto es necesario para que las cookies "Secure" funcionen correctamente
+    app.set('trust proxy', 1);
+
     // middleware que permite el acceso a la API desde el frontend
     const allowedOrigin = enviroment.FRONTEND_URL || 'http://localhost:5173';
     app.use(cors({
