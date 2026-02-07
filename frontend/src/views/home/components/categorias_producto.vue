@@ -4,20 +4,31 @@
       <h1>Categorías</h1>
     </div>
     <div class="contenedor_categorias">
-      <div 
-      v-for="(categoria) in categoriesList" 
-      :key="categoria.categoria_id" 
-      class="carta_categoria"
-      >
-        <RouterLink target="_blank" :to="`/categoria/${categoria.categoria_id}`" class="carta_link">
-          <div class="imagen_categoria">
-            <img :src="categoria.image" loading="lazy" alt="">
-          </div>
-          <div class="contenido_categoria">
-            <p class="nombre_categoria">{{ categoria.name }}</p>
-          </div>
-        </RouterLink>
-      </div>
+      <template v-if="cargandoCategorias">
+        <div v-for="i in 7" :key="i" class="categoria_skeleton_item">
+          <SkeletonCategoryCard />
+        </div>
+      </template>
+
+      <template v-else>
+        <div
+          v-for="(categoria) in categoriesList"
+          :key="categoria.categoria_id"
+          class="carta_categoria"
+        >
+          <RouterLink
+            :to="{ name: 'categoria', params: { id: categoria.categoria_id, slug: slugify(categoria.name) } }"
+            class="carta_link"
+          >
+            <div class="imagen_categoria">
+              <img :src="categoria.image" loading="lazy" alt="">
+            </div>
+            <div class="contenido_categoria">
+              <p class="nombre_categoria">{{ categoria.name }}</p>
+            </div>
+          </RouterLink>
+        </div>
+      </template>
     </div>
   </div> 
 </template>
@@ -25,14 +36,21 @@
 <script setup>
 import { categoryService } from '@/utils/categoryServices';
 import { onMounted, ref } from 'vue';
+import { slugify } from '@/utils/slugify';
+import SkeletonCategoryCard from '@/components/skeleton/SkeletonCategoryCard.vue';
 
 const categoriesList = ref([]);
+const cargandoCategorias = ref(true);
 onMounted(() => {
-    categoryService.getCategories().then(categories => {
-        categoriesList.value = categories.data;
-    }).catch(error => {
-        console.error("Error fetching categories:", error);
-    });
+  cargandoCategorias.value = true;
+  categoryService.getCategories().then(categories => {
+    categoriesList.value = categories.data;
+  }).catch(error => {
+    console.error("Error fetching categories:", error);
+    categoriesList.value = [];
+  }).finally(() => {
+    cargandoCategorias.value = false;
+  });
 });
 </script>
 
@@ -91,6 +109,16 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  height: 260px;
+}
+
+.categoria_skeleton_item {
+  width: 100%;
+}
+
+/* Skeleton ocupa toda la celda */
+.contenedor_categorias > div > :deep(.sk_cat) {
+  width: 100%;
 }
 
 .carta_categoria:hover {
@@ -107,13 +135,17 @@ onMounted(() => {
 
 .imagen_categoria img{
   width: 100%;
-  height: 150px;
+  height: 140px;
   object-fit: cover;
 }
 
 .contenido_categoria {
   margin: 10px 0px;
   padding: 15px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
 
 .nombre_categoria {
@@ -129,9 +161,37 @@ onMounted(() => {
   }
 }
 
-@media (max-width: 576px) {
+/* Carrusel en mobile */
+@media (max-width: 768px) {
   .contenedor_categorias {
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 6px 2px 14px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .carta_categoria {
+    flex: 0 0 220px;
+    scroll-snap-align: start;
+  }
+
+  /* En pantallas táctiles evitamos el “salto” por hover */
+  .carta_categoria:hover {
+    scale: 1;
+  }
+}
+
+@media (max-width: 576px) {
+  .carta_categoria {
+    height: 220px;
+    flex-basis: 200px;
+  }
+
+  .imagen_categoria img {
+    height: 120px;
   }
 }
 </style>

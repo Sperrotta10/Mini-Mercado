@@ -5,7 +5,9 @@
         </div>
 
         <div class="tapa_overlay">
-            <RouterLink target="_blank" :to="`/categoria/${props.categoria.categoria_id}`">
+            <RouterLink
+              :to="{ name: 'categoria', params: { id: props.categoria?.categoria_id, slug: slugify(props.categoria?.name) } }"
+            >
                 <span class="hover_texto">{{ props.categoria.name }}</span>
             </RouterLink>
         </div>
@@ -14,6 +16,7 @@
 
 <script setup>
 import { defineProps } from 'vue'
+import { slugify } from '@/utils/slugify';
 
 const props = defineProps({
     categoria: Object,
@@ -32,6 +35,7 @@ const props = defineProps({
     flex-direction: column;
     overflow: hidden; 
     position: relative;
+    height: 260px;
 }
 
 .categoria_carta:hover {
@@ -46,6 +50,7 @@ const props = defineProps({
     justify-content: center;
     overflow: hidden;
     position: relative;
+    height: 160px;
 }
 
 .product_imagen img{
@@ -101,5 +106,20 @@ const props = defineProps({
 
 .categoria_carta:hover img {
     transform: scale(1.05);
+}
+
+@media (max-width: 576px) {
+    .categoria_carta {
+        height: 220px;
+    }
+
+    .product_imagen {
+        height: 120px;
+    }
+
+    .hover_texto {
+        font-size: 1.1rem;
+        padding: 14px 18px;
+    }
 }
 </style>
