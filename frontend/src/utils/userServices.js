@@ -31,6 +31,9 @@ export class UserService {
         const res = await api.post('/auth/logout', {})
         if (res.status === 200) return true
         } catch (error) {
+        const status = error?.response?.status
+        // Si no hay sesión/cookie, consideramos el logout como "ok" (no-op)
+        if (status === 401 || status === 403) return true
         console.error('Error al cerrar sesión:', error)
         }
         return false
@@ -43,10 +46,15 @@ export class UserService {
             return { status: true, data: res.data.data }
         }
         } catch (error) {
-        console.error('Error al obtener sección por ID:', error)
-        return false
+        const status = error?.response?.status
+        // 401/403 es un caso normal: usuario no autenticado
+        if (status === 401 || status === 403) {
+            return { status: false, code: status }
         }
-        return false
+        console.error('Error al obtener sección por ID:', error)
+        return { status: false, code: status }
+        }
+        return { status: false }
     }
 
     async getUserByID(id) {

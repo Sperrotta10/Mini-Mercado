@@ -5,7 +5,7 @@
         <TransitionGroup name="grupo_slide">
           <div
             v-for="(slide, index) in slides"
-            :key="slide.slides"
+            :key="slide.slides ?? index"
             class="slide"
             v-show="Imagen_referencia_Index === index"
           >
@@ -25,7 +25,7 @@
         <div class="indicador" v-if="slides.length > 1">
           <span 
             v-for="(slide, index) in slides" 
-            :key="slide.slides"
+            :key="slide.slides ?? index"
             @click="goTo(index)"
             :class="{ active: Imagen_referencia_Index === index }"
           ></span>

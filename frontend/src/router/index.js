@@ -130,6 +130,12 @@ router.beforeEach(async (to, from, next) => {
 
   // Si la ruta requiere autenticación
   if (to.meta.requiresAuth) {
+    // Si no hay usuario en el store, evita pegarle al backend innecesariamente
+    // (y evita el spam de 401 en consola). Redirige directo a login.
+    if (!auth.user) {
+      return next({ name: 'Pagina de Login usuario' });
+    }
+
     // Siempre verifica la sesión con el backend (o token válido)
     const valid = await auth.checkSession();
     if (!valid) {

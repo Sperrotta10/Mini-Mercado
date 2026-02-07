@@ -46,19 +46,29 @@ export const useAuthStore = defineStore('auth', {
                     ...res.data,
                     role: res.data.role?.name || res.data.role,
                 }
+                localStorage.setItem('user', JSON.stringify(this.user))
                 
                 return true
                 }
             } catch (e) {
                 console.error('Session check error:', e)
                 this.user = null
+                localStorage.removeItem('user')
             }
             return false
         },
 
         async GetThisUserData() {
             try {
-                const res = await userService.getUserByID(this.user?.user_id)
+                if (!this.user?.user_id) {
+                    const hasSession = await this.checkSession()
+                    if (!hasSession || !this.user?.user_id) {
+                        this.userData = null
+                        return false
+                    }
+                }
+
+                const res = await userService.getUserByID(this.user.user_id)
                 if (res && res.status) {
                     this.userData = res.data
                     return res.data
