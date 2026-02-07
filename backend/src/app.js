@@ -5,18 +5,8 @@ import { createServer } from './config/server.js';
 //import { seedCategories } from './seeders/auto-seeding/seed-categorias.js';
 import './models/index.js';
 
-
-function parseBoolean(value) {
-  if (value === undefined || value === null) return false;
-  return ['1', 'true', 'yes', 'on', 'prod', 'production'].includes(String(value).toLowerCase());
-}
-
 function ms(start) {
   return `${Date.now() - start}ms`;
-}
-
-function safe(value, fallback = '—') {
-  return value === undefined || value === null || value === '' ? fallback : String(value);
 }
 
 function normalizeBaseUrl(url) {

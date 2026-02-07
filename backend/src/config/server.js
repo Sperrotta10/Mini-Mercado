@@ -5,6 +5,7 @@ import session from 'express-session';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
 import fileUpload from "express-fileupload"
 import { enviroment } from './enviroment.js';
 import path from 'path';
@@ -32,6 +33,7 @@ export function createServer() {
     // middleware para parsear el cuerpo de las peticiones y las cookies
     app.use(express.json());
     app.use(cookieParser(enviroment.COOKIE_SECRET));
+    app.use(morgan('dev')); // Logger de peticiones HTTP
 
     // Servir los archivos estáticos
     app.use(express.static(path.join(__dirname, '../public')));
