@@ -94,8 +94,6 @@
 import { ref, onMounted } from 'vue';
 import Swal from 'sweetalert2';
 import { ProductService } from '@/utils/productServices';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
 const search = ref('');
 const productos = ref([]);
 const productService = new ProductService();
@@ -141,6 +139,7 @@ const generarPDFCompleto = async () => {
   loading.value = true;
   
   try {
+    const { default: jsPDF } = await import('jspdf');
     const doc = new jsPDF();
     
     // Título

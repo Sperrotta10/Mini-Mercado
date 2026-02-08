@@ -1,38 +1,40 @@
-import Pagina_principal from '@/views/home/view/pagina_principal.vue'
-import pagina_404 from '@/views/pagina_404/pagina_404.vue'
-import login_usuarios from '@/modules/login_usuarios.vue'
-import Detalles_producto from '@/views/home/components/Detalles_producto.vue'
-import CrearUsuario from '@/modules/CrearUsuario.vue'
-
-//Rutas para diferentes de user
-import pagina_administrador from '@/views/admin/view/pagina_administrador.vue'
-import pagina_usuario from '@/views/usuarios/view/pagina_usuario.vue'
-import pagina_empleado from '@/views/empleado/view/pagina_empleado.vue'
-
-//Componentes para Admin
-import BienvenidoComponente from '@/views/admin/components/BienvenidoComponente.vue'
-import Gestion_inventario from '@/views/admin/components/GestionInventario.vue'
-import Gestion_empleado from '@/views/admin/components/GestionEmpleado.vue'
-import GestionPublicidad from '@/views/admin/components/GestionPublicidad.vue'
-
-//Componentes para Usuario
-import BienvenidoUsuario from '@/views/usuarios/components/BienvenidoUsuario.vue'
-import InformacionPersonal from '@/views/usuarios/components/InformacionPersonal.vue'
-import GestionCarritos from '@/views/usuarios/components/GestionCarritos.vue'
-import DetallesCarrito from '@/views/usuarios/components/DetallesCarrito.vue'
-import ConsultaDuda from '@/views/usuarios/components/ConsultaDuda.vue'
-import EditarInformacion from '@/views/usuarios/components/EditarInformacion.vue'
-
-//Componentes para Empleado
-import BienvenidoEmpleado from '@/views/empleado/components/BienvenidoEmpleado.vue'
-import ConsultaInventario from '@/views/empleado/components/ConsultaInventario.vue'
-import AtencionClientePro from '@/views/empleado/components/AtencionClientePro.vue'
 import { useAuthStore } from '@/stores/Auth.js'
 
 import { createRouter, createWebHistory } from 'vue-router'
-import Pagina_buscador from '@/views/home/view/pagina_buscador.vue'
-import Pagina_categoria from '@/views/home/view/pagina_categoria.vue'
-import TerminosYCondiciones from '@/modules/TerminosYCondiciones.vue'
+
+const Pagina_principal = () => import('@/views/home/view/pagina_principal.vue')
+const pagina_404 = () => import('@/views/pagina_404/pagina_404.vue')
+const login_usuarios = () => import('@/modules/login_usuarios.vue')
+const Detalles_producto = () => import('@/views/home/components/Detalles_producto.vue')
+const CrearUsuario = () => import('@/modules/CrearUsuario.vue')
+
+//Rutas para diferentes de user
+const pagina_administrador = () => import('@/views/admin/view/pagina_administrador.vue')
+const pagina_usuario = () => import('@/views/usuarios/view/pagina_usuario.vue')
+const pagina_empleado = () => import('@/views/empleado/view/pagina_empleado.vue')
+
+//Componentes para Admin
+const BienvenidoComponente = () => import('@/views/admin/components/BienvenidoComponente.vue')
+const Gestion_inventario = () => import('@/views/admin/components/GestionInventario.vue')
+const Gestion_empleado = () => import('@/views/admin/components/GestionEmpleado.vue')
+const GestionPublicidad = () => import('@/views/admin/components/GestionPublicidad.vue')
+
+//Componentes para Usuario
+const BienvenidoUsuario = () => import('@/views/usuarios/components/BienvenidoUsuario.vue')
+const InformacionPersonal = () => import('@/views/usuarios/components/InformacionPersonal.vue')
+const GestionCarritos = () => import('@/views/usuarios/components/GestionCarritos.vue')
+const DetallesCarrito = () => import('@/views/usuarios/components/DetallesCarrito.vue')
+const ConsultaDuda = () => import('@/views/usuarios/components/ConsultaDuda.vue')
+const EditarInformacion = () => import('@/views/usuarios/components/EditarInformacion.vue')
+
+//Componentes para Empleado
+const BienvenidoEmpleado = () => import('@/views/empleado/components/BienvenidoEmpleado.vue')
+const ConsultaInventario = () => import('@/views/empleado/components/ConsultaInventario.vue')
+const AtencionClientePro = () => import('@/views/empleado/components/AtencionClientePro.vue')
+
+const Pagina_buscador = () => import('@/views/home/view/pagina_buscador.vue')
+const Pagina_categoria = () => import('@/views/home/view/pagina_categoria.vue')
+const TerminosYCondiciones = () => import('@/modules/TerminosYCondiciones.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
