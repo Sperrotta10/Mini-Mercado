@@ -143,5 +143,5 @@ function scrollCarrusel(categoriaId, direction) {
 </script>
 
 <style scoped>
-@import url('./pagina_principal.css');
+@import url('./Pagina_principal.css');
 </style>
