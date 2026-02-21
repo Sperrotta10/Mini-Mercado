@@ -2,9 +2,8 @@ name: Keep Aiven DB Alive
 
 on:
   schedule:
-    # Ejecutar una vez al día (00:00 UTC) es suficiente para Aiven
     - cron: '0 0 * * *'
-  workflow_dispatch: # Para probar manualmente
+  workflow_dispatch:
 
 jobs:
   ping-db:
@@ -12,7 +11,8 @@ jobs:
     steps:
       - name: Ping Aiven MySQL
         run: |
-          # MySQL a veces requiere separar el comando si la URL da problemas, 
-          # pero muchas versiones aceptan la URI directa o usamos variables:
-          # Lo más fácil es configurar el secreto AIVEN_DB_URL con el formato mysql://...
-          mysql "${{ secrets.AIVEN_DB_URL }}" -e "SELECT 1;"
+          mysql -h "${{ secrets.AIVEN_MYSQL_HOST }}" \
+                -P "${{ secrets.AIVEN_MYSQL_PORT }}" \
+                -u "${{ secrets.AIVEN_MYSQL_USER }}" \
+                -p"${{ secrets.AIVEN_MYSQL_PASSWORD }}" \
+                -e "SELECT 1;"
