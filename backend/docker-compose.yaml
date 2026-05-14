@@ -16,7 +16,7 @@ services:
         sleep 1;
       done;
       echo '✅ MySQL está listo. Levantando servidor...';
-      npm run dev
+      pnpm run dev
       "
 
   db:
